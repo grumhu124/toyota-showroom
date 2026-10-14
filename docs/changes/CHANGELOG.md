@@ -3,6 +3,14 @@
 Git lưu diff chính xác; file này giải thích thay đổi để người và AI hiểu.
 Thêm mục mới lên đầu. Dùng CHANGE_TEMPLATE.md, không chỉ ghi “update code”.
 
+## 2026-10-14 Xác nhận kiểm tra CI của bản nền
+
+- Sửa: FEATURE_STATUS và BASELINE_VALIDATION ghi kết quả GitHub Actions thực tế,
+  thay trạng thái dự kiến kiểm tra MySQL bằng kết quả pass ở CI.
+- Bằng chứng: run 38555128110 của commit 33cec56; frontend và PHP SQLite/MySQL đều success.
+- Không thay mã nghiệp vụ/schema. Cập nhật inventory để phản ánh các file Markdown đã sửa.
+- Hạn chế giữ nguyên: chưa có chat end-to-end hoặc service xác nhận lịch để thử cạnh tranh.
+
 ## 2026-10-14 Khởi tạo nền tảng
 
 - Thêm: Laravel 12 và dependency Reverb/Echo, schema 8 core + audit, enums/models,

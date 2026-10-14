@@ -13,7 +13,7 @@ Trạng thái nền tảng không có nghĩa nghiệp vụ đã hoàn tất.
 | Chat | Reverb config/dependency, Echo factory, route channels từ chối mặc định | HTTP gửi tin, event sau commit, quyền kênh theo hồ sơ, reconnect/dedupe và UI | TV4 + Đạt |
 | Appointment | Schema/quan hệ/trạng thái, thư mục module | Form, giao người, xác nhận có khóa hàng, đổi/hủy/no_show, UI | TV5 |
 | Audit | Bảng/model/namespace | Service che dữ liệu, ghi các action, màn hình log | Hoàng |
-| Kiểm tra | Test nền và CI cấu hình | Toàn bộ acceptance của các nghiệp vụ và chat hai phiên | Cả nhóm |
+| Kiểm tra | Test nền pass local SQLite; CI SQLite/MySQL và build frontend pass | Toàn bộ acceptance của các nghiệp vụ và chat hai phiên | Cả nhóm |
 
 Chỉ đánh dấu Hoàn tất khi chức năng chạy từ đầu tới cuối, có quyền/validation,
 test phù hợp và bằng chứng demo. Bộ khung không tự nhận chat đang hoạt động.
