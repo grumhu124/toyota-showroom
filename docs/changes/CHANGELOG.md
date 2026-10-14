@@ -1,0 +1,16 @@
+# Nhật ký thay đổi hệ thống
+
+Git lưu diff chính xác; file này giải thích thay đổi để người và AI hiểu.
+Thêm mục mới lên đầu. Dùng CHANGE_TEMPLATE.md, không chỉ ghi “update code”.
+
+## 2026-10-14 Khởi tạo nền tảng
+
+- Thêm: Laravel 12 và dependency Reverb/Echo, schema 8 core + audit, enums/models,
+  active/role middleware, seed user local, cấu trúc module và tài liệu nhóm/AI.
+- Sửa so với nguồn v5: thống nhất tên trường, giới hạn form, biến broadcasting,
+  quy tắc overlap, reserved và số bảng; chi tiết ở SOURCE_REVIEW/ADR 0001.
+- Thay: README/workflow/changelog mẫu upstream bằng hướng dẫn và CI cho nhóm.
+- Xóa: workflow bot upstream cho issue/PR/update changelog; không xóa mã thành viên.
+- Kiến trúc: monolith MVC, MySQL, Blade/Tailwind, Reverb; chưa có nghiệp vụ online bán hàng.
+- Trạng thái: nền tảng; auth/CRUD/chat/lịch hẹn end-to-end chưa triển khai.
+- Kiểm tra và hạn chế: xem BASELINE_VALIDATION.md; không coi CI pass là đạt điểm mục tiêu.
