@@ -16,7 +16,8 @@ UserSeeder không chạy để tạo tài khoản demo trong production.
 | sales | sales1@example.test, sales2@example.test |
 | customer | customer1@example.test, customer2@example.test, customer3@example.test |
 
-Chưa có giao diện đăng nhập; các user phục vụ phát triển nền, auth do Hoàng làm tiếp.
+H01 đã có /dang-ky, /dang-nhap, /tai-khoan; chưa có UI admin tạo/khóa user.
+Auth dùng session/cookie, SESSION_DRIVER=database trong env mẫu, không JWT.
 Khi đăng ký public, chỉ truyền trường khách được sửa; User.role/is_active không mass assignable.
 
 `php artisan test` mặc định dùng SQLite in-memory, không đụng database demo.
@@ -27,3 +28,8 @@ Khi bổ sung test cạnh tranh lịch, dùng hai kết nối thật MySQL và x
 `.gitignore` giữ dependency, env, uploads, cache và database local ngoài Git.
 Đưa migration, seed dữ liệu minh họa, cấu hình template và lockfile vào repo.
 Ảnh công khai dùng trong demo phải có nguồn/quyền phù hợp; chưa lấy ảnh hay giá thật trong setup.
+
+Schema quản lý bằng migration, không sửa DB tay thay cho migration.
+Mỗi máy tạo database riêng; pull bản mới rồi migrate, không reset DB chung.
+Chủ module dùng factory/fixture test riêng; seed demo tổng do Hoàng tổng hợp.
+Xem docs/team/PARALLEL_WORK.md về thứ tự nhánh/PR và bàn giao module.

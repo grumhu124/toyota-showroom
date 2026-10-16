@@ -48,7 +48,8 @@ Admin không tự tạo đơn mua xe thay khách.
 
 Đăng ký customer, đăng nhập và đăng xuất bằng session Laravel.
 Server tự gán role customer, không tin role/is_active từ form.
-Tên tối đa 100; email hợp lệ/unique/tối đa 255; mật khẩu tối thiểu 8, có xác nhận,
+Tên tối đa 100; email hợp lệ/unique/tối đa 255; mật khẩu tối thiểu 8 ký tự,
+tối đa 72 byte, không chứa NUL (bcrypt hiện tại), có xác nhận,
 lưu hash. Phone demo 10 số theo `/^(0[3-9])\d{8}$/`, không coi là xác minh số có thật.
 Admin tạo sales và khóa/mở customer/sales; không cho tự khóa admin duy nhất.
 Khóa tài khoản phải chặn request và nhận tin mới, không chỉ chặn lần đăng nhập sau.

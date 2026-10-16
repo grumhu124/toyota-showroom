@@ -1,7 +1,7 @@
 # Hợp đồng route và giao tiếp — P1
 
-Theo [SRS 1.4](../../SRS.md)/ADR 0003, chưa phải endpoint đã triển khai.
-Baseline chỉ welcome/health/broadcast auth và private channel deny-by-default.
+Theo [SRS 1.4](../../SRS.md)/ADR 0003. H01 đã có endpoint Auth/tài khoản ở phần dưới.
+Endpoint catalog/tư vấn/chat/lịch vẫn là đích; private channel còn deny-by-default.
 
 | Nhóm | Route đích | Quyền |
 | --- | --- | --- |
@@ -12,7 +12,8 @@ Baseline chỉ welcome/health/broadcast auth và private channel deny-by-default
 | Staff/admin | /staff/... và /admin/... | Role/active + Policy từng hồ sơ |
 
 Không có route đổi lịch/mở lại/audit UI/API status riêng trong P1.
-Bootstrap còn nhóm /customer rỗng; chủ module sửa khi làm endpoint.
+Customer route đăng ký tại root URL, route name customer.*; không có prefix /customer.
+Route file customer chưa có endpoint nghiệp vụ, TV4/TV5 thêm theo module.
 Giữ slug/source/brand; Toyota cố định phía server. Category lọc bằng slug,
 chi tiết xe dùng ID, xe ẩn 404. Car code là mã chiếc xe, không là mã cả dòng xe.
 
@@ -24,7 +25,23 @@ Email form ánh xạ contact_email. Không nhận customer_id/role/assigned_to t
 422 validation/trùng lịch; 401 chưa đăng nhập; 403 sai quyền; 404 không tồn tại/ẩn;
 429 throttle; 409 UUID dùng lại khác payload. Web dùng redirect/flash phù hợp.
 Form public 3 lần/10 phút/IP/endpoint; login 5 thất bại/phút/IP+email.
-Không nhận limiter đếm request hiện có là failure-only login đã chạy.
+LoginRequest đã thực hiện failure-only limiter; không gắn throttle đếm mọi request.
+
+## H01 đã triển khai
+
+GET /dang-ky (register), POST /dang-ky (register.store);
+GET /dang-nhap (login), POST /dang-nhap (login.store), đều guest.
+POST /dang-xuat (logout), GET /tai-khoan (account), đều auth + ensure.active.
+Đăng ký tự login rồi vào account; login dùng intended URL hoặc account.
+Form đăng ký name/email/phone/password/password_confirmation; login email/password.
+Mật khẩu không có NUL và tối đa 72 byte cho bcrypt hiện tại;
+đăng ký vẫn tối thiểu 8 ký tự. Giới hạn byte khác giới hạn số ký tự Unicode.
+Mật khẩu không được fill lại vào HTML/session flash. Email trim/lowercase.
+Guest vào route auth bị redirect login; JSON trả 401.
+User khóa bị logout/invalidate session: web redirect login với account_error,
+JSON 403; kiểm active áp dụng cả web công khai để tránh giữ phiên khóa.
+Sai thông tin login trả lỗi email, quá ngưỡng trả 429. Đăng xuất chỉ POST + CSRF.
+Tên route là hợp đồng cho Đạt; layout accounts chỉ là giao diện tối thiểu.
 
 ## Chat
 
@@ -50,3 +67,9 @@ Customer hủy pending/confirmed chưa tới giờ, server kiểm own và lưu l
 Nhân viên/admin hủy kèm lý do; hoàn tất/no_show sau giờ confirmed_at.
 Không sửa trạng thái cuối, không tự giữ xe từ lịch; không gán inquiry khác customer.
 Giờ không phù hợp: hủy, tạo yêu cầu mới; đổi lịch chuyên biệt là P2.
+
+## Hợp đồng làm song song
+
+Xem [PARALLEL_WORK](../team/PARALLEL_WORK.md) về namespace route, fixture/seed,
+phân công file chung và thứ tự khóa giữa tài khoản/tư vấn/lịch.
+TV4/TV5 dùng hợp đồng chung và test MySQL, không khóa dữ liệu ngược thứ tự.

@@ -1,6 +1,6 @@
 <?php
 
-/** Return the source/config/document paths covered by architecture inventory. */
+/** Hash controlled text consistently across checkouts; preserve binary bytes. */
 function controlledProjectFileHash(string $path): string
 {
     $content = file_get_contents($path);
@@ -19,6 +19,7 @@ function controlledProjectFileHash(string $path): string
     return hash('sha256', $content);
 }
 
+/** Return the source/config/document paths covered by architecture inventory. */
 function controlledProjectFiles(string $root): array
 {
     $paths = [];
