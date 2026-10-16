@@ -1,5 +1,16 @@
 # Hợp đồng route và giao tiếp
 
+GET / tên home: preview trang chủ Camry trong local/testing; production giữ welcome.
+/#dich-vu và /#showroom là anchor giới thiệu, không phải endpoint dịch vụ/đặt lịch.
+
+Preview local/testing: GET /xe/{id} tên cars.preview.show cho ID fixture 1–9;
+ID không có trả 404. Không truy vấn DB; chưa thay hợp đồng Catalog production.
+
+Frontend local 16/10/2026: GET /xe tên cars.preview đã có trong local/testing,
+chỉ render fixtures minh họa, không phải endpoint Catalog production.
+Query q/category/price/status/sort do JS lọc fixture; chưa là API/backend filter.
+Các route nghiệp vụ khác bên dưới vẫn chưa triển khai.
+
 **Các endpoint nghiệp vụ dưới đây là kế hoạch, chưa được đăng ký trong baseline.**
 Khi làm route thật, module owner cập nhật bảng và FEATURE_STATUS.
 Route chạy hiện tại xem php artisan route:list: welcome, health và broadcast auth.

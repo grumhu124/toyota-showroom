@@ -4,7 +4,13 @@
 tiếp nhận tư vấn, chat thời gian thực và lịch xem xe hoặc bảo dưỡng.
 Việc mua bán, giấy tờ và thanh toán được thực hiện tại showroom trong phạm vi bài.
 
-**Hiện tại đây là bộ khung phát triển, chưa phải website đã hoàn thành.**
+**Nhánh frontend hiện có bản xem trước giao diện; nghiệp vụ backend chưa hoàn chỉnh.**
+
+Trong local/testing: mở `/` để xem trang chủ Camry, `/xe` xem slider và card,
+`/xe/1` đến `/xe/9` xem chi tiết mẫu. Chạy `npm run dev` khi sửa hoặc
+`npm run build` để xem bản build. Dữ liệu/giá đều minh họa; tư vấn, đặt lịch
+và đăng nhập chưa được kết nối trên nhánh này.
+Xem docs/development/HOME_PREVIEW.md và CATALOG_CARDS.md.
 Đã có Laravel, cấu hình Reverb, schema nền, model, middleware và tài liệu.
 Màn hình, đăng ký/đăng nhập, CRUD và chat hoàn chỉnh sẽ do các module triển khai.
 
@@ -49,8 +55,7 @@ npm run build
 php artisan serve
 ```
 
-Mở `http://127.0.0.1:8000`. Bản nền hiện hiển thị trang welcome mặc định;
-Đạt sẽ thay bằng giao diện showroom. Seeder tạo 1 admin, 2 sales, 3 customer
+Mở `http://127.0.0.1:8000`. Local/testing hiện hiển thị giao diện trang chủ; production vẫn giữ welcome. Seeder tạo 1 admin, 2 sales, 3 customer
 khi DEMO_PASSWORD có giá trị; chưa tạo xe hoặc dịch vụ giả như dữ liệu thật.
 Danh sách email mẫu ở [hướng dẫn môi trường](docs/development/SETUP.md).
 
