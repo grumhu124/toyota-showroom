@@ -15,6 +15,13 @@ Thêm mục mới lên đầu. Dùng CHANGE_TEMPLATE.md, không chỉ ghi “upd
 - 11 test Auth mới; tổng 17 test/135 assertions pass local SQLite, Pint/build pass.
 - Browser lỗi môi trường nên chưa kiểm trực quan; MySQL xem CI, chưa claim local.
 
+## 2026-10-16 Sửa inventory Windows/Linux
+
+- CI PR tài liệu và Auth dừng ở inventory vì hash CRLF cục bộ khác LF Git checkout.
+- Chuẩn hóa CRLF thành LF khi băm tệp text, giữ nguyên byte tệp binary; manifest format 2.
+- Thêm test phát hiện đổi nội dung, tương đương LF/CRLF và giữ byte DOCX.
+- Không sửa schema hoặc file nguồn Word. Kiểm lại CI trước khi nhận đủ điều kiện merge.
+
 ## 2026-10-16 Bổ sung tên thành viên
 
 - Xác nhận TV3 Võ Nguyễn Thành Đạt, TV4 Nguyễn Huy Hoàng, TV5 Phan Võ Chí Bảo.
