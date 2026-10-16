@@ -10,11 +10,11 @@ if (! in_array($mode, ['--check', '--write'], true)) {
 }
 $current = [];
 foreach (controlledProjectFiles($root) as $path) {
-    $current[$path] = hash_file('sha256', $root.'/'.$path);
+    $current[$path] = controlledProjectFileHash($root.'/'.$path);
 }
 $target = $root.'/docs/architecture/INVENTORY.json';
 if ($mode === '--write') {
-    $document = ['format' => 1, 'algorithm' => 'sha256', 'files' => $current];
+    $document = ['format' => 2, 'algorithm' => 'sha256', 'text_line_endings' => 'lf', 'files' => $current];
     file_put_contents($target, json_encode($document, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)."\n");
     echo 'Inventory updated: '.count($current)." controlled files.\n";
     exit(0);
