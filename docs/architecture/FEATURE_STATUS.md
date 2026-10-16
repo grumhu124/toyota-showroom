@@ -6,12 +6,12 @@ Chưa có website showroom hoặc nghiệp vụ chạy hoàn chỉnh.
 | Module | Đã có | P1 còn làm | Chủ trách nhiệm |
 | --- | --- | --- | --- |
 | Framework | Laravel/lockfile/Vite/Tailwind/CI | Cài/demo máy khác | Hoàng + nhóm |
-| Dữ liệu | 8 bảng core + audit, enum/model | Seed Toyota; giữ brand=Toyota, internal_note | TV3/TV5 + Hoàng |
+| Dữ liệu | 8 bảng core + audit, enum/model | Seed Toyota; giữ brand=Toyota, internal_note | Võ Nguyễn Thành Đạt (TV3)/Phan Võ Chí Bảo (TV5) + Hoàng |
 | Auth | Role/active middleware, limiter nền, seed user | Register/login/logout, Policy, khóa phiên/kênh, failure-only limit | Hoàng |
-| Catalog | Schema/model/thư mục | CRUD/ảnh/search/filter/pagination/UI | TV3 + Đạt |
-| Tư vấn | Inquiry model/enum | Form AJAX, phân công/trạng thái/internal_note/quyền | TV4 + Đạt |
-| Chat | Reverb/Echo cấu hình, private channel từ chối mặc định | Gửi/lưu/phát, lịch sử, retry/catch-up, thu hồi quyền, UI hai phiên | TV4 + Đạt |
-| Lịch/dịch vụ | Schema/model/enum | Form, phân công, xác nhận khóa/trùng giờ, hủy/hoàn tất/no_show | TV5 |
+| Catalog | Schema/model/thư mục | CRUD/ảnh/search/filter/pagination/UI | Võ Nguyễn Thành Đạt (TV3) + Đạt |
+| Tư vấn | Inquiry model/enum | Form AJAX, phân công/trạng thái/internal_note/quyền | Nguyễn Huy Hoàng (TV4) + Đạt |
+| Chat | Reverb/Echo cấu hình, private channel từ chối mặc định | Gửi/lưu/phát, lịch sử, retry/catch-up, thu hồi quyền, UI hai phiên | Nguyễn Huy Hoàng (TV4) + Đạt |
+| Lịch/dịch vụ | Schema/model/enum | Form, phân công, xác nhận khóa/trùng giờ, hủy/hoàn tất/no_show | Phan Võ Chí Bảo (TV5) |
 | Audit | Bảng/model/namespace | Không buộc làm module riêng P1; giữ nền | Hoàng |
 | Bàn giao | Kiểm tra nền từng pass local và CI | Test nghiệp vụ, responsive, báo cáo, demo cả 5 người | Cả nhóm |
 

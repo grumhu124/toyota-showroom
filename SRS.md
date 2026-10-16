@@ -188,16 +188,16 @@ Không reset DB chung; test dùng DB riêng. SQLite không chứng minh khóa My
 | Đợt | Việc | Người chính |
 | --- | --- | --- |
 | A | Chốt phạm vi, DB, layout, Auth/Policy; seed demo | Hoàng + cả nhóm |
-| B | CRUD xe/ảnh/dòng xe, catalog/search/filter/pagination | TV3 + Đạt |
-| B | Tiếp nhận/phân công tư vấn, internal_note; dịch vụ/lịch | TV4; TV5 |
-| C | Chat WebSocket văn bản + lịch sử/quyền/retry; AJAX form | TV4 + Đạt; Hoàng review quyền |
+| B | CRUD xe/ảnh/dòng xe, catalog/search/filter/pagination | Võ Nguyễn Thành Đạt (TV3) + Đạt |
+| B | Tiếp nhận/phân công tư vấn, internal_note; dịch vụ/lịch | Nguyễn Huy Hoàng (TV4); Phan Võ Chí Bảo (TV5) |
+| C | Chat WebSocket văn bản + lịch sử/quyền/retry; AJAX form | Nguyễn Huy Hoàng (TV4) + Đạt; Hoàng review quyền |
 | D | Tích hợp, kiểm thử MySQL, responsive, báo cáo, tập demo | Cả 5 người |
 | Sau P1 | Chọn đề xuất P2 theo thời gian còn lại | Chỉ sau checklist và quyết định nhóm |
 
 Đạt phụ trách UI khách/layout; module owner làm màn admin/staff trên layout chung.
 Mỗi người có PR/kiểm thử/báo cáo và giải thích được phần mình.
 Đợt C vẫn là P1, không được bỏ chat rồi nhận sản phẩm đã hoàn thành.
-Không tự điền tên TV3/4/5 hoặc bảo đảm điểm 8+/9 từ số tính năng.
+Danh sách 5 người đã được nhóm xác nhận; không bảo đảm điểm 8+/9 từ số tính năng.
 
 ## 7. Tiêu chí nghiệm thu P1
 

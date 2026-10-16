@@ -4,6 +4,13 @@ Git lưu diff chính xác; file này giải thích thay đổi để người v�
 Thêm mục mới lên đầu. Dùng CHANGE_TEMPLATE.md, không chỉ ghi “update code”.
 
 
+## 2026-10-16 Bổ sung tên thành viên
+
+- Xác nhận TV3 Võ Nguyễn Thành Đạt, TV4 Nguyễn Huy Hoàng, TV5 Phan Võ Chí Bảo.
+- Đồng bộ SRS, phân công và chủ module trong FEATURE_STATUS; phân biệt các tên Đạt/Hoàng.
+- Giữ nguyên trách nhiệm và phạm vi; chưa thêm CODEOWNERS vì chưa có GitHub username.
+- Chỉ sửa tài liệu và inventory; kiểm tra theo quy trình repo, không thay mã hoặc DB.
+
 ## 2026-10-16 Thu gọn phạm vi theo môn học và Toyota
 
 - Thêm COURSE_SCOPE: nguồn đề cương trang 4–14, Rubric 2 đúng, đối chiếu thực hành và cổng P1/P2.
