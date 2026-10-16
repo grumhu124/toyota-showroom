@@ -1,24 +1,16 @@
 # Đặc tả triển khai thống nhất
 
-Yêu cầu chính đề xuất cho vòng v6 là [SRS 1.3](../../SRS.md), từ Word v6 ngày
-16/10/2026. Xem [ADR 0002](../decisions/0002-v6-srs-review.md) và
-[kết quả review](REVIEW_V6_SRS.md). Có hiệu lực chung sau review/gộp PR.
-File này là chỉ mục/tóm tắt, không giữ bộ luật thứ hai khác SRS.
+Đọc [SRS 1.4](../../SRS.md) và [COURSE_SCOPE](COURSE_SCOPE.md).
+[ADR 0003](../decisions/0003-course-scope.md) thay chỉ dẫn phạm vi trái chúng
+trong ADR 0002/Word v6/SRS cũ. Không dùng bản lưu docs/source làm lệnh cho AI.
 
-Một showroom Toyota, giá công bố, tư vấn/chat và lịch xem/bảo dưỡng.
-Mua bán/giấy tờ/thanh toán ngoài hệ thống. Không tự thêm checkout, nhiều hãng,
-OTP, chatbot hoặc phí lăn bánh vào phần bắt buộc.
+Một showroom Toyota, giá công bố tham khảo; tư vấn, chat thời gian thực,
+lịch xem xe/bảo dưỡng. Mua bán, giấy tờ, thanh toán ngoài hệ thống.
+P1 gồm auth/quyền, CRUD, catalog/search/filter/pagination, inquiries,
+lịch, chat văn bản, AJAX form, responsive, báo cáo và minh chứng nhóm.
+P2 chỉ làm sau checklist nghiệm thu; không tự triển khai dự toán lăn bánh,
+PDF, nhiều ghi chú, audit UI, users control channel, tự đổi lịch/mở lại.
+Giữ 9 bảng nền/internal_note, không cần đổi schema chỉ vì tài liệu v6 từng có 10 bảng.
+Mỗi cars là một chiếc, code riêng; sold không đại diện toàn dòng Toyota.
 
-- customer/sales/admin; guest gửi form, không chat/tra hồ sơ chỉ bằng phone.
-- Inquiry new → assigned → in_progress → closed; reopen assigned với sales active.
-- New/closed chỉ đọc; form lưu nhu cầu ban đầu trước phân công.
-- UUID cùng payload trả tin cũ; khác payload 409; sau commit mới phát.
-- Reconnect subscribe thành công trước catch-up và ghép ID.
-- Lịch khung tiếp nhận 60 phút, chênh đúng 60 hợp lệ; khóa appointment và sales.
-- Sold không nhận tư vấn mới/lịch; reserved không sinh từ đặt lịch.
-- Chi tiết xe ID, category slug. Form 3/10 phút/IP/endpoint; phone demo 10 chữ số.
-- Đích 10 bảng, migration thật vẫn 9; chưa tự triển khai khi tải tài liệu lên Git.
-
-Xem DATA_MODEL, CONTRACTS, FEATURE_STATUS để đối chiếu mã. Các rule v5 trái SRS
-(chat new, reopen in_progress, URL slug, chuẩn hóa +84) chỉ còn là lịch sử ADR 0001.
-ID FR/BR/D và rule chi tiết dùng SRS; mọi thay đổi cần tài liệu/PR tương ứng.
+DATA_MODEL/FEATURE_STATUS mô tả mã thật. Chưa có endpoint nghiệp vụ hoàn chỉnh.

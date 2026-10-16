@@ -1,27 +1,22 @@
 # Trạng thái thực tế
 
-Cập nhật tài liệu 2026-10-16; mã vẫn baseline 2026-10-14. Dùng bảng này để hiểu hệ thống đã làm đến đâu.
-Trạng thái nền tảng không có nghĩa nghiệp vụ đã hoàn tất.
+Ngày 16/10/2026. Mã vẫn baseline, SRS 1.4 chỉ thay yêu cầu/tài liệu.
+Chưa có website showroom hoặc nghiệp vụ chạy hoàn chỉnh.
 
-| Module | Đã có | Chưa có | Chủ trách nhiệm |
+| Module | Đã có | P1 còn làm | Chủ trách nhiệm |
 | --- | --- | --- | --- |
-| Framework | Laravel 12, lockfile, Vite/Tailwind, env mẫu, CI | Website showroom hoàn chỉnh | Hoàng + Đạt |
-| Dữ liệu | Migration 8 core + audit, enum và quan hệ model | Đích SRS 10 bảng, InquiryNote/code/closed_at, Toyota-only và seed demo | TV3/TV5 |
-| Auth/quyền | User role/active, middleware alias, limiter nền, seed user local | Login/register/logout, policies và lifecycle khóa user đầy đủ | Hoàng |
-| Catalog | Bảng/model, thư mục controller/request/service/view/test | CRUD/upload/search/filter/pagination, public/admin UI | TV3 + Đạt |
-| Inquiry | Bảng/model/enum, thư mục module | Tạo/phân công/chuyển/đóng, audit thao tác, policy, UI | TV4 |
-| Chat | Reverb config/dependency, Echo factory, route channels từ chối mặc định | HTTP gửi tin, event sau commit, quyền kênh theo hồ sơ, reconnect/dedupe và UI | TV4 + Đạt |
-| Appointment | Schema/quan hệ/trạng thái, thư mục module | Form, giao người, xác nhận có khóa hàng, đổi/hủy/no_show, UI | TV5 |
-| Audit | Bảng/model/namespace | Service che dữ liệu, ghi các action, màn hình log | Hoàng |
-| Kiểm tra | Test nền pass local SQLite; CI SQLite/MySQL và build frontend pass | Toàn bộ acceptance của các nghiệp vụ và chat hai phiên | Cả nhóm |
+| Framework | Laravel/lockfile/Vite/Tailwind/CI | Cài/demo máy khác | Hoàng + nhóm |
+| Dữ liệu | 8 bảng core + audit, enum/model | Seed Toyota; giữ brand=Toyota, internal_note | TV3/TV5 + Hoàng |
+| Auth | Role/active middleware, limiter nền, seed user | Register/login/logout, Policy, khóa phiên/kênh, failure-only limit | Hoàng |
+| Catalog | Schema/model/thư mục | CRUD/ảnh/search/filter/pagination/UI | TV3 + Đạt |
+| Tư vấn | Inquiry model/enum | Form AJAX, phân công/trạng thái/internal_note/quyền | TV4 + Đạt |
+| Chat | Reverb/Echo cấu hình, private channel từ chối mặc định | Gửi/lưu/phát, lịch sử, retry/catch-up, thu hồi quyền, UI hai phiên | TV4 + Đạt |
+| Lịch/dịch vụ | Schema/model/enum | Form, phân công, xác nhận khóa/trùng giờ, hủy/hoàn tất/no_show | TV5 |
+| Audit | Bảng/model/namespace | Không buộc làm module riêng P1; giữ nền | Hoàng |
+| Bàn giao | Kiểm tra nền từng pass local và CI | Test nghiệp vụ, responsive, báo cáo, demo cả 5 người | Cả nhóm |
 
-Chỉ đánh dấu Hoàn tất khi chức năng chạy từ đầu tới cuối, có quyền/validation,
-test phù hợp và bằng chứng demo. Bộ khung không tự nhận chat đang hoạt động.
-Kênh chat hiện từ chối tất cả để tránh mở dữ liệu trước khi TV4 viết policy đúng.
-
-
-## Tài liệu mới chưa là chức năng mới
-
-SRS 1.3/v6 đang ở PR tài liệu. Các thay đổi SRS mục 12 chưa triển khai.
-Không dùng test nền làm bằng chứng đạt 26 tình huống SRS. TV4 làm ghi chú/chat/lifecycle;
-TV3/Hoàng làm migration Toyota; TV5 làm other/lịch; Hoàng xử lý route và login failure-only.
+Chưa triển khai InquiryNote/code/closed_at/other; các mục này là P2, không còn
+chặn hoàn thành P1. Không cần migration bỏ brand trong P1. Kênh users control,
+khách tự đổi lịch/mở lại cũng P2. Chưa có chức năng nào tự hoàn tất vì sửa SRS.
+Chỉ đánh dấu hoàn tất khi chạy end-to-end, có quyền/validation và bằng chứng kiểm tra.
+Test nền 6 test/19 assertions không nghiệm thu chức năng ở bảng trên.

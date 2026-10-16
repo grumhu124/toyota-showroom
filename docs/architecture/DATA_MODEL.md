@@ -1,7 +1,7 @@
 # Hợp đồng dữ liệu
 
 Migrations là schema thật của baseline 2026-10-14; PR review 16/10 chưa đổi mã.
-Yêu cầu đích SRS 1.3 khác ở phần chênh lệch dưới, không coi target là đã chạy.
+SRS 1.4 giữ 9 bảng nền cho P1; không coi yêu cầu trong tài liệu là mã đã chạy.
 
 | Bảng | Trường nghiệp vụ |
 | --- | --- |
@@ -55,12 +55,11 @@ Dữ liệu vãng lai không gắn sang account chỉ vì trùng phone. Không h
 
 Sau baseline, sửa schema bằng migration mới; cập nhật model, đặc tả, contracts, test và inventory.
 
+## Đích P1 theo SRS 1.4 / ADR 0003
 
-## Chênh lệch cần triển khai theo v6
-
-Xem SRS mục 12. Hiện 9 bảng, đích 10; chưa có inquiry_notes/InquiryNote,
-inquiries.code/closed_at và ServiceType.other. Brand còn required; phone/default
-visibility/service description nullable phải đối chiếu trước migration.
-Car_id/close_result/access_version đã có, không tạo trùng. Form email ánh xạ contact_email.
-Không xóa internal_note/brand/slug/source mà chưa backfill/đường khôi phục và review.
-Module owner tạo migration mới, cập nhật model/service và test; không sửa migration cũ.
+Giữ 9 bảng, internal_note, brand cố định Toyota; không cần migration bỏ brand.
+Cars là từng chiếc code unique; không phải tồn kho tổng của cả phiên bản.
+inquiries.code/closed_at, InquiryNote và ServiceType.other chuyển P2; chưa có trong mã.
+User phone DB nullable không thay validation phone required của form đăng ký.
+Giữ slug/source, contact_email. ActivityLog là nền, không yêu cầu UI audit P1.
+Không sửa migration đã merge hoặc xóa bảng/cột vì đổi phạm vi tài liệu.

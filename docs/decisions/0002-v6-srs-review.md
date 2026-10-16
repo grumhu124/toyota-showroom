@@ -1,3 +1,5 @@
+> Lịch sử rà soát v6/SRS 1.3. Phạm vi hiện hành dùng SRS 1.4, COURSE_SCOPE và ADR 0003; không tự triển khai phần đã chuyển P2.
+
 # ADR 0002 Rà soát v6 và SRS
 
 Ngày 2026-10-16. Đề xuất trong PR tài liệu để nhóm review.

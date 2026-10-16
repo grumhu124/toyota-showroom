@@ -1,3 +1,5 @@
+> Lịch sử rà soát v6/SRS 1.3. Phạm vi hiện hành dùng SRS 1.4, COURSE_SCOPE và ADR 0003; không tự triển khai phần đã chuyển P2.
+
 # Rà soát v6 và SRS ngày 16 tháng 10 năm 2026
 
 Đã đối chiếu Word v6, SRS 1.2 và mã nền c87c255. Giữ nguyên Word, lưu bản SRS

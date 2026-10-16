@@ -4,6 +4,17 @@ Git lưu diff chính xác; file này giải thích thay đổi để người v�
 Thêm mục mới lên đầu. Dùng CHANGE_TEMPLATE.md, không chỉ ghi “update code”.
 
 
+## 2026-10-16 Thu gọn phạm vi theo môn học và Toyota
+
+- Thêm COURSE_SCOPE: nguồn đề cương trang 4–14, Rubric 2 đúng, đối chiếu thực hành và cổng P1/P2.
+- SRS 1.4 viết lại phạm vi; lưu nguyên SRS 1.3, Word v6 không đổi.
+- Giữ chat WebSocket văn bản/quyền/retry, CRUD, tìm/lọc/phân trang, AJAX form và lịch tiếp nhận.
+- Hoãn InquiryNote/code/closed_at/other, audit UI, control channel tự chuyển, đổi lịch/mở lại và công cụ giá.
+- Làm rõ từng chiếc xe/mã riêng, giá công bố tham khảo, bảo hành chỉ giới thiệu; không mô phỏng xưởng.
+- Đồng bộ chỉ dẫn AI, kiến trúc/dữ liệu/contracts/trạng thái/phân công/nghiệm thu; không sửa mã nghiệp vụ, DB hoặc dependency.
+- Kiểm tra: composer check pass (6 tests/19 assertions, cú pháp/encoding và Pint);
+  inventory cập nhật 159 tệp. Không đổi mã nghiệp vụ, không nhận test nền là nghiệm thu P1.
+
 ## 2026-10-16 Rà soát v6 và SRS
 
 - Thêm Word v6 nguyên byte, SRS 1.3, bản trích v6, SRS 1.2 gửi ban đầu, review và ADR 0002.
