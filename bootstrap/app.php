@@ -29,6 +29,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ['middleware' => ['web', 'auth', 'ensure.active']],
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->redirectGuestsTo(fn () => route('login'));
+        $middleware->redirectUsersTo(fn () => route('account'));
+        $middleware->web(append: [EnsureAccountActive::class]);
         $middleware->alias([
             'ensure.active' => EnsureAccountActive::class,
             'role' => RoleMiddleware::class,

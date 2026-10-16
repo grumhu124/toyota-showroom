@@ -6,7 +6,8 @@ Việc mua bán, giấy tờ và thanh toán được thực hiện tại showro
 
 **Hiện tại đây là bộ khung phát triển, chưa phải website đã hoàn thành.**
 Đã có Laravel, cấu hình Reverb, schema nền, model, middleware và tài liệu.
-Màn hình, đăng ký/đăng nhập, CRUD và chat hoàn chỉnh sẽ do các module triển khai.
+H01 đã có đăng ký/đăng nhập/đăng xuất và màn tài khoản tối thiểu.
+Quản lý user của admin, CRUD xe, tư vấn/chat và lịch vẫn chưa hoàn chỉnh.
 
 ## Đọc trước khi làm
 
@@ -16,6 +17,7 @@ Màn hình, đăng ký/đăng nhập, CRUD và chat hoàn chỉnh sẽ do các m
 4. [Phân công và vị trí thư mục](docs/team/OWNERSHIP.md).
 5. [Trạng thái thực tế](docs/architecture/FEATURE_STATUS.md).
 6. [Cách góp mã](CONTRIBUTING.md).
+7. [Task list của Hoàng](docs/team/HOANG_TASKS.md) — thứ tự phần repo/auth/tích hợp.
 
 ## Công nghệ đã chọn
 
@@ -53,6 +55,9 @@ Mở `http://127.0.0.1:8000`. Bản nền hiện hiển thị trang welcome mặ
 Đạt sẽ thay bằng giao diện showroom. Seeder tạo 1 admin, 2 sales, 3 customer
 khi DEMO_PASSWORD có giá trị; chưa tạo xe hoặc dịch vụ giả như dữ liệu thật.
 Danh sách email mẫu ở [hướng dẫn môi trường](docs/development/SETUP.md).
+
+Mở /dang-ky hoặc /dang-nhap để thử H01; sau xác thực vào /tai-khoan.
+Màn tài khoản chưa là dashboard tư vấn/lịch. Xem [kiểm tra H01](docs/testing/AUTH_VALIDATION.md).
 
 ## Khi phát triển chat
 

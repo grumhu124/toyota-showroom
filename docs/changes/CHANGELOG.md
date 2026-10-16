@@ -4,6 +4,17 @@ Git lưu diff chính xác; file này giải thích thay đổi để người v�
 Thêm mục mới lên đầu. Dùng CHANGE_TEMPLATE.md, không chỉ ghi “update code”.
 
 
+## 2026-10-16 H01 tài khoản và task list Hoàng
+
+- Thêm HOANG_TASKS: H01–H05, không làm thay các module của nhóm.
+- Thêm FormRequest/controller/Blade/routes đăng ký, đăng nhập, đăng xuất, tài khoản.
+- Login failure-only 5/phút/IP+email; xóa limiter login đếm request chưa dùng.
+- Middleware active thu hồi session trên web/JSON của user đã khóa; cấu hình redirect.
+- Không đổi schema, dependency hoặc mở private channel. Admin user/Policy và thu hồi
+  socket/job chat vẫn ở H02/tích hợp TV4, chưa nhận hoàn thành.
+- 11 test Auth mới; tổng 17 test/135 assertions pass local SQLite, Pint/build pass.
+- Browser lỗi môi trường nên chưa kiểm trực quan; MySQL xem CI, chưa claim local.
+
 ## 2026-10-16 Bổ sung tên thành viên
 
 - Xác nhận TV3 Võ Nguyễn Thành Đạt, TV4 Nguyễn Huy Hoàng, TV5 Phan Võ Chí Bảo.

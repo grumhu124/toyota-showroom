@@ -1,7 +1,7 @@
 # Hợp đồng route và giao tiếp — P1
 
-Theo [SRS 1.4](../../SRS.md)/ADR 0003, chưa phải endpoint đã triển khai.
-Baseline chỉ welcome/health/broadcast auth và private channel deny-by-default.
+Theo [SRS 1.4](../../SRS.md)/ADR 0003. H01 đã có endpoint Auth/tài khoản ở phần dưới.
+Endpoint catalog/tư vấn/chat/lịch vẫn là đích; private channel còn deny-by-default.
 
 | Nhóm | Route đích | Quyền |
 | --- | --- | --- |
@@ -24,7 +24,21 @@ Email form ánh xạ contact_email. Không nhận customer_id/role/assigned_to t
 422 validation/trùng lịch; 401 chưa đăng nhập; 403 sai quyền; 404 không tồn tại/ẩn;
 429 throttle; 409 UUID dùng lại khác payload. Web dùng redirect/flash phù hợp.
 Form public 3 lần/10 phút/IP/endpoint; login 5 thất bại/phút/IP+email.
-Không nhận limiter đếm request hiện có là failure-only login đã chạy.
+LoginRequest đã thực hiện failure-only limiter; không gắn throttle đếm mọi request.
+
+## H01 đã triển khai
+
+GET /dang-ky (register), POST /dang-ky (register.store);
+GET /dang-nhap (login), POST /dang-nhap (login.store), đều guest.
+POST /dang-xuat (logout), GET /tai-khoan (account), đều auth + ensure.active.
+Đăng ký tự login rồi vào account; login dùng intended URL hoặc account.
+Form đăng ký name/email/phone/password/password_confirmation; login email/password.
+Mật khẩu không được fill lại vào HTML/session flash. Email trim/lowercase.
+Guest vào route auth bị redirect login; JSON trả 401.
+User khóa bị logout/invalidate session: web redirect login với account_error,
+JSON 403; kiểm active áp dụng cả web công khai để tránh giữ phiên khóa.
+Sai thông tin login trả lỗi email, quá ngưỡng trả 429. Đăng xuất chỉ POST + CSRF.
+Tên route là hợp đồng cho Đạt; layout accounts chỉ là giao diện tối thiểu.
 
 ## Chat
 
