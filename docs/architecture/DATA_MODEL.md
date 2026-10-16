@@ -1,6 +1,7 @@
 # Hợp đồng dữ liệu
 
-Migrations là schema đang chạy; bảng này mô tả baseline 2026-10-14.
+Migrations là schema thật của baseline 2026-10-14; PR review 16/10 chưa đổi mã.
+Yêu cầu đích SRS 1.3 khác ở phần chênh lệch dưới, không coi target là đã chạy.
 
 | Bảng | Trường nghiệp vụ |
 | --- | --- |
@@ -21,7 +22,7 @@ User.role/is_active không mass assignable. Inquiry.internal_note hidden mặc �
 điều này không thay API Resource/policy để tránh lộ các trường liên hệ khác.
 
 Phone users cho phép null ở DB để factory/seed nền; FormRequest đăng ký vẫn bắt buộc phone.
-Form tư vấn email nhập được ánh xạ contact_email. Cars/services.slug phục vụ URL public, unique.
+Form tư vấn email nhập được ánh xạ contact_email. Cars/services.slug hiện có và unique; route đích v6 dùng ID xe, chưa xóa cột này.
 messages unique(sender_id, client_message_id); chưa có bảng read receipts hoặc attachments.
 Một xe có tối đa một ảnh primary là invariant của service, chưa được migration tự bảo đảm.
 
@@ -53,3 +54,13 @@ Cập nhật access_version trong transaction với chuyển người/khóa acco
 Dữ liệu vãng lai không gắn sang account chỉ vì trùng phone. Không hard-delete hồ sơ/tin/lịch.
 
 Sau baseline, sửa schema bằng migration mới; cập nhật model, đặc tả, contracts, test và inventory.
+
+
+## Chênh lệch cần triển khai theo v6
+
+Xem SRS mục 12. Hiện 9 bảng, đích 10; chưa có inquiry_notes/InquiryNote,
+inquiries.code/closed_at và ServiceType.other. Brand còn required; phone/default
+visibility/service description nullable phải đối chiếu trước migration.
+Car_id/close_result/access_version đã có, không tạo trùng. Form email ánh xạ contact_email.
+Không xóa internal_note/brand/slug/source mà chưa backfill/đường khôi phục và review.
+Module owner tạo migration mới, cập nhật model/service và test; không sửa migration cũ.

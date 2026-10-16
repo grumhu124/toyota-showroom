@@ -11,7 +11,7 @@ Màn hình, đăng ký/đăng nhập, CRUD và chat hoàn chỉnh sẽ do các m
 ## Đọc trước khi làm
 
 1. [AGENTS.md](AGENTS.md) — quy tắc cho AI và người sửa mã.
-2. [Đặc tả thống nhất](docs/requirements/SPECIFICATION.md).
+2. [SRS 1.3 theo v6](SRS.md) và [chỉ mục đặc tả](docs/requirements/SPECIFICATION.md).
 3. [Kiến trúc hệ thống](ARCHITECTURE.md).
 4. [Phân công và vị trí thư mục](docs/team/OWNERSHIP.md).
 5. [Trạng thái thực tế](docs/architecture/FEATURE_STATUS.md).
@@ -82,3 +82,14 @@ Danh mục [INVENTORY.json](docs/architecture/INVENTORY.json) ghi đường dẫ
 các tệp được kiểm soát. Nếu thêm, sửa hoặc xóa tệp, bước kiểm tra chỉ ra khác biệt.
 Git lưu lịch sử; [nhật ký](docs/changes/CHANGELOG.md) giải thích lý do thay đổi.
 Quy trình này hỗ trợ kiểm soát, không tự bảo đảm mọi công cụ AI đều tuân thủ.
+
+
+## Tài liệu ngày 16 tháng 10 năm 2026
+
+Xem [rà soát v6/SRS](docs/requirements/REVIEW_V6_SRS.md) và ADR 0002.
+Đích 10 bảng, mã thật vẫn 9; PR tài liệu không thay DB/model/route/nghiệp vụ.
+Word giữ nguyên; SRS gửi ban đầu lưu ở docs/source.
+
+Upload 10 ảnh x 5MB: kiểm tra PHP phục vụ web, đề xuất upload_max_filesize >= 5M,
+post_max_size >= 64M, max_file_uploads >= 10, chừa multipart và kiểm tra giới hạn proxy.
+Server vẫn validate count/size/MIME; chưa tự sửa php.ini trên máy thành viên.

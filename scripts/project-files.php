@@ -30,7 +30,7 @@ function controlledProjectFiles(string $root): array
         }
     }
 
-    foreach (['README.md', 'AGENTS.md', 'CLAUDE.md', 'ARCHITECTURE.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'composer.json', 'composer.lock', 'package.json', 'package-lock.json', 'artisan', 'phpunit.xml', 'vite.config.js', '.env.example', '.gitignore', '.gitattributes', '.editorconfig', '.nvmrc'] as $file) {
+    foreach (['README.md', 'AGENTS.md', 'CLAUDE.md', 'ARCHITECTURE.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'SRS.md', 'Luong-nghiep-vu-website-ban-xe-v6.docx', 'composer.json', 'composer.lock', 'package.json', 'package-lock.json', 'artisan', 'phpunit.xml', 'vite.config.js', '.env.example', '.gitignore', '.gitattributes', '.editorconfig', '.nvmrc'] as $file) {
         if (is_file($root.'/'.$file)) {
             $paths[] = $file;
         }

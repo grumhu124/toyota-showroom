@@ -23,3 +23,14 @@ Trước khi làm: đọc AGENTS, spec, contracts, trạng thái; chọn issue n
 Thay đổi shared files (User, route groups, bootstrap, config, package/lockfile,
 migrations chung, layouts) phải mô tả người/module bị ảnh hưởng trong PR.
 Mỗi người chịu kiểm thử và báo cáo phần mình; Hoàng không tự nhận sửa mọi lỗi.
+
+
+## Công việc tiếp theo từ v6
+
+- Hoàng: hợp đồng route, failure-only login limiter, audit các thay đổi trạng thái/tài khoản.
+- TV3/Hoàng: migration Toyota-only/default/slug/phone, giữ dữ liệu, không sửa migration gốc.
+- TV4: InquiryNote, code/closed_at, chuyển internal_note; new chỉ đọc, reopen assigned; UUID/reconnect/version.
+- TV5: ServiceType.other; khóa appointment + sales, no_show sau giờ.
+- Đạt: UI chờ phân công/nháp xe chưa ảnh, route xe ID; phối hợp subscribe/catch-up với TV4.
+
+Đây là việc cần triển khai, không là chức năng đã bàn giao.

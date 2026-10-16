@@ -26,3 +26,10 @@ Ghi kết quả và PR minh chứng khi module hoàn thành; FEATURE_STATUS ph�
 PHP tests nền dùng SQLite; CI chạy thêm MySQL. Test khóa hàng/race condition
 cần hai giao dịch/connections thật, không kết luận từ test tuần tự hoặc mock DB.
 Chat cần demo trình duyệt hai session độc lập, không chỉ unit test Event.
+
+
+## Đối chiếu SRS v6
+
+26 tình huống ở SRS mục 9 là kế hoạch chưa chạy end-to-end. Bổ sung UUID khác payload,
+hai request cùng appointment, new/reopen, subscribe trước catch-up, ảnh nháp và no_show tương lai.
+Test nền không nghiệm thu schema/luồng mới; module owner thêm test trước đánh hoàn thành.

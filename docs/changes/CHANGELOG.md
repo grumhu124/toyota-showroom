@@ -3,6 +3,17 @@
 Git lưu diff chính xác; file này giải thích thay đổi để người và AI hiểu.
 Thêm mục mới lên đầu. Dùng CHANGE_TEMPLATE.md, không chỉ ghi “update code”.
 
+
+## 2026-10-16 Rà soát v6 và SRS
+
+- Thêm Word v6 nguyên byte, SRS 1.3, bản trích v6, SRS 1.2 gửi ban đầu, review và ADR 0002.
+- Sửa metadata, enum/active, sau commit, UUID/payload, reconnect/version, khóa lịch,
+  ảnh nháp/upload; tách schema đích khỏi baseline.
+- Đồng bộ AGENTS/README/spec/contracts/kiến trúc/trạng thái/phân công/nghiệm thu.
+- Công cụ inventory thêm hai tài liệu gốc; không đổi app/DB/migration/model/dependency.
+- Đã chạy composer check: inventory 156 tệp, encoding/cú pháp, 6 test/19 assertions và Pint đều pass.
+  Đã đối chiếu hash nguồn và đường dẫn tài liệu; CI xem trong PR. FR mới vẫn cần test khi làm module.
+
 ## 2026-10-14 Xác nhận kiểm tra CI của bản nền
 
 - Sửa: FEATURE_STATUS và BASELINE_VALIDATION ghi kết quả GitHub Actions thực tế,
