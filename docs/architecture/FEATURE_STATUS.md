@@ -19,6 +19,6 @@ Chưa triển khai InquiryNote/code/closed_at/other; các mục này là P2, kh�
 chặn hoàn thành P1. Không cần migration bỏ brand trong P1. Kênh users control,
 khách tự đổi lịch/mở lại cũng P2. Chưa có chức năng nào tự hoàn tất vì sửa SRS.
 Chỉ đánh dấu hoàn tất khi chạy end-to-end, có quyền/validation và bằng chứng kiểm tra.
-Suite hiện 17 test/135 assertions: 6 nền và 11 Auth; chưa nghiệm thu các module khác.
+Suite hiện 20 test/158 assertions: 6 nền, 12 Auth và 2 inventory; chưa nghiệm thu các module khác.
 Xem AUTH_VALIDATION và docs/team/HOANG_TASKS.md. Chưa kiểm trực quan responsive;
 build/Blade render pass không thay việc Đạt review giao diện.

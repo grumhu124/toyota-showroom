@@ -18,6 +18,7 @@ Quản lý user của admin, CRUD xe, tư vấn/chat và lịch vẫn chưa hoà
 5. [Trạng thái thực tế](docs/architecture/FEATURE_STATUS.md).
 6. [Cách góp mã](CONTRIBUTING.md).
 7. [Task list của Hoàng](docs/team/HOANG_TASKS.md) — thứ tự phần repo/auth/tích hợp.
+8. [Quy ước làm song song](docs/team/PARALLEL_WORK.md) và [kết quả rà soát](docs/requirements/READINESS_REVIEW.md).
 
 ## Công nghệ đã chọn
 

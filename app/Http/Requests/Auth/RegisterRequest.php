@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Rules\PasswordInput;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -26,7 +27,7 @@ class RegisterRequest extends FormRequest
             'name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')],
             'phone' => ['required', 'string', 'regex:/^(0[3-9])\d{8}$/'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['bail', 'required', 'string', 'min:8', 'confirmed', new PasswordInput],
         ];
     }
 

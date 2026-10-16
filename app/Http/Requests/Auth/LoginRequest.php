@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Rules\PasswordInput;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -26,7 +27,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'email' => ['required', 'email', 'max:255'],
-            'password' => ['required', 'string'],
+            'password' => ['bail', 'required', 'string', new PasswordInput],
         ];
     }
 

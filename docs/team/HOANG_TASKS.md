@@ -18,7 +18,7 @@ Không làm thay catalog, tư vấn/chat hoặc lịch của thành viên khác.
 Đợt đầu chỉ bàn giao H01; trang tài khoản là màn tối thiểu, không thay dashboard
 nghiệp vụ của TV3/4/5. Chưa nhận toàn bộ Auth/quản lý tài khoản hoàn thành.
 
-Bằng chứng: AuthenticationTest có 11 test; toàn bộ suite 17 test/135 assertions
+Bằng chứng sau rà soát: AuthenticationTest có 12 test; toàn bộ suite 20 test/158 assertions
 pass local SQLite, Pint và Vite build pass. Xem docs/testing/AUTH_VALIDATION.md.
 Review nhóm, kiểm tra trực quan responsive và tích hợp MySQL tiếp tục theo PR.
 
@@ -40,6 +40,10 @@ Không tuyên bố thu hồi kết nối WebSocket hoàn chỉnh trước khi t�
 - [ ] Review Policy theo bản ghi của TV3/4/5, không chỉ kiểm role.
 - [ ] Review CSRF/upload/response allowlist/throttle và log không lộ dữ liệu.
 - [ ] Kiểm các ca đoán ID, chuyển sales, khóa user và trạng thái không hợp lệ.
+
+Đã soạn hợp đồng chung ở PARALLEL_WORK và ADR 0004; đã sửa URL prefix customer.
+Vẫn chờ owner review và code module thật để nghiệm thu tích hợp, không đánh dấu
+toàn bộ H03 chỉ vì đã có quy ước.
 
 ## H04 — Dữ liệu và tích hợp
 

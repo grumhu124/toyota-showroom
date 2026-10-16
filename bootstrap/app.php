@@ -14,7 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
         then: function (): void {
             Route::middleware(['web', 'auth', 'ensure.active', 'role:customer'])
-                ->prefix('customer')->name('customer.')
+                ->name('customer.')
                 ->group(base_path('routes/customer.php'));
             Route::middleware(['web', 'auth', 'ensure.active', 'role:sales,admin'])
                 ->prefix('staff')->name('staff.')

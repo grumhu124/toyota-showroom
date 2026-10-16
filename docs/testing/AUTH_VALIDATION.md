@@ -4,8 +4,8 @@ Ngày: 16/10/2026. Nhánh feature/auth-middleware.
 
 ## Đã kiểm
 
-- tests/Feature/Auth/AuthenticationTest.php: 11 test chức năng.
-- Toàn bộ suite local SQLite: 17 test / 135 assertions pass.
+- tests/Feature/Auth/AuthenticationTest.php: 12 test chức năng sau rà soát.
+- Toàn bộ suite local SQLite: 20 test / 158 assertions pass (thêm 2 inventory).
 - Pint pass, npm run build pass; không đổi dependency/schema.
 - GET form render Blade qua HTTP test; session, email normalize/unique,
   giả role, validation/array input, mật khẩu không flash vào session.

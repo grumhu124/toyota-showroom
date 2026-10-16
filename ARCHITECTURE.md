@@ -11,7 +11,15 @@ Trình duyệt → route web → auth/active/role middleware → FormRequest + P
 Chat nhận tin qua Echo ← Reverb ← sự kiện sau commit từ MessageService.
 Queue worker chạy riêng cho broadcasting dùng hàng đợi; MySQL là nơi lưu tin chính.
 
-## Các lớp và vị trí
+## Cơ chế đã chốt
+
+Code-first bằng migration versioned (ADR 0004): migration tạo/thay schema,
+Eloquent Model định nghĩa truy cập/casts/quan hệ; sửa Model không tự đổi database.
+Đăng nhập session + cookie; env mẫu dùng database session 120 phút và CSRF.
+Không dùng JWT/Sanctum/Passport; private channel tái dùng session.
+Phân công file chung/route/seed và giao thức khóa ở docs/team/PARALLEL_WORK.md.
+
+## Vị trí mã nguồn
 
 | Lớp | Vị trí | Trách nhiệm |
 | --- | --- | --- |

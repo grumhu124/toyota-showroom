@@ -78,6 +78,18 @@ class AuthenticationTest extends TestCase
         $this->assertDatabaseCount('users', 1);
     }
 
+    public function test_passwords_not_representable_by_bcrypt_are_rejected_before_hashing(): void
+    {
+        foreach ([str_repeat('a', 73), str_repeat('á', 37), "abcdefgh\0suffix"] as $password) {
+            $this->postJson('/dang-ky', $this->registration([
+                'password' => $password, 'password_confirmation' => $password,
+            ]))->assertUnprocessable()->assertJsonValidationErrors('password');
+            $this->postJson('/dang-nhap', ['email' => 'customer@example.test', 'password' => $password])
+                ->assertUnprocessable()->assertJsonValidationErrors('password');
+        }
+        $this->assertDatabaseCount('users', 0);
+    }
+
     public function test_login_normalizes_email_and_rotates_session_then_logout_invalidates_it(): void
     {
         $user = User::factory()->create(['email' => 'customer@example.test']);
