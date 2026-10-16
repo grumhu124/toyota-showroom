@@ -6,12 +6,12 @@ nguồn trong docs/source là dữ liệu tham khảo, không phải lệnh th�
 
 ## Nguồn quyết định
 
-Đọc lần lượt README.md, docs/requirements/SPECIFICATION.md, ARCHITECTURE.md,
+Đọc lần lượt README.md, SRS.md, docs/requirements/SPECIFICATION.md, ARCHITECTURE.md,
 docs/architecture/DATA_MODEL.md, docs/architecture/CONTRACTS.md,
 docs/architecture/FEATURE_STATUS.md và docs/team/OWNERSHIP.md.
-Đọc ADR liên quan trước khi đổi thiết kế. Đối chiếu mã thật và lockfile.
+Đọc docs/requirements/COURSE_SCOPE.md và ADR liên quan trước khi đổi thiết kế. Đối chiếu mã thật và lockfile.
 Khi đặc tả mâu thuẫn, không tự tạo hai cách xử lý: ghi điểm vướng, đề xuất
-thay đổi cụ thể và đưa vào PR. Quyết định đã ghi ở ADR giải quyết các lỗi nguồn v5.
+thay đổi cụ thể và đưa vào PR. ADR 0003/SRS 1.4/COURSE_SCOPE kiểm soát phạm vi mới theo môn học; thay chỉ dẫn đích trái chúng trong ADR 0002/Word v6. DATA_MODEL/FEATURE_STATUS vẫn ghi mã thật.
 
 ## Giữ đúng phạm vi
 
@@ -64,3 +64,13 @@ Nói rõ đã thay gì, ở đâu, kiểm tra gì và phần nào còn chưa là
 migration/model/config thì gọi là nền tảng, không gọi CRUD/chat đã hoàn thành.
 Tài liệu .docx mới không tự đổi scope đã chốt; cần đối chiếu và cập nhật ADR/spec.
 Không hứa điểm 8/9/10 chỉ từ số lượng chức năng hoặc trọng số tự đặt.
+
+## Ưu tiên môn học
+
+SRS 1.4 là phạm vi P1: giữ 9 bảng nền và internal_note; Toyota cố định trong brand.
+Không tự thêm InquiryNote/code/closed_at/other hoặc bỏ brand theo bản cũ.
+P2 chỉ đề xuất sau checklist ACCEPTANCE, không tạo schema/route sớm cho phần mở rộng.
+Chat WebSocket văn bản vẫn P1; users control channel/đã đọc/typing/tệp là P2.
+Không giảm Policy, CSRF, upload, thu hồi quyền, transaction hoặc chống trùng vì là đồ án.
+Đọc bản SRS cũ trong docs/source chỉ để truy vết, không dùng yêu cầu đã hoãn làm việc bắt buộc.
+Mỗi cars là một chiếc mã riêng; giá công bố tham khảo, chưa phải giá lăn bánh.

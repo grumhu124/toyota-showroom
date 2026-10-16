@@ -1,6 +1,7 @@
 # Hợp đồng dữ liệu
 
-Migrations là schema đang chạy; bảng này mô tả baseline 2026-10-14.
+Migrations là schema thật của baseline 2026-10-14; PR review 16/10 chưa đổi mã.
+SRS 1.4 giữ 9 bảng nền cho P1; không coi yêu cầu trong tài liệu là mã đã chạy.
 
 | Bảng | Trường nghiệp vụ |
 | --- | --- |
@@ -21,7 +22,7 @@ User.role/is_active không mass assignable. Inquiry.internal_note hidden mặc �
 điều này không thay API Resource/policy để tránh lộ các trường liên hệ khác.
 
 Phone users cho phép null ở DB để factory/seed nền; FormRequest đăng ký vẫn bắt buộc phone.
-Form tư vấn email nhập được ánh xạ contact_email. Cars/services.slug phục vụ URL public, unique.
+Form tư vấn email nhập được ánh xạ contact_email. Cars/services.slug hiện có và unique; route đích v6 dùng ID xe, chưa xóa cột này.
 messages unique(sender_id, client_message_id); chưa có bảng read receipts hoặc attachments.
 Một xe có tối đa một ảnh primary là invariant của service, chưa được migration tự bảo đảm.
 
@@ -53,3 +54,12 @@ Cập nhật access_version trong transaction với chuyển người/khóa acco
 Dữ liệu vãng lai không gắn sang account chỉ vì trùng phone. Không hard-delete hồ sơ/tin/lịch.
 
 Sau baseline, sửa schema bằng migration mới; cập nhật model, đặc tả, contracts, test và inventory.
+
+## Đích P1 theo SRS 1.4 / ADR 0003
+
+Giữ 9 bảng, internal_note, brand cố định Toyota; không cần migration bỏ brand.
+Cars là từng chiếc code unique; không phải tồn kho tổng của cả phiên bản.
+inquiries.code/closed_at, InquiryNote và ServiceType.other chuyển P2; chưa có trong mã.
+User phone DB nullable không thay validation phone required của form đăng ký.
+Giữ slug/source, contact_email. ActivityLog là nền, không yêu cầu UI audit P1.
+Không sửa migration đã merge hoặc xóa bảng/cột vì đổi phạm vi tài liệu.
