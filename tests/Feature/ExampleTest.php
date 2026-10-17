@@ -12,7 +12,8 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response(): void
     {
-        $response = $this->get('/');
+        // PHP CI does not build assets; frontend compilation has its own CI job.
+        $response = $this->withoutVite()->get('/');
 
         $response->assertStatus(200);
     }

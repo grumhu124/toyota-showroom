@@ -1,0 +1,28 @@
+/* Decorative motion follows the same scroll phase as the existing Camry story. */
+.camry-airflow .camry-wind-field{display:block;width:100%;height:100%;overflow:visible}
+.camry-airflow:has(.camry-wind-field){opacity:calc((1 - var(--camry-shift,0)) * .9)}
+.wind-flow path{stroke:url(#wind-color);stroke-width:1.3;opacity:.55;vector-effect:non-scaling-stroke}
+.wind-travel path{stroke:#d6f7ff;stroke-width:2;stroke-linecap:round;stroke-dasharray:95 360;vector-effect:non-scaling-stroke;animation:camry-air-stream 5s linear infinite;opacity:.95}
+.wind-travel path:nth-child(2){stroke:#86dff5;stroke-width:1.6;animation-duration:6s;animation-delay:-2s;stroke-dasharray:65 390}
+.wind-travel path:nth-child(3){stroke-width:1.5;animation-duration:7s;animation-delay:-4s;stroke-dasharray:85 370;opacity:.75}
+@keyframes camry-air-stream{to{stroke-dashoffset:-1820}}
+.camry-story.effects-paused .wind-travel path{animation-play-state:paused}
+@media(max-width:767px){.camry-airflow:has(.camry-wind-field){top:0;bottom:0}.wind-flow path{stroke-width:1}.wind-travel path{stroke-width:1.4}}
+.camry-airflow,.camry-road,.camry-scanner{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.camry-airflow,.camry-road{opacity:calc((1 - var(--camry-shift,0)) * .6)}
+.camry-airflow span{position:absolute;left:-24%;top:35%;width:20%;height:1px;border-radius:50%;background:linear-gradient(90deg,transparent,#a0e9ff80,transparent);box-shadow:0 0 7px #6ad9ff22;animation:camry-wind 6.8s linear infinite;animation-delay:-2s}
+.camry-airflow span:nth-child(2){top:44%;width:13%;animation-duration:8.2s;animation-delay:-6s;opacity:.5}
+.camry-airflow span:nth-child(3){top:55%;width:24%;animation-duration:7.5s;animation-delay:-4.5s;opacity:.7}
+.camry-airflow span:nth-child(4){top:63%;width:16%;animation-duration:9s;animation-delay:-1s;opacity:.45}
+.camry-airflow span:nth-child(5){top:28%;width:11%;animation-duration:8s;animation-delay:-6.7s;opacity:.4}
+.camry-road{top:71%;bottom:15%;mask-image:linear-gradient(90deg,transparent 8%,black 27%,black 73%,transparent 94%)}
+.camry-road span{position:absolute;left:-30%;top:45%;width:22%;height:1px;background:linear-gradient(90deg,transparent,#86def9b3,transparent);box-shadow:0 0 10px #67d2fa44;animation:camry-road-pass 4.8s linear infinite;animation-delay:-1s}
+.camry-road span:nth-child(2){top:66%;width:15%;animation-duration:5.8s;animation-delay:-4s;opacity:.6}
+.camry-road span:nth-child(3){top:25%;width:10%;animation-duration:6.5s;animation-delay:-3s;opacity:.35}
+.camry-scanner{left:10%;right:28%;top:22%;bottom:22%;opacity:calc(var(--camry-shift,0) * .5);mask-image:radial-gradient(ellipse,black 20%,transparent 72%)}
+.camry-scanner span{display:block;position:absolute;left:-45%;top:-20%;width:35%;height:140%;background:linear-gradient(90deg,transparent,#9be6ff12 40%,#b8f0ff35 50%,#9be6ff12 60%,transparent);transform:skewX(-15deg);animation:camry-scan 8.5s ease-in-out infinite}
+.camry-story.effects-paused .camry-airflow span,.camry-story.effects-paused .camry-road span,.camry-story.effects-paused .camry-scanner span{animation-play-state:paused}
+@keyframes camry-wind{0%{transform:translateX(0);opacity:0}12%{opacity:.7}80%{opacity:.5}100%{transform:translateX(150vw);opacity:0}}
+@keyframes camry-road-pass{0%{transform:translateX(0);opacity:0}15%{opacity:.8}85%{opacity:.8}100%{transform:translateX(150vw);opacity:0}}
+@keyframes camry-scan{0%,15%{transform:translateX(0) skewX(-15deg);opacity:0}30%{opacity:1}75%{opacity:.7}90%,100%{transform:translateX(75vw) skewX(-15deg);opacity:0}}
+@media(max-width:767px){.camry-airflow{top:20%;bottom:22%}.camry-airflow span{width:27%;animation-duration:8s}.camry-airflow span:nth-child(4),.camry-airflow span:nth-child(5){display:none}.camry-road{top:60%;bottom:34%}.camry-scanner{left:2%;right:2%;top:27%;bottom:36%}.camry-road span{width:30%}}

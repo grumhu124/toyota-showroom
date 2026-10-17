@@ -1,4 +1,10 @@
 @import 'tailwindcss';
+@import './collection.css';
+@import './car-detail.css';
+@import './home.css';
+@import './home-tech.css';
+@import './home-atmosphere.css';
+@import './catalog-redesign.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
