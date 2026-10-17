@@ -22,17 +22,19 @@ Bằng chứng sau rà soát: AuthenticationTest có 12 test; toàn bộ suite 2
 pass local SQLite, Pint và Vite build pass. Xem docs/testing/AUTH_VALIDATION.md.
 Review nhóm, kiểm tra trực quan responsive và tích hợp MySQL tiếp tục theo PR.
 
-## H02 — Admin quản lý người dùng (tiếp theo H01)
+## H02 — Admin quản lý người dùng (đã triển khai HTTP, chờ review/tích hợp chat)
 
-- [ ] UserPolicy: chỉ admin xem danh sách/tạo sales/khóa-mở customer hoặc sales.
-- [ ] Form/list có tìm kiếm và phân trang; không xóa tài khoản hoặc cấp admin qua UI.
-- [ ] Khóa/mở theo transaction; không khóa admin; giữ người đang được giao hồ sơ.
-- [ ] Khi khóa customer/sales, tăng access_version các inquiry liên quan.
-- [ ] Test ownership/role/payload, thao tác lặp, khóa user đang hoạt động.
+- [x] UserPolicy: chỉ admin xem danh sách/tạo sales/khóa-mở customer hoặc sales.
+- [x] Form/list có tìm kiếm và phân trang; không xóa tài khoản hoặc cấp admin qua UI.
+- [x] Khóa/mở theo transaction; không khóa admin; giữ người đang được giao hồ sơ.
+- [x] Khi khóa customer/sales, tăng access_version các inquiry liên quan.
+- [x] Test role/payload, thao tác lặp, input sai và rollback khi ghi version lỗi.
 - [ ] Phối hợp TV4: chặn HTTP, private channel và tin đang chờ sau thu hồi quyền.
 
 H01 chỉ chặn tài khoản đã bị đánh dấu khóa; H02 mới cung cấp thao tác admin.
 Không tuyên bố thu hồi kết nối WebSocket hoàn chỉnh trước khi tích hợp module TV4.
+H02 thêm 8 test, suite local 28 test/222 assertions; chưa test cạnh tranh hai
+kết nối MySQL hoặc trực quan responsive H02. Đọc docs/testing/ADMIN_USERS_VALIDATION.md.
 
 ## H03 — Quyền chung và phối hợp
 

@@ -27,6 +27,7 @@ Phân công file chung/route/seed và giao thức khóa ở docs/team/PARALLEL_W
 | HTTP | routes, app/Http/Controllers, app/Http/Requests | URL, validate, điều phối; không nhồi toàn bộ transaction vào view |
 | Truy cập | app/Http/Middleware, app/Policies, routes/channels.php | Active/role và quyền từng hồ sơ/kênh |
 | Nghiệp vụ | app/Services/Catalog, Inquiry, Appointment, Audit | Thao tác nhiều bước, transaction, log an toàn |
+| Tài khoản | app/Services/Account, app/Policies/UserPolicy.php | H02 khóa/mở user và version hồ sơ trong transaction; role admin bắt buộc |
 | Dữ liệu | app/Models, app/Enums, database | Quan hệ, casts, migration, seeder, enum |
 | Sự kiện | app/Events, config/broadcasting.php, config/reverb.php | Tin mới sau commit; không thay thế lưu CSDL |
 
