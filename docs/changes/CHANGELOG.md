@@ -1,5 +1,14 @@
 # Nhật ký thay đổi hệ thống
 
+## 2026-10-17 Chuẩn bị review — smoke test độc lập Vite build
+
+- CI frontend build đạt nhưng PHP test không có bước tạo Vite manifest.
+- Tái hiện điều kiện thiếu assets: ExampleTest trả 500 ViteManifestNotFoundException;
+  HomePreviewTest/CollectionPreviewTest đã withoutVite, chỉ smoke test cũ chưa có.
+- Sửa ExampleTest dùng withoutVite để kiểm render HTTP độc lập asset pipeline.
+  Không sửa giao diện, route, fixture, dependency hoặc bỏ kiểm tra npm build riêng.
+- Probe trước sửa fail, sau sửa pass; full composer check kiểm lại trước push.
+
 ## 2026-10-16 Card sản phẩm và tên xe chuyển dọc
 
 - Theo ảnh tham khảo: sidebar bộ lọc, card trắng bo góc, 3 cột desktop,
