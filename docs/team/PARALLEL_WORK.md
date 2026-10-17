@@ -37,7 +37,7 @@ Một người khác review; phần có tác động nhiều module cần ngư�
 | Vị trí | Chủ phối hợp | Cách sửa |
 | --- | --- | --- |
 | routes/web.php, bootstrap/app.php | Hoàng | Auth/root/đăng ký route chung; đổi cấu hình chỉ một PR nhỏ |
-| routes/customer.php | TV4 + TV5 | TV4 thêm /yeu-cau và tin nhắn; TV5 thêm /lich-hen; không tiền tố URL /customer |
+| routes/customer.php | TV4 + TV5 | TV4 thêm list/detail /yeu-cau; TV5 thêm /lich-hen; không /customer; shared chat ở auth group riêng routes/inquiries.php |
 | routes/staff.php | TV4 + TV5 | /staff/inquiries và /staff/appointments, không dùng tên route chung |
 | routes/admin.php | Hoàng + TV3/4/5 | /admin/users, car-categories/cars, inquiries, services/appointments theo module |
 | Route public mới | TV3/4/5 + Hoàng | Mỗi module thêm file routes/catalog.php, inquiries.php, appointments.php khi có code; require một lần từ web.php trong cùng PR |
@@ -90,6 +90,9 @@ middleware HTTP hay đóng giao diện là đã thu hồi tin WebSocket.
 TV5 test hai kết nối MySQL; CI unit/feature tuần tự không chứng minh race đã đúng.
 
 ## 6. Nhịp làm liên tục
+
+Xem [gói review PR](PR_REVIEW_GUIDE.md) và [hợp đồng quyền H03](../architecture/AUTHORIZATION_CONTRACT.md).
+Hợp đồng đã soạn không thay review/đồng ý của owner hoặc nghiệm thu endpoint chưa có.
 
 1. Một task/PR nhỏ có kết quả chạy được: form tư vấn; CRUD xe; xác nhận lịch...
 2. Ghi module, dữ liệu/route dùng chung, phụ thuộc, điều kiện xong và người review.

@@ -7,7 +7,8 @@ Việc mua bán, giấy tờ và thanh toán được thực hiện tại showro
 **Hiện tại đây là bộ khung phát triển, chưa phải website đã hoàn thành.**
 Đã có Laravel, cấu hình Reverb, schema nền, model, middleware và tài liệu.
 H01 đã có đăng ký/đăng nhập/đăng xuất và màn tài khoản tối thiểu.
-Quản lý user của admin, CRUD xe, tư vấn/chat và lịch vẫn chưa hoàn chỉnh.
+H02 có quản lý user phía admin ở /admin/users (tạo sales, khóa/mở customer/sales).
+CRUD xe, tư vấn/chat và lịch vẫn chưa hoàn chỉnh.
 
 ## Đọc trước khi làm
 
@@ -19,6 +20,7 @@ Quản lý user của admin, CRUD xe, tư vấn/chat và lịch vẫn chưa hoà
 6. [Cách góp mã](CONTRIBUTING.md).
 7. [Task list của Hoàng](docs/team/HOANG_TASKS.md) — thứ tự phần repo/auth/tích hợp.
 8. [Quy ước làm song song](docs/team/PARALLEL_WORK.md) và [kết quả rà soát](docs/requirements/READINESS_REVIEW.md).
+9. [Gói review PR](docs/team/PR_REVIEW_GUIDE.md) và [ma trận quyền H03](docs/architecture/AUTHORIZATION_CONTRACT.md).
 
 ## Công nghệ đã chọn
 

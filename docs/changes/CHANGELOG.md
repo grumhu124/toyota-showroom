@@ -4,6 +4,31 @@ Git lưu diff chính xác; file này giải thích thay đổi để người v�
 Thêm mục mới lên đầu. Dùng CHANGE_TEMPLATE.md, không chỉ ghi “update code”.
 
 
+## 2026-10-17 Chuẩn bị review PR và hợp đồng quyền H03
+
+- Kiểm head CI #1/#2/#4 success và chưa có review submission; #3 PHP test fail
+  dù frontend build pass. Tái hiện thiếu Vite manifest, sửa smoke test trên nhánh
+  FE riêng (af2091f), không thay UI; probe fail trước sửa/pass sau sửa.
+- Thêm PR_REVIEW_GUIDE: dependency/base/head CI/checklist/người review đề nghị,
+  chưa gửi request hoặc giả nhận approval.
+- Thêm AUTHORIZATION_CONTRACT: quyền theo owner/assigned/active/state, response,
+  list scope/UUID/link inquiry và ca cần test khi module có code.
+- Làm rõ shared HTTP chat ở auth group customer/sales/admin, không nằm trong
+  customer-only group; cập nhật CONTRACTS/PARALLEL_WORK/AGENTS/task/status.
+- Không thêm Policy/endpoint của module khác, không mở channel; H03 chưa nghiệm thu.
+
+## 2026-10-17 H02 admin quản lý tài khoản
+
+- Thêm UserPolicy, requests/admin controller, service khóa/mở, Blade danh sách/form
+  và GET/POST/PATCH admin routes; thêm link quản lý tài khoản cho admin.
+- Tạo sales cố định, validation kế thừa Auth, không đổi phiên admin; danh sách có
+  search/role/pagination; không xóa/cấp quyền admin hoặc khóa admin.
+- Khóa users theo ID rồi inquiry trong transaction, recheck Policy, bump version
+  khi khóa, lặp idempotent và giữ assignment/history; rollback cả user khi lỗi version.
+- Không đổi schema/dependency hoặc sửa module FE/TV3/TV4/TV5. Socket/job cần TV4 tích hợp.
+- 8 test H02 mới; suite local 28 test/222 assertions pass và Pint pass.
+  Chưa test hai kết nối MySQL/đánh giá responsive trực quan H02; không claim đã xong.
+
 ## 2026-10-16 Rà soát code-first và triển khai song song
 
 - Sửa inventory LF/CRLF đã đưa vào PR #1, merge fix vào nhánh Auth; giải quyết conflict bằng giữ hai mục CHANGELOG và regenerate manifest.

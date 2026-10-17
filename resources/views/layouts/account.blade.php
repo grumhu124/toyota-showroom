@@ -14,6 +14,9 @@
             <div class="flex flex-wrap items-center gap-4 text-sm">
                 @auth
                     <a href="{{ route('account') }}" class="hover:underline">Tài khoản</a>
+                    @can('viewAny', \App\Models\User::class)
+                        <a href="{{ route('admin.users.index') }}" class="hover:underline">Quản lý tài khoản</a>
+                    @endcan
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="font-medium text-red-700 hover:underline">Đăng xuất</button>
@@ -25,7 +28,7 @@
             </div>
         </nav>
     </header>
-    <main class="mx-auto w-full max-w-lg px-5 py-12">
+    <main class="mx-auto w-full {{ request()->routeIs('admin.users.index') ? 'max-w-5xl' : 'max-w-lg' }} px-5 py-12">
         @if (session('status'))
             <div role="status" class="mb-6 rounded-xl bg-green-50 p-4 text-sm text-green-800">{{ session('status') }}</div>
         @endif

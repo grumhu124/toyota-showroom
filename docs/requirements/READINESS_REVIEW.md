@@ -1,5 +1,9 @@
 # Rà soát khả năng triển khai nhóm — 16/10/2026
 
+Cập nhật H02 ngày 17/10: đã có admin tạo sales/khóa-mở/UserPolicy/tăng version
+trên nhánh feature/admin-users; mục chưa đạt H02 bên dưới là snapshot lúc rà soát
+16/10, phần tích hợp socket/job vẫn chưa đạt. Xem FEATURE_STATUS cho hiện trạng.
+
 Phạm vi: SRS/Word nguồn, schema/model/enum, Auth, routes/middleware, phân công,
 CI/inventory và hướng dẫn môi trường. Không xác nhận chức năng chưa có code.
 Không thể cam kết “hoàn hảo/không bao giờ lỗi”; mục tiêu là luật nhất quán và test được.

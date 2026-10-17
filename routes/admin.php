@@ -1,4 +1,10 @@
 <?php
 
-// Add admin module routes here; shared middleware/prefix are registered in bootstrap/app.php.
-// No business endpoints are implemented by this foundation file.
+use App\Http\Controllers\Admin\UserController;
+use Illuminate\Support\Facades\Route;
+
+// Shared web/auth/active/admin middleware is registered in bootstrap/app.php.
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
+Route::patch('/users/{user}/status', [UserController::class, 'updateStatus'])->name('users.status');
