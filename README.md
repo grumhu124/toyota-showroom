@@ -20,6 +20,7 @@ CRUD xe, tư vấn/chat và lịch vẫn chưa hoàn chỉnh.
 6. [Cách góp mã](CONTRIBUTING.md).
 7. [Task list của Hoàng](docs/team/HOANG_TASKS.md) — thứ tự phần repo/auth/tích hợp.
 8. [Quy ước làm song song](docs/team/PARALLEL_WORK.md) và [kết quả rà soát](docs/requirements/READINESS_REVIEW.md).
+9. [Gói review PR](docs/team/PR_REVIEW_GUIDE.md) và [ma trận quyền H03](docs/architecture/AUTHORIZATION_CONTRACT.md).
 
 ## Công nghệ đã chọn
 

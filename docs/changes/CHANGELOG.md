@@ -4,6 +4,19 @@ Git lưu diff chính xác; file này giải thích thay đổi để người v�
 Thêm mục mới lên đầu. Dùng CHANGE_TEMPLATE.md, không chỉ ghi “update code”.
 
 
+## 2026-10-17 Chuẩn bị review PR và hợp đồng quyền H03
+
+- Kiểm head CI #1/#2/#4 success và chưa có review submission; #3 PHP test fail
+  dù frontend build pass. Tái hiện thiếu Vite manifest, sửa smoke test trên nhánh
+  FE riêng (af2091f), không thay UI; probe fail trước sửa/pass sau sửa.
+- Thêm PR_REVIEW_GUIDE: dependency/base/head CI/checklist/người review đề nghị,
+  chưa gửi request hoặc giả nhận approval.
+- Thêm AUTHORIZATION_CONTRACT: quyền theo owner/assigned/active/state, response,
+  list scope/UUID/link inquiry và ca cần test khi module có code.
+- Làm rõ shared HTTP chat ở auth group customer/sales/admin, không nằm trong
+  customer-only group; cập nhật CONTRACTS/PARALLEL_WORK/AGENTS/task/status.
+- Không thêm Policy/endpoint của module khác, không mở channel; H03 chưa nghiệm thu.
+
 ## 2026-10-17 H02 admin quản lý tài khoản
 
 - Thêm UserPolicy, requests/admin controller, service khóa/mở, Blade danh sách/form

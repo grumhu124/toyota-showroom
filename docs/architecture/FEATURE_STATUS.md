@@ -1,6 +1,7 @@
 # Trạng thái thực tế
 
-Ngày 16/10/2026. Đã triển khai H01 tài khoản trên nhánh feature/auth-middleware.
+Ngày 17/10/2026. H01 trên feature/auth-middleware, H02 trên feature/admin-users;
+các PR vẫn chờ review, chưa gộp main. H03 mới có hợp đồng quyền/gói review.
 Chưa có website showroom hoặc nghiệp vụ chạy hoàn chỉnh.
 
 | Module | Đã có | P1 còn làm | Chủ trách nhiệm |
@@ -13,6 +14,7 @@ Chưa có website showroom hoặc nghiệp vụ chạy hoàn chỉnh.
 | Chat | Reverb/Echo cấu hình, private channel từ chối mặc định | Gửi/lưu/phát, lịch sử, retry/catch-up, thu hồi quyền, UI hai phiên | Nguyễn Huy Hoàng (TV4) + Đạt |
 | Lịch/dịch vụ | Schema/model/enum | Form, phân công, xác nhận khóa/trùng giờ, hủy/hoàn tất/no_show | Phan Võ Chí Bảo (TV5) |
 | Audit | Bảng/model/namespace | Không buộc làm module riêng P1; giữ nền | Hoàng |
+| H03 | Ma trận quyền theo bản ghi, vị trí shared chat route, checklist review/ca test đích | Owner review; Policy/endpoints của TV3/4/5 và nghiệm thu tích hợp | Hoàng + các owner |
 | Bàn giao | Kiểm tra nền từng pass local và CI | Test nghiệp vụ, responsive, báo cáo, demo cả 5 người | Cả nhóm |
 
 Chưa triển khai InquiryNote/code/closed_at/other; các mục này là P2, không còn

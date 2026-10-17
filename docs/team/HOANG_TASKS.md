@@ -38,12 +38,17 @@ kết nối MySQL hoặc trực quan responsive H02. Đọc docs/testing/ADMIN_U
 
 ## H03 — Quyền chung và phối hợp
 
+- [x] Kiểm tra CI các PR tại commit cụ thể, soạn gói review và thứ tự dependency.
+- [x] Rà hợp đồng quyền theo bản ghi, ghi ma trận và ca kiểm cho từng owner.
+
 - [ ] Chốt route public/customer/staff/admin với từng chủ module.
 - [ ] Review Policy theo bản ghi của TV3/4/5, không chỉ kiểm role.
 - [ ] Review CSRF/upload/response allowlist/throttle và log không lộ dữ liệu.
 - [ ] Kiểm các ca đoán ID, chuyển sales, khóa user và trạng thái không hợp lệ.
 
 Đã soạn hợp đồng chung ở PARALLEL_WORK và ADR 0004; đã sửa URL prefix customer.
+H03 có AUTHORIZATION_CONTRACT và PR_REVIEW_GUIDE. Phát hiện shared chat không
+được đặt trong group role:customer; đã ghi vị trí auth group chung cho TV4.
 Vẫn chờ owner review và code module thật để nghiệm thu tích hợp, không đánh dấu
 toàn bộ H03 chỉ vì đã có quy ước.
 

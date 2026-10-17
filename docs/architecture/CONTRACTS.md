@@ -62,6 +62,11 @@ HTTP phiên cũ bị H01 thu hồi ở request kế tiếp; socket/job còn ph�
 
 ## Chat — hợp đồng TV4
 
+HTTP chat dùng auth group cho customer/sales/admin trong routes/inquiries.php,
+không đặt trong routes/customer.php vốn role:customer. Quyền từng inquiry kiểm
+bằng Policy; xem [ma trận H03](AUTHORIZATION_CONTRACT.md). Đây là hợp đồng đích,
+chưa có endpoint/kênh nghiệp vụ để nghiệm thu.
+
 POST content/client_message_id, sender từ session; trả id/inquiry_id,
 sender(id,name), content, created_at; không serialize user/inquiry/internal_note.
 History tối đa 50/lần, after_id/cursor; client dedupe ID, kết nối lại bù lịch sử.
