@@ -4,7 +4,7 @@ Ngày 16/10/2026. Đã triển khai H01 tài khoản trên nhánh feature/auth-m
 Nhánh tích hợp feature/frontend-auth-integration đã ghép H01 với frontend ngày 18/10;
 chưa merge main. Trang chủ tối, video/canvas, hai ảnh chi tiết, /xe slider/card/lọc
 và /xe/{id} ID 1–9 vẫn dùng fixture local/testing. Header đã nối Auth thật,
-form Auth giữ bản tối thiểu của Hoàng, chưa thiết kế lại. Tư vấn/đặt lịch/chat chưa nối backend.
+Form đăng nhập/đăng ký dùng ảnh xe chạy và nền tối; backend H01 giữ nguyên. Tư vấn/đặt lịch/chat chưa nối backend.
 Không lấy H02/PR #4 vào nhánh tích hợp này.
 Kiểm tra bản tích hợp: 27 tests/263 assertions, Pint và Vite build đạt trên máy;
 chưa kiểm local MySQL và toàn bộ responsive thiết bị thật.

@@ -1,10 +1,10 @@
-@extends('layouts.account')
+@extends('layouts.auth')
 @section('title', 'Đăng ký')
 @section('content')
-    <div class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+    <div class="auth-card">
         <h1 class="text-2xl font-semibold">Tạo tài khoản khách hàng</h1>
         <p class="mt-2 text-sm text-zinc-600">Bạn vẫn có thể xem xe và gửi yêu cầu mà không cần tài khoản.</p>
-        <form method="POST" action="{{ route('register.store') }}" class="mt-7 space-y-5">
+        <form method="POST" action="{{ route('register.store') }}" class="auth-form" data-auth-form>
             @csrf
             @foreach (['name' => ['Họ và tên', 'text', 'name', 100], 'email' => ['Email', 'email', 'username', 255], 'phone' => ['Số điện thoại', 'tel', 'tel-national', 10]] as $field => [$label, $type, $autocomplete, $max])
                 <div>
@@ -25,7 +25,7 @@
                     @error($field) <p id="{{ $field }}-error" role="alert" class="mt-2 text-sm text-red-700">{{ $message }}</p> @enderror
                 </div>
             @endforeach
-            <p class="text-xs text-zinc-500">Mật khẩu có ít nhất 8 ký tự.</p>
+            <p class="text-xs text-zinc-500">Mật khẩu từ 8 ký tự, tối đa 72 byte.</p>
             <button type="submit" class="w-full rounded-lg bg-red-700 px-4 py-3 font-medium text-white hover:bg-red-800">Tạo tài khoản</button>
         </form>
         <p class="mt-6 text-sm text-zinc-600">Đã có tài khoản? <a href="{{ route('login') }}" class="font-medium text-red-700 underline">Đăng nhập</a></p>

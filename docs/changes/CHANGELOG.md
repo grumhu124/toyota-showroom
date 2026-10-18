@@ -1,5 +1,19 @@
 # Nhật ký thay đổi hệ thống
 
+## 2026-10-18 Chuyển động nhẹ cho hai ảnh trang chủ
+
+- Giữ hiệu ứng hiện dần; thêm vệt sáng chạy một lần trên ảnh đèn và zoom vô lăng theo cuộn.
+- Hover phóng nhẹ, viền sáng; hỗ trợ reduced-motion, chỉ cập nhật ảnh trong vùng nhìn bằng requestAnimationFrame.
+- Chỉ CSS/JS trang chủ, không đổi dữ liệu hoặc quyền. Kiểm tra composer check, build và trình duyệt.
+
+## 2026-10-18 Giao diện đăng nhập và đăng ký
+
+- Dùng ảnh xe chạy do người dùng cung cấp, ảnh trái/form xanh đen phải; mobile ảnh trên.
+- Layout auth riêng, hiện/ẩn mật khẩu, loading submit và phục hồi khi quay lại trang.
+- Giữ route/CSRF/validation/controller H01; không đổi trang tài khoản hay database.
+- Kiểm tra composer check và build; kiểm trực quan theo kích thước trình duyệt khả dụng.
+
+
 ## 2026-10-18 Tích hợp thử H01 với frontend
 
 - Nhánh riêng từ frontend, merge H01 668b65e/PR #2 và nền phụ thuộc #1; không merge main/#4.
