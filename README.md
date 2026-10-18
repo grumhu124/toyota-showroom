@@ -9,19 +9,22 @@ Việc mua bán, giấy tờ và thanh toán được thực hiện tại showro
 Trong local/testing: mở `/` để xem trang chủ Camry, `/xe` xem slider và card,
 `/xe/1` đến `/xe/9` xem chi tiết mẫu. Chạy `npm run dev` khi sửa hoặc
 `npm run build` để xem bản build. Dữ liệu/giá đều minh họa; tư vấn, đặt lịch
-và đăng nhập chưa được kết nối trên nhánh này.
+chưa được kết nối; đăng ký/đăng nhập/đăng xuất đã nối H01 của Hoàng trên nhánh tích hợp.
 Xem docs/development/HOME_PREVIEW.md và CATALOG_CARDS.md.
 Đã có Laravel, cấu hình Reverb, schema nền, model, middleware và tài liệu.
-Màn hình, đăng ký/đăng nhập, CRUD và chat hoàn chỉnh sẽ do các module triển khai.
+H01 đã có đăng ký/đăng nhập/đăng xuất và màn tài khoản tối thiểu.
+Quản lý user của admin, CRUD xe, tư vấn/chat và lịch vẫn chưa hoàn chỉnh.
 
 ## Đọc trước khi làm
 
 1. [AGENTS.md](AGENTS.md) — quy tắc cho AI và người sửa mã.
-2. [Đặc tả thống nhất](docs/requirements/SPECIFICATION.md).
+2. [SRS 1.4 theo phạm vi môn học](SRS.md) và [chỉ mục đặc tả](docs/requirements/SPECIFICATION.md).
 3. [Kiến trúc hệ thống](ARCHITECTURE.md).
 4. [Phân công và vị trí thư mục](docs/team/OWNERSHIP.md).
 5. [Trạng thái thực tế](docs/architecture/FEATURE_STATUS.md).
 6. [Cách góp mã](CONTRIBUTING.md).
+7. [Task list của Hoàng](docs/team/HOANG_TASKS.md) — thứ tự phần repo/auth/tích hợp.
+8. [Quy ước làm song song](docs/team/PARALLEL_WORK.md) và [kết quả rà soát](docs/requirements/READINESS_REVIEW.md).
 
 ## Công nghệ đã chọn
 
@@ -59,6 +62,9 @@ Mở `http://127.0.0.1:8000`. Local/testing hiện hiển thị giao diện tran
 khi DEMO_PASSWORD có giá trị; chưa tạo xe hoặc dịch vụ giả như dữ liệu thật.
 Danh sách email mẫu ở [hướng dẫn môi trường](docs/development/SETUP.md).
 
+Mở /dang-ky hoặc /dang-nhap để thử H01; sau xác thực vào /tai-khoan.
+Màn tài khoản chưa là dashboard tư vấn/lịch. Xem [kiểm tra H01](docs/testing/AUTH_VALIDATION.md).
+
 ## Khi phát triển chat
 
 Mỗi tiến trình chạy ở một terminal; hiện chưa có endpoint gửi tin nghiệp vụ.
@@ -87,3 +93,21 @@ Danh mục [INVENTORY.json](docs/architecture/INVENTORY.json) ghi đường dẫ
 các tệp được kiểm soát. Nếu thêm, sửa hoặc xóa tệp, bước kiểm tra chỉ ra khác biệt.
 Git lưu lịch sử; [nhật ký](docs/changes/CHANGELOG.md) giải thích lý do thay đổi.
 Quy trình này hỗ trợ kiểm soát, không tự bảo đảm mọi công cụ AI đều tuân thủ.
+
+
+## Tài liệu ngày 16 tháng 10 năm 2026
+
+Xem [rà soát v6/SRS](docs/requirements/REVIEW_V6_SRS.md) và ADR 0002.
+Theo ADR 0003, P1 giữ 9 bảng nền/internal_note; 10 bảng của v6 là phương án cũ. PR tài liệu không thay DB/model/route/nghiệp vụ.
+Word giữ nguyên; SRS gửi ban đầu lưu ở docs/source.
+
+Upload 10 ảnh x 5MB: kiểm tra PHP phục vụ web, đề xuất upload_max_filesize >= 5M,
+post_max_size >= 64M, max_file_uploads >= 10, chừa multipart và kiểm tra giới hạn proxy.
+Server vẫn validate count/size/MIME; chưa tự sửa php.ini trên máy thành viên.
+
+## Phạm vi trước khi chia việc
+
+Đọc [COURSE_SCOPE](docs/requirements/COURSE_SCOPE.md): rubric thật, đối chiếu thực hành,
+ràng buộc P1 và điều kiện mới được mở rộng P2. Chat WebSocket văn bản vẫn P1.
+Một chiếc xe có mã riêng; giá công bố tham khảo; không làm công cụ tính lăn bánh.
+SRS 1.4/ADR 0003 thay phạm vi trái chúng trong tài liệu v6 cũ; Word giữ nguyên.

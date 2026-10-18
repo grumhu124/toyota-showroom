@@ -24,13 +24,30 @@ hoặc xóa CSDL của người khác để giải quyết conflict. Khi main đ
 nhánh và giải quyết conflict cùng chủ module; chạy lại check trước gộp.
 Dùng feat/fix/refactor/docs/test/chore cho commit phù hợp.
 
-## Tài liệu và inventory
+## Thay đổi cơ sở dữ liệu theo code-first
+
+1. Nêu bảng/cột bị đổi, module dùng chung và cần backfill gì trước khi code.
+2. Tạo migration mới với timestamp riêng; không sửa migration đã chia sẻ/chạy chung.
+3. Sửa model/request/policy/seed/test và DATA_MODEL/CONTRACTS cùng PR.
+4. Chạy migrate trên DB test MySQL mới và DB test đã có dữ liệu từ bản trước;
+   kiểm không mất lịch sử, unique/FK/index và khả năng phục hồi.
+5. Với thay đổi có thể mất dữ liệu, backup/restore trên DB riêng và ghi giới hạn
+   rollback. Có down() không tự bảo đảm phục hồi được dữ liệu đã xóa.
+6. Sau merge, thành viên pull rồi migrate; không yêu cầu sửa phpMyAdmin bằng tay.
+
+Không dùng migrate:fresh/rollback trên DB chung. Test dùng DB riêng, khóa/race cần
+hai kết nối MySQL thật. Mỗi người tự tạo fixture để không đợi CRUD người khác.
+Chi tiết chia file và review: docs/team/PARALLEL_WORK.md.
+
+## Cập nhật tài liệu và inventory
 
 Mỗi thay đổi: thêm entry ở docs/changes/CHANGELOG.md, chạy inventory --write.
 Thay schema/route/quyền/kiến trúc: sửa tài liệu tương ứng và thêm ADR nếu đổi thiết kế.
 FEATURE_STATUS chỉ nâng mức khi có mã và kiểm tra phù hợp.
 Khi conflict INVENTORY.json, giải quyết mã trước rồi chạy lại script; không chọn
 ngẫu nhiên ours/theirs. Không sửa hash thủ công để qua CI.
+Format 2 băm text sau chuẩn hóa CRLF thành LF để khớp Git Windows/Linux,
+binary giữ nguyên byte. Nội dung đổi vẫn bị phát hiện; không format lại nguồn Word.
 
 ## PR phải ghi
 
