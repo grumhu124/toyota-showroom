@@ -39,6 +39,33 @@
         <noscript><style>.camry-story{height:auto}.camry-sticky{position:relative}.camry-canvas{display:none}</style></noscript>
     </div>
 </section>
+<section class="home-details" aria-label="Khám phá thiết kế Toyota">
+    <article class="home-detail" data-home-reveal>
+        <div class="home-detail-photo home-detail-photo--light">
+            <img src="{{ asset('assets/home/toyota-headlight.jpg') }}" alt="Góc đầu xe Toyota với cụm đèn đang sáng" width="2832" height="4256" loading="lazy" decoding="async">
+            <span class="home-detail-index" aria-hidden="true">01 / NGOẠI THẤT</span>
+        </div>
+        <div class="home-detail-copy">
+            <p class="eyebrow">DẤU ẤN THIẾT KẾ</p>
+            <h2>Ấn tượng từ<br>ánh nhìn đầu tiên.</h2>
+            <p>Những đường nét, những góc nhìn. Khám phá chiếc Toyota mang dấu ấn của riêng bạn.</p>
+            <a class="home-detail-link" href="{{ route('cars.preview') }}">Khám phá các dòng xe <span aria-hidden="true">↗</span></a>
+        </div>
+    </article>
+    <article class="home-detail home-detail--reverse" data-home-reveal>
+        <div class="home-detail-photo home-detail-photo--wheel">
+            <img src="{{ asset('assets/home/toyota-steering-wheel.jpg') }}" alt="Cận cảnh vô lăng và khoang lái Toyota" width="4000" height="5334" loading="lazy" decoding="async">
+            <span class="home-detail-index" aria-hidden="true">02 / KHOANG LÁI</span>
+        </div>
+        <div class="home-detail-copy">
+            <p class="eyebrow">CHẠM VÀO TRẢI NGHIỆM</p>
+            <h2>Cảm hứng<br>sau tay lái.</h2>
+            <p>Có những cảm nhận cần được trải nghiệm trực tiếp. Hẹn gặp bạn tại showroom để tìm hiểu chiếc xe mình yêu thích.</p>
+            <button class="home-detail-link" type="button" data-preview="Đặt lịch đến showroom">Đặt lịch xem xe <span aria-hidden="true">↗</span></button>
+            <small>Hình ảnh minh họa trải nghiệm Toyota.</small>
+        </div>
+    </article>
+</section>
 <section class="home-services" id="dich-vu" aria-labelledby="services-title"><div><p class="eyebrow">ĐỒNG HÀNH CÙNG BẠN</p><h2 id="services-title">An tâm.<br>Trên mọi hành trình.</h2><p>Từ lựa chọn xe đến chăm sóc sau bán hàng.</p></div><div class="home-service-links"><button type="button" data-preview="Bảo dưỡng định kỳ"><span>01</span>Bảo dưỡng định kỳ <i aria-hidden="true">→</i></button><button type="button" data-preview="Chính sách bảo hành"><span>02</span>Chính sách bảo hành <i aria-hidden="true">→</i></button><button type="button" data-preview="Tư vấn tại showroom"><span>03</span>Tư vấn tại showroom <i aria-hidden="true">→</i></button><a class="button button-dark" href="{{ route('cars.preview') }}">Khám phá các dòng xe</a></div></section>
 <section class="home-showroom" id="showroom" aria-labelledby="showroom-title"><div><p class="eyebrow">HẸN GẶP TẠI SHOWROOM</p><h2 id="showroom-title">Cảm nhận bằng<br>chính trải nghiệm của bạn.</h2></div><button type="button" class="button button-dark" data-preview="Đặt lịch đến showroom">Đặt lịch xem xe</button></section>
 @endsection

@@ -11,6 +11,9 @@ class HomePreviewTest extends TestCase
         $this->withoutVite()->get('/')->assertOk()
             ->assertSee('data-camry-story', false)
             ->assertSee('camry-exploded.mp4')
+            ->assertSee('assets/home/toyota-headlight.jpg')
+            ->assertSee('assets/home/toyota-steering-wheel.jpg')
+            ->assertSee('data-home-reveal', false)
             ->assertSee('id="dich-vu"', false)
             ->assertSee('id="showroom"', false)
             ->assertSee(route('cars.preview.show', 1));

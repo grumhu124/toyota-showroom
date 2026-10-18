@@ -4,6 +4,7 @@
 @import './home.css';
 @import './home-tech.css';
 @import './home-atmosphere.css';
+@import './home-details.css';
 @import './catalog-redesign.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';

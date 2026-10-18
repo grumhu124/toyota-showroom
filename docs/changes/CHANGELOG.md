@@ -1,5 +1,13 @@
 # Nhật ký thay đổi hệ thống
 
+## 2026-10-16 Hai góc nhìn Toyota dưới hero
+
+- Thêm hai ảnh người dùng cung cấp: đèn xe và vô lăng, bố cục ảnh/chữ xen kẽ.
+- Nền đen than đồng bộ dịch vụ/showroom/footer; chỉ áp dụng trang chủ.
+- Reveal một lần và zoom ảnh chậm, tôn trọng reduced motion; không JS vẫn thấy nội dung.
+- Giữ nguyên video, timeline, route và backend. CTA vẫn là preview, không tự nhận đặt lịch thật.
+- Kiểm tra render có hai ảnh, composer check, build và inventory; chưa kiểm thử mọi thiết bị thực.
+
 ## 2026-10-16 Card sản phẩm và tên xe chuyển dọc
 
 - Theo ảnh tham khảo: sidebar bộ lọc, card trắng bo góc, 3 cột desktop,
