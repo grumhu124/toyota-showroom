@@ -1,56 +1,84 @@
-# Hợp đồng route và giao tiếp
+# Hợp đồng route và giao tiếp — P1
 
-GET / tên home: preview trang chủ Camry trong local/testing; production giữ welcome.
-/#dich-vu và /#showroom là anchor giới thiệu, không phải endpoint dịch vụ/đặt lịch.
+Theo [SRS 1.4](../../SRS.md)/ADR 0003. H01 đã có endpoint Auth/tài khoản ở phần dưới.
+Endpoint catalog/tư vấn/chat/lịch vẫn là đích; private channel còn deny-by-default.
 
-Preview local/testing: GET /xe/{id} tên cars.preview.show cho ID fixture 1–9;
-ID không có trả 404. Không truy vấn DB; chưa thay hợp đồng Catalog production.
-
-Frontend local 16/10/2026: GET /xe tên cars.preview đã có trong local/testing,
-chỉ render fixtures minh họa, không phải endpoint Catalog production.
-Query q/category/price/status/sort do JS lọc fixture; chưa là API/backend filter.
-Các route nghiệp vụ khác bên dưới vẫn chưa triển khai.
-
-**Các endpoint nghiệp vụ dưới đây là kế hoạch, chưa được đăng ký trong baseline.**
-Khi làm route thật, module owner cập nhật bảng và FEATURE_STATUS.
-Route chạy hiện tại xem php artisan route:list: welcome, health và broadcast auth.
-
-| Nhóm | Route dự kiến | Quyền |
+| Nhóm | Route đích | Quyền |
 | --- | --- | --- |
-| Public | GET /xe, /xe/{slug}, /dich-vu; POST /tu-van, /lich-hen | Khách vãng lai; chỉ dữ liệu công khai |
-| Auth | GET/POST /dang-ky, /dang-nhap; POST /dang-xuat | guest/auth tùy route; active; CSRF |
-| Customer | /customer/yeu-cau, /customer/lich-hen; đổi/hủy lịch mình | auth + ensure.active + role:customer + Policy |
-| Chat | GET/POST /chat/{inquiry}/messages | auth + ensure.active + Inquiry/Message Policy |
-| Staff | /staff/yeu-cau, /staff/lich-hen | auth + ensure.active + role:sales,admin + Policy assigned |
-| Admin | /admin/xe, /admin/dong-xe, /admin/dich-vu, /admin/users, /admin/logs | auth + ensure.active + role:admin |
+| Public | GET /xe, /xe/{id}, /dich-vu; POST /tu-van, /dat-lich/xem-xe, /dat-lich/bao-duong | Dữ liệu public, validate, throttle |
+| Auth | GET/POST /dang-ky, /dang-nhap; POST /dang-xuat | guest/auth, active, CSRF |
+| Customer | GET /yeu-cau, /yeu-cau/{inquiry}, /lich-hen; POST /lich-hen/{id}/huy | Own/active |
+| Chat | GET/POST /yeu-cau/{inquiry}/tin-nhan | Own/assigned/admin; gửi chỉ assigned/in_progress |
+| Staff/admin | /staff/... và /admin/... | Role/active + Policy từng hồ sơ |
 
-Public /xe/{slug} dùng cars.slug unique; code quản trị cũng unique.
-HTML trả Blade; AJAX yêu cầu Accept: application/json.
-FormRequest trả validation 422 có errors theo trường; 401 cần login, 403 thiếu quyền,
-404 public ẩn/không có, 409 tranh chấp hoặc UUID trùng payload khác, 429 vượt limiter.
-Sau POST form HTML redirect với flash; AJAX trả id + trạng thái, không lộ nội bộ.
+Không có route đổi lịch/mở lại/audit UI/API status riêng trong P1.
+Customer route đăng ký tại root URL, route name customer.*; không có prefix /customer.
+Route file customer chưa có endpoint nghiệp vụ, TV4/TV5 thêm theo module.
+Giữ slug/source/brand; Toyota cố định phía server. Category lọc bằng slug,
+chi tiết xe dùng ID, xe ẩn 404. Car code là mã chiếc xe, không là mã cả dòng xe.
 
-## Gửi và tải tin
+## Form AJAX và lỗi
 
-POST: content + client_message_id; không nhận sender_id hay role từ client.
-Trả id, inquiry_id, sender (id/name), content, created_at. Không gửi email/phone,
-note nội bộ, password hoặc toàn bộ serialized User. History GET after_id và limit
-giới hạn tối đa 50; các trang cũ dùng cursor, thứ tự theo message ID.
-UUID trùng sender được kiểm tra với inquiry/content để trả đúng idempotent response.
+Form tư vấn Accept JSON trả 201 với id, thông báo tiếp nhận; không trả cả model.
+Không dùng mã/id public để đọc hồ sơ; guest liên hệ qua phone.
+Email form ánh xạ contact_email. Không nhận customer_id/role/assigned_to từ khách.
+422 validation/trùng lịch; 401 chưa đăng nhập; 403 sai quyền; 404 không tồn tại/ẩn;
+429 throttle; 409 UUID dùng lại khác payload. Web dùng redirect/flash phù hợp.
+Form public 3 lần/10 phút/IP/endpoint; login 5 thất bại/phút/IP+email.
+LoginRequest đã thực hiện failure-only limiter; không gắn throttle đếm mọi request.
 
-Kênh Echo logical name inquiry.{id}.v{version}; Echo tự thêm private- prefix.
-Authorized khi account active và là customer owner/sales đang assigned/admin,
-và version khớp DB. Event chỉ mang thông tin tin nhắn tối thiểu sau commit.
-Khi version đổi, client còn quyền lấy version mới qua HTTP có Policy;
-rời kênh cũ, tham gia kênh mới, rồi tải tin thiếu và dedupe theo ID.
-Event queue phải xác định quyền/version hiện tại lúc phát, không dùng phiên cũ đã chụp.
-reconnect/catch-up là HTTP đồng bộ khi có sự kiện nối lại, không polling định kỳ thay chat.
+## H01 đã triển khai
 
-## Hợp đồng xác nhận lịch
+GET /dang-ky (register), POST /dang-ky (register.store);
+GET /dang-nhap (login), POST /dang-nhap (login.store), đều guest.
+POST /dang-xuat (logout), GET /tai-khoan (account), đều auth + ensure.active.
+Đăng ký tự login rồi vào account; login dùng intended URL hoặc account.
+Form đăng ký name/email/phone/password/password_confirmation; login email/password.
+Mật khẩu không có NUL và tối đa 72 byte cho bcrypt hiện tại;
+đăng ký vẫn tối thiểu 8 ký tự. Giới hạn byte khác giới hạn số ký tự Unicode.
+Mật khẩu không được fill lại vào HTML/session flash. Email trim/lowercase.
+Guest vào route auth bị redirect login; JSON trả 401.
+User khóa bị logout/invalidate session: web redirect login với account_error,
+JSON 403; kiểm active áp dụng cả web công khai để tránh giữ phiên khóa.
+Sai thông tin login trả lỗi email, quá ngưỡng trả 429. Đăng xuất chỉ POST + CSRF.
+Tên route là hợp đồng cho Đạt; layout accounts chỉ là giao diện tối thiểu.
 
-assigned_to phải là sales active; confirmed_at tương lai, đủ điều kiện xe/dịch vụ.
-Khóa row users của sales trong transaction trước khi truy vấn conflict.
-Lịch A chồng B khi A.start < B.end và A.end > B.start, khung 60 phút.
-Cùng giao thức khóa dùng khi confirm/reschedule đổi người để tránh race.
-Chặn đổi người phụ trách lịch confirmed mà chưa kiểm tra lịch của người mới.
-Khi xe bán/ẩn sau khi confirmed, không tự xóa lịch: nhân viên liên hệ và đổi/hủy.
+## Chat
+
+POST content/client_message_id, sender từ session; trả id/inquiry_id,
+sender(id,name), content, created_at; không serialize user/inquiry/internal_note.
+History tối đa 50/lần, after_id/cursor; client dedupe ID, kết nối lại bù lịch sử.
+Unique sender/UUID; retry cùng payload trả bản cũ 200, khác trả 409.
+Lưu rồi phát sau commit, chỉ lần tạo mới phát. Subscribe trước catch-up.
+Private inquiry.{id}.v{version} kiểm active/role/ownership/assigned/version.
+Chuyển sales/khóa tài khoản tăng version; kiểm quyền/version hiện tại khi gửi/phát,
+không chuyển tin của job cũ sang kênh cũ. Dữ liệu đã nhận không thu lại được.
+Người còn quyền có thể tải lại để lấy version mới; kênh users.{id} tự chuyển là P2.
+New/closed chỉ đọc; không có reopen trong P1. UI chưa gửi được phải nói rõ.
+
+## Lịch
+
+Validate type/giờ/xe/dịch vụ; admin phân công sales active.
+Xác nhận transaction khóa appointment rồi sales, đọc lại pending và quyền,
+kiểm giờ/xe/service và lịch confirmed khác cách <60 phút, rồi ghi.
+Mọi confirmation dùng cùng service/protocol, tránh hai request ghi đè/trùng.
+Đúng 60 phút hợp lệ; đây là quy ước tiếp nhận demo, không mô hình xưởng.
+Customer hủy pending/confirmed chưa tới giờ, server kiểm own và lưu lý do.
+Nhân viên/admin hủy kèm lý do; hoàn tất/no_show sau giờ confirmed_at.
+Không sửa trạng thái cuối, không tự giữ xe từ lịch; không gán inquiry khác customer.
+Giờ không phù hợp: hủy, tạo yêu cầu mới; đổi lịch chuyên biệt là P2.
+
+## Hợp đồng làm song song
+
+Xem [PARALLEL_WORK](../team/PARALLEL_WORK.md) về namespace route, fixture/seed,
+phân công file chung và thứ tự khóa giữa tài khoản/tư vấn/lịch.
+TV4/TV5 dùng hợp đồng chung và test MySQL, không khóa dữ liệu ngược thứ tự.
+
+## Tích hợp frontend + H01 — 18/10/2026
+
+Nhánh feature/frontend-auth-integration phụ thuộc PR #1/#2 và frontend PR #3,
+chưa merge các PR đó vào main. Giữ GET / tên home cho trang chủ local/testing,
+production vẫn welcome. /xe và /xe/{id} (cars.preview/cars.preview.show) vẫn là
+fixtures ID 1–9 trong local/testing; chưa có Catalog backend.
+Header guest nối route login thật; đã xác thực nối account và POST logout có CSRF.
+Tư vấn/đặt lịch vẫn là preview; anchor /#dich-vu và /#showroom chỉ giới thiệu.

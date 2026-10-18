@@ -1,6 +1,6 @@
 # Kiến trúc hệ thống Toyota Showroom
 
-Cập nhật 2026-10-14. Kiến trúc là Laravel MVC đơn khối cho một showroom.
+Cập nhật tài liệu 2026-10-16; mã baseline chưa thay đổi. Kiến trúc là Laravel MVC đơn khối cho một showroom.
 Tài liệu mô tả cả nền tảng hiện có và hợp đồng cần triển khai; xem
 [FEATURE_STATUS](docs/architecture/FEATURE_STATUS.md) để phân biệt.
 
@@ -11,7 +11,15 @@ Trình duyệt → route web → auth/active/role middleware → FormRequest + P
 Chat nhận tin qua Echo ← Reverb ← sự kiện sau commit từ MessageService.
 Queue worker chạy riêng cho broadcasting dùng hàng đợi; MySQL là nơi lưu tin chính.
 
-## Các lớp và vị trí
+## Cơ chế đã chốt
+
+Code-first bằng migration versioned (ADR 0004): migration tạo/thay schema,
+Eloquent Model định nghĩa truy cập/casts/quan hệ; sửa Model không tự đổi database.
+Đăng nhập session + cookie; env mẫu dùng database session 120 phút và CSRF.
+Không dùng JWT/Sanctum/Passport; private channel tái dùng session.
+Phân công file chung/route/seed và giao thức khóa ở docs/team/PARALLEL_WORK.md.
+
+## Vị trí mã nguồn
 
 | Lớp | Vị trí | Trách nhiệm |
 | --- | --- | --- |
@@ -40,7 +48,7 @@ Không đặt code theo tên thành viên vào app/Hoang hoặc app/Dat. Chia th
 
 ## Dữ liệu và trạng thái
 
-Có **8 bảng cốt lõi và 1 bảng audit**, cộng các bảng kỹ thuật của Laravel.
+Mã hiện có **8 bảng cốt lõi + 1 audit**. SRS 1.4 giữ 9 bảng này cho P1; inquiry_notes là P2. Bảng kỹ thuật tính riêng.
 [DATA_MODEL](docs/architecture/DATA_MODEL.md) giữ hợp đồng trường và quan hệ.
 Trạng thái là PHP backed enum, cột string để migration/test tương thích MySQL và SQLite.
 MySQL vẫn là database phát triển và demo chính; SQLite test nhanh không chứng minh
@@ -71,3 +79,20 @@ kiến trúc, nhưng vẫn ghi trong PR/nhật ký và chạy kiểm tra liên q
 [Broadcasting](https://laravel.com/docs/12.x/broadcasting),
 [Reverb](https://laravel.com/docs/12.x/reverb).
 Phiên bản chính dùng theo bài thực hành hiện có, phiên bản chính xác nằm ở lockfile.
+
+
+## Vòng yêu cầu v6
+
+[SRS](SRS.md) 1.4 giữ tên module và bảng truy vết yêu cầu cũ;
+[ADR 0002](docs/decisions/0002-v6-srs-review.md) là lịch sử rà soát v6.
+Word v6 giữ nguyên làm nguồn, phạm vi theo ADR 0003.
+DATA_MODEL/FEATURE_STATUS giữ schema và trạng thái thật; PR tài liệu không mở chat
+hoặc áp schema 10 bảng. Kênh điều khiển users.{id} là P2, chưa có mã; P1 có thể tải lại khi đổi quyền nhưng người cũ phải bị chặn tin mới.
+
+## Phạm vi hiện hành theo ADR 0003
+
+SRS 1.4 và COURSE_SCOPE thay các đích v6 trái phạm vi môn học.
+Giữ schema nền/internal_note/brand=Toyota; chưa thêm module audit UI, InquiryNote,
+code/closed_at hay other. Audit namespace/bảng là khả năng nền, không chức năng đã chạy.
+Không thay kiến trúc MVC, private chat, thu hồi quyền và transaction bảo vệ dữ liệu.
+Một cars là một chiếc mã riêng; lịch tiếp nhận 60 phút là quy ước demo.
