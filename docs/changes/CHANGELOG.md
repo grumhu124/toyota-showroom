@@ -1,5 +1,19 @@
 # Nhật ký thay đổi hệ thống
 
+## 2026-10-18 Đồng bộ nhánh giao diện
+
+- Giữ hai ảnh và nền tối đã lưu local; ghép commit sửa smoke test af2091f từ GitHub.
+- Không đổi main, backend hoặc thời gian video; tạo lại inventory sau khi ghép.
+
+## 2026-10-17 Chuẩn bị review — smoke test độc lập Vite build
+
+- CI frontend build đạt nhưng PHP test không có bước tạo Vite manifest.
+- Tái hiện điều kiện thiếu assets: ExampleTest trả 500 ViteManifestNotFoundException;
+  HomePreviewTest/CollectionPreviewTest đã withoutVite, chỉ smoke test cũ chưa có.
+- Sửa ExampleTest dùng withoutVite để kiểm render HTTP độc lập asset pipeline.
+  Không sửa giao diện, route, fixture, dependency hoặc bỏ kiểm tra npm build riêng.
+- Probe trước sửa fail, sau sửa pass; full composer check kiểm lại trước push.
+
 ## 2026-10-16 Hai góc nhìn Toyota dưới hero
 
 - Thêm hai ảnh người dùng cung cấp: đèn xe và vô lăng, bố cục ảnh/chữ xen kẽ.
