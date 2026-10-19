@@ -1,8 +1,30 @@
 # Trạng thái thực tế
 
-Ngày 17/10/2026. H01 trên feature/auth-middleware, H02 trên feature/admin-users;
-các PR vẫn chờ review, chưa gộp main. H03 mới có hợp đồng quyền/gói review.
-Chưa có website showroom hoặc nghiệp vụ chạy hoàn chỉnh.
+Ngày 19/10/2026. Đã gộp vào main: docs/review-v6-srs, H01 (feature/auth-middleware),
+H02 (feature/admin-users), frontend home/catalog preview (feature/frontend-layout) và
+tích hợp auth vào giao diện frontend (feature/frontend-auth-integration). H03 mới có
+hợp đồng quyền/gói review. Chưa có nghiệp vụ tư vấn/lịch/chat hoàn chỉnh.
+
+Frontend home local/testing: / có hero Camry theo Figma, cuộn video/canvas,
+ảnh fallback, dịch vụ/showroom và link sang /xe/1. Chưa có dịch vụ/đặt lịch backend.
+Xem docs/development/HOME_PREVIEW.md về giới hạn xử lý nền video.
+
+## Cập nhật frontend local 16/10/2026
+
+Có thêm /xe/{id} cho 9 xe fixture: ảnh phóng to, thông tin, thông số chưa xác nhận,
+CTA theo available/reserved/sold và xe liên quan. Card/hero đã nối chi tiết.
+Đây vẫn là UI minh họa, không phải Catalog/đặt lịch/tư vấn backend hoàn chỉnh.
+
+Có trang xem trước /xe (chỉ local/testing): layout/header/footer, slider 3 xe
+dịch ngang, card, bộ lọc fixture và dialog báo chức năng chưa nối backend.
+Tên xe chuyển dọc, xe chuyển ngang; 6 card sản phẩm, 3 cột desktop, bộ lọc fixture.
+Chưa có CRUD, dữ liệu xe thật, form đặt lịch hoặc auth. Xem docs/development/COLLECTION_PREVIEW.md.
+
+Cập nhật baseline 2026-10-14. Dùng bảng này để hiểu hệ thống đã làm đến đâu.
+Trạng thái nền tảng không có nghĩa nghiệp vụ đã hoàn tất.
+
+Trang auth dùng layout frontend (feature/frontend-auth-integration): header hiện
+Tài khoản/Đăng xuất khi đã đăng nhập, liên kết Đăng nhập khi là khách.
 
 | Module | Đã có | P1 còn làm | Chủ trách nhiệm |
 | --- | --- | --- | --- |

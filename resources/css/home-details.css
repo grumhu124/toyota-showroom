@@ -1,0 +1,41 @@
+/* Home-only editorial sections: preserve the light catalog and detail pages. */
+.home-page{background:#080f18}
+.home-details{background:#080f18;color:#edf2f6;padding:72px max(5%,calc((100vw - 1500px)/2)) 110px;overflow:hidden}
+.home-detail{display:grid;grid-template-columns:1.08fr 1fr;align-items:center;gap:clamp(36px,7vw,120px);max-width:1500px;margin:auto}
+.home-detail+.home-detail{margin-top:110px}
+.home-detail-photo{height:clamp(430px,46vw,670px);position:relative;overflow:hidden;background:#111c25}
+.home-detail-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.8s cubic-bezier(.2,.7,.2,1)}
+.home-detail-photo--light img{object-position:50% 68%}
+.home-detail-photo--wheel img{object-position:54% 53%}
+.home-detail-photo::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,#080f18b3,transparent 35%),linear-gradient(90deg,#080f181a,transparent 30%,transparent 85%,#080f1833)}
+.home-detail-index{position:absolute;z-index:1;left:28px;bottom:26px;color:#e0e9ef;font-size:10px;letter-spacing:.17em}
+.home-detail-copy{max-width:490px;padding:30px 0}
+.home-detail-copy .eyebrow{color:#8bd8e8;font-size:11px;letter-spacing:.16em}
+.home-detail-copy h2{font-size:clamp(32px,3.6vw,58px);line-height:1.22;font-weight:300;letter-spacing:-.04em;margin:25px 0}
+.home-detail-copy>p:not(.eyebrow){color:#a7b8c7;font-size:14px;line-height:1.95;max-width:390px}
+.home-detail-link{display:inline-flex;align-items:center;gap:35px;margin-top:34px;padding:0 0 14px;border-bottom:1px solid #8fa9ba66;color:#eef4f8;font-size:13px;text-align:left;transition:color .25s,border-color .25s}
+.home-detail-link span{font-size:22px;transition:transform .3s}
+.home-detail-link:hover{color:#9ae3f1;border-color:#9ae3f1}
+.home-detail-link:hover span{transform:translate(3px,-3px)}
+.home-detail-link:focus-visible{outline:2px solid #9ae3f1;outline-offset:7px}
+.home-detail-copy small{display:block;color:#8a9dad;font-size:10px;margin-top:24px;line-height:1.7}
+.home-detail--reverse{grid-template-columns:1fr 1.08fr}
+.home-detail--reverse .home-detail-photo{grid-column:2;grid-row:1}
+.home-detail--reverse .home-detail-copy{grid-column:1;grid-row:1;padding-left:12%}
+.home-detail.is-visible .home-detail-photo img{transform:scale(1.035)}
+.home-detail.reveal-ready .home-detail-photo,.home-detail.reveal-ready .home-detail-copy{opacity:0;transform:translateY(32px);transition:opacity 1s ease,transform 1.1s cubic-bezier(.2,.7,.2,1)}
+.home-detail.reveal-ready.is-visible .home-detail-photo,.home-detail.reveal-ready.is-visible .home-detail-copy{opacity:1;transform:none}
+.home-detail.reveal-ready .home-detail-copy{transition-delay:.14s}
+.home-page .home-services{max-width:none;background:#0c1722;border-top:1px solid #a5cde51a;color:#edf2f6}
+.home-page .home-services .eyebrow,.home-page .home-showroom .eyebrow{color:#8bd8e8}
+.home-page .home-services>div>p:last-child{color:#a7b8c7}
+.home-page .home-service-links>button{padding-bottom:20px;border-bottom:1px solid #a5cde526}
+.home-page .home-service-links>button>span{color:#7791a4}
+.home-page .home-service-links>button:hover{color:#9ae3f1}
+.home-page .home-showroom{background:radial-gradient(ellipse at 85% 100%,#183344,transparent 65%),#080f18;color:#edf2f6;border-top:1px solid #a5cde51a}
+.home-page .home-services .button-dark,.home-page .home-showroom .button-dark{background:#d71920;border-color:#d71920;color:#fff}
+.home-page .home-services .button-dark:hover,.home-page .home-showroom .button-dark:hover{background:#ed2330}
+.home-page .site-footer{background:#080f18;color:#a7b8c7;border-top:1px solid #a5cde51a}
+@media(hover:hover){.home-detail-photo:hover img{transform:scale(1.065)}}
+@media(max-width:767px){.home-details{padding:36px 5% 60px}.home-detail,.home-detail--reverse{grid-template-columns:1fr;gap:12px}.home-detail+.home-detail{margin-top:46px}.home-detail-photo{height:clamp(350px,115vw,520px)}.home-detail--reverse .home-detail-photo,.home-detail--reverse .home-detail-copy{grid-column:auto;grid-row:auto}.home-detail--reverse .home-detail-copy{padding-left:0}.home-detail-copy{padding:22px 4px;max-width:none}.home-detail-copy h2{font-size:36px;margin:18px 0}.home-detail-copy>p:not(.eyebrow){font-size:13px}.home-detail-link{margin-top:22px}.home-detail-index{left:20px;bottom:22px}}
+@media(prefers-reduced-motion:reduce){.home-detail.reveal-ready .home-detail-photo,.home-detail.reveal-ready .home-detail-copy{opacity:1;transform:none;transition:none}.home-detail-photo img,.home-detail-link span{transition:none;transform:none!important}}
