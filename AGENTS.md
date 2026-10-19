@@ -11,6 +11,8 @@ docs/architecture/DATA_MODEL.md, docs/architecture/CONTRACTS.md,
 docs/architecture/FEATURE_STATUS.md và docs/team/OWNERSHIP.md.
 Đọc docs/requirements/COURSE_SCOPE.md và ADR liên quan trước khi đổi thiết kế. Đối chiếu mã thật và lockfile.
 Đọc docs/team/PARALLEL_WORK.md khi sửa route/layout/seed/quyền dùng chung.
+Đọc docs/architecture/AUTHORIZATION_CONTRACT.md trước khi triển khai quyền module;
+ma trận là yêu cầu đích, không phải Policy/endpoint đã hoàn tất.
 Khi đặc tả mâu thuẫn, không tự tạo hai cách xử lý: ghi điểm vướng, đề xuất
 thay đổi cụ thể và đưa vào PR. ADR 0003/SRS 1.4/COURSE_SCOPE kiểm soát phạm vi mới theo môn học; thay chỉ dẫn đích trái chúng trong ADR 0002/Word v6. DATA_MODEL/FEATURE_STATUS vẫn ghi mã thật.
 

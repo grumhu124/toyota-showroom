@@ -16,7 +16,8 @@ UserSeeder không chạy để tạo tài khoản demo trong production.
 | sales | sales1@example.test, sales2@example.test |
 | customer | customer1@example.test, customer2@example.test, customer3@example.test |
 
-H01 đã có /dang-ky, /dang-nhap, /tai-khoan; chưa có UI admin tạo/khóa user.
+H01 có /dang-ky, /dang-nhap, /tai-khoan; H02 có /admin/users dành cho admin
+để tạo sales và khóa/mở customer/sales (không tạo/khóa admin).
 Auth dùng session/cookie, SESSION_DRIVER=database trong env mẫu, không JWT.
 Khi đăng ký public, chỉ truyền trường khách được sửa; User.role/is_active không mass assignable.
 

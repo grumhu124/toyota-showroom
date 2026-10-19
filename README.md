@@ -13,7 +13,13 @@ chưa được kết nối; đăng ký/đăng nhập/đăng xuất đã nối H0
 Xem docs/development/HOME_PREVIEW.md và CATALOG_CARDS.md.
 Đã có Laravel, cấu hình Reverb, schema nền, model, middleware và tài liệu.
 H01 đã có đăng ký/đăng nhập/đăng xuất và màn tài khoản tối thiểu.
-Quản lý user của admin, CRUD xe, tư vấn/chat và lịch vẫn chưa hoàn chỉnh.
+H02 có quản lý user phía admin ở /admin/users (tạo sales, khóa/mở customer/sales).
+CRUD xe, tư vấn/chat và lịch vẫn chưa hoàn chỉnh.
+
+## Demo tiến độ 20/10/2026
+
+Bản tích hợp trên `demo/progress-2026-10-20`: xem [hướng dẫn chạy, kịch bản và giới hạn](docs/demo/DEMO_2026-10-20.md).
+Auth + quản lý tài khoản chạy DB; catalog trong bản này vẫn là fixture.
 
 ## Đọc trước khi làm
 
@@ -25,6 +31,7 @@ Quản lý user của admin, CRUD xe, tư vấn/chat và lịch vẫn chưa hoà
 6. [Cách góp mã](CONTRIBUTING.md).
 7. [Task list của Hoàng](docs/team/HOANG_TASKS.md) — thứ tự phần repo/auth/tích hợp.
 8. [Quy ước làm song song](docs/team/PARALLEL_WORK.md) và [kết quả rà soát](docs/requirements/READINESS_REVIEW.md).
+9. [Gói review PR](docs/team/PR_REVIEW_GUIDE.md) và [ma trận quyền H03](docs/architecture/AUTHORIZATION_CONTRACT.md).
 
 ## Công nghệ đã chọn
 
