@@ -9,7 +9,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(UserSeeder::class);
-        $this->call(CatalogSeeder::class);
-        // TV5 adds the service seeder with explicit demo data provenance.
+        // TV3 and TV5 add catalog/service seeders with explicit demo data provenance.
     }
 }
