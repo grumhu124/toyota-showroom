@@ -1,6 +1,7 @@
 ## Vấn đề và kết quả
 
 Module / người phụ trách:
+PR phụ thuộc / người review / chủ module bị ảnh hưởng:
 Thay đổi hành vi:
 
 ## Thêm sửa xóa và ảnh hưởng
@@ -21,5 +22,6 @@ Lệnh đã chạy, kết quả, ảnh/demo nếu liên quan; phần chưa kiể
 - [ ] inventory --write và composer check
 - [ ] npm run build nếu đổi frontend
 - [ ] Test MySQL nếu đổi schema/locking; thử hai phiên nếu đổi chat
+- [ ] Không đổi contract/route/shared layout/seed mà chưa ghi ảnh hưởng và trao đổi owner
 - [ ] Không có .env, token, dữ liệu khách thật hoặc dependency directories
 - [ ] Có ít nhất một thành viên khác review

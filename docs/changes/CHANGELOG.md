@@ -4,6 +4,31 @@ Git lưu diff chính xác; file này giải thích thay đổi để người v�
 Thêm mục mới lên đầu. Dùng CHANGE_TEMPLATE.md, không chỉ ghi “update code”.
 
 
+## 2026-10-16 Rà soát code-first và triển khai song song
+
+- Sửa inventory LF/CRLF đã đưa vào PR #1, merge fix vào nhánh Auth; giải quyết conflict bằng giữ hai mục CHANGELOG và regenerate manifest.
+- Bỏ URL prefix customer để khớp /yeu-cau, /lich-hen; giữ auth/active/role và route name.
+- Chặn password NUL/>72 byte trước bcrypt; thêm test đầu vào ASCII/Unicode/NUL.
+- Thêm PARALLEL_WORK, READINESS_REVIEW và ADR 0004: code-first/migration, shared
+  files, route namespace, fixture/seed, review chéo, thứ tự khóa và tích hợp.
+- Đồng bộ SRS/AGENTS/README/kiến trúc/hợp đồng/SETUP/CONTRIBUTING/PR template.
+- Không sửa migration/DB hoặc triển khai thêm nghiệp vụ P2. Các service/chat/lịch
+  chưa có không được nhận hoàn tất bằng việc thêm quy ước.
+- Kiểm local: composer check pass 20 test/158 assertions, Pint/cú pháp/encoding.
+  CI PR #1 đã success run 38884213819; PR #2 chạy lại sau push.
+  Không dùng test H01/inventory làm bằng chứng toàn bộ P1.
+
+## 2026-10-16 H01 tài khoản và task list Hoàng
+
+- Thêm HOANG_TASKS: H01–H05, không làm thay các module của nhóm.
+- Thêm FormRequest/controller/Blade/routes đăng ký, đăng nhập, đăng xuất, tài khoản.
+- Login failure-only 5/phút/IP+email; xóa limiter login đếm request chưa dùng.
+- Middleware active thu hồi session trên web/JSON của user đã khóa; cấu hình redirect.
+- Không đổi schema, dependency hoặc mở private channel. Admin user/Policy và thu hồi
+  socket/job chat vẫn ở H02/tích hợp TV4, chưa nhận hoàn thành.
+- 11 test Auth mới; tổng 17 test/135 assertions pass local SQLite, Pint/build pass.
+- Browser lỗi môi trường nên chưa kiểm trực quan; MySQL xem CI, chưa claim local.
+
 ## 2026-10-16 Sửa inventory Windows/Linux
 
 - CI PR tài liệu và Auth dừng ở inventory vì hash CRLF cục bộ khác LF Git checkout.

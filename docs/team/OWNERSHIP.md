@@ -1,5 +1,8 @@
 # Phân công và vị trí thư mục
 
+Đọc [PARALLEL_WORK](PARALLEL_WORK.md) trước khi làm song song: route/layout/seed,
+review chéo, dữ liệu fixture, điểm giao nhau và thứ tự merge PR #1/#2.
+
 | Thành viên | Trách nhiệm | Vị trí chính | Nhánh gợi ý |
 | --- | --- | --- | --- |
 | Hoàng | Repo, nền tảng, auth, active/role, tích hợp và review; audit UI là P2 | Controllers/Auth, Controllers/Admin/User, Middleware, bootstrap, config, docs, CI | feature/auth-middleware |
