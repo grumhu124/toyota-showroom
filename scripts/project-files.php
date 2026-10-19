@@ -1,6 +1,24 @@
 <?php
 
 /** Return the source/config/document paths covered by architecture inventory. */
+function controlledProjectFileHash(string $path): string
+{
+    $content = file_get_contents($path);
+    if ($content === false) {
+        throw new RuntimeException('Cannot read controlled file: '.$path);
+    }
+
+    // Git stores these text files with LF even when an editor writes CRLF.
+    $textExtensions = ['md', 'json', 'php', 'js', 'css', 'html', 'yml', 'yaml', 'xml', 'txt', 'svg'];
+    $textNames = ['artisan', '.env.example', '.gitignore', '.gitattributes', '.editorconfig', '.nvmrc'];
+    if (in_array(strtolower(pathinfo($path, PATHINFO_EXTENSION)), $textExtensions, true)
+        || in_array(basename($path), $textNames, true)) {
+        $content = str_replace("\r\n", "\n", $content);
+    }
+
+    return hash('sha256', $content);
+}
+
 function controlledProjectFiles(string $root): array
 {
     $paths = [];
@@ -30,7 +48,7 @@ function controlledProjectFiles(string $root): array
         }
     }
 
-    foreach (['README.md', 'AGENTS.md', 'CLAUDE.md', 'ARCHITECTURE.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'composer.json', 'composer.lock', 'package.json', 'package-lock.json', 'artisan', 'phpunit.xml', 'vite.config.js', '.env.example', '.gitignore', '.gitattributes', '.editorconfig', '.nvmrc'] as $file) {
+    foreach (['README.md', 'AGENTS.md', 'CLAUDE.md', 'ARCHITECTURE.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'SRS.md', 'Luong-nghiep-vu-website-ban-xe-v6.docx', 'composer.json', 'composer.lock', 'package.json', 'package-lock.json', 'artisan', 'phpunit.xml', 'vite.config.js', '.env.example', '.gitignore', '.gitattributes', '.editorconfig', '.nvmrc'] as $file) {
         if (is_file($root.'/'.$file)) {
             $paths[] = $file;
         }

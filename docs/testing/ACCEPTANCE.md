@@ -1,28 +1,33 @@
-# Kịch bản nghiệm thu
+# Kế hoạch nghiệm thu P1 — SRS 1.4
 
-Bảng này là kế hoạch kiểm tra, không phải kết quả test đã chạy.
-Ghi kết quả và PR minh chứng khi module hoàn thành; FEATURE_STATUS phải khớp.
+Chưa phải kết quả đã chạy. Mỗi mục ghi người kiểm, ngày, kết quả và PR/bằng chứng.
+Các tính năng P2 không nằm trong điều kiện đạt P1.
 
-| ID | Tình huống | Kết quả cần đạt |
+| ID | Kiểm tra | Kết quả cần đạt |
 | --- | --- | --- |
-| CAT-01 | Tìm/lọc/sắp xếp và phân trang | Dữ liệu đúng, giữ query, empty state |
-| CAT-02 | Ẩn category hoặc biết URL xe ẩn | Không có ở public, URL trả 404 |
-| CAT-03 | Xóa xe đã có inquiry/lịch | Từ chối xóa; vẫn ẩn được và giữ lịch sử |
-| AUTH-01 | Đăng ký gửi role admin | Vẫn customer; email unique; password hashed |
-| AUTH-02 | Khóa user đang login | HTTP bị chặn và không nhận được tin mới |
-| INQ-01 | Form thiếu phone hoặc gửi lần 4/10 phút | 422 hoặc 429; không tạo bản ghi sai |
-| INQ-02 | Giao A rồi chuyển B | B thấy lịch sử, A mất quyền HTTP/kênh mới |
-| CHAT-01 | Hai phiên gửi nhận | Tự cập nhật dưới 2 giây ở mạng demo ổn định |
-| CHAT-02 | Reload, mất mạng, retry cùng UUID | Đủ lịch sử, không trùng, payload khác bị chặn |
-| CHAT-03 | Đoán ID/version của người khác | Auth kênh và HTTP bị từ chối |
-| APT-01 | Xe sold/reserved/ẩn hoặc service không booking | Không tạo/xác nhận lịch sai |
-| APT-02 | Hai confirmation đồng thời cùng sales | Chỉ một thành công; chạy hai kết nối MySQL |
-| APT-03 | Hai lịch đầu/cuối sát nhau | Không overlap nếu cách đúng 60 phút |
-| APT-04 | Đổi, hủy, complete, no_show | Đúng chuyển trạng thái, ghi lý do, không tự giữ xe |
-| AUD-01 | Quản trị thay dữ liệu | Có action/actor/target; log không chứa secret/PII đầy đủ |
-| UI-01 | Mobile/tablet/desktop và lỗi/empty/loading | Không tràn ngang, điều khiển dùng được |
-| SET-01 | Checkout trên máy khác | Cài lockfiles/migrate/seed/build được theo README |
+| AUTH-01 | Đăng ký/login/logout, email trùng, gửi role admin | Customer, hash, session đúng; lỗi tại trường; logout hủy phiên |
+| AUTH-02 | Login sai và tài khoản khóa | Failure-only limiter 5/phút/IP+email; khóa chặn HTTP và tin mới |
+| CAT-01 | CRUD dòng/xe/ảnh/dịch vụ, dữ liệu sai | Lưu DB thật, FK/unique; xe nháp được, công khai cần ảnh chính |
+| CAT-02 | Tìm/lọc/sort/phân trang/rỗng | Dữ liệu đúng và giữ filter; min>max có lỗi |
+| CAT-03 | Ẩn xe/dòng; nhập URL/POST trực tiếp | 404/validation, không lộ hay tạo yêu cầu cho xe ẩn |
+| CAT-04 | Xóa đã có hồ sơ vs chưa tham chiếu | Chặn xóa lịch sử, cho ẩn; xóa bản chưa tham chiếu được |
+| CAT-05 | Hai chiếc cùng phiên bản, sold một chiếc | Chiếc còn lại vẫn available; nhãn giá tham khảo/nguồn/ngày rõ |
+| INQ-01 | Guest/customer gửi form AJAX, thiếu phone, spam | JSON/lỗi theo trường, tạo đúng owner, lần 4/10 phút bị 429 |
+| INQ-02 | Giao A rồi chuyển B; đoán ID; nội bộ | Chỉ own/assigned/admin đọc/xử lý, không lộ internal_note |
+| INQ-03 | New → assigned → in_progress → closed | Kiểm quyền/trạng thái, lưu close_result; new/closed không gửi chat |
+| CHAT-01 | Customer/sales hai phiên gửi nhận | Dưới 2 giây ở mạng demo ổn định, không reload, lưu DB |
+| CHAT-02 | Reload/mất mạng/retry UUID/khác payload | Đủ lịch sử, không trùng; khác payload 409; hiển thị lỗi thật |
+| CHAT-03 | Chuyển sales/khóa user khi đang nối | Người cũ không nhận tin mới kể cả job chờ; HTTP/kênh từ chối |
+| APT-01 | Xem available/reserved/sold/ẩn; service tắt | Chỉ nhận đầu vào hợp lệ; lịch không tự giữ xe |
+| APT-02 | Thiếu trường/type sai/quá khứ; guest/customer | Pending đúng contact/owner, guest không tra lịch bằng phone |
+| APT-03 | Xác nhận đồng thời cùng sales và cùng appointment | Không trùng/ghi đè; chênh <60 phút chặn, đúng 60 hợp lệ |
+| APT-04 | Customer hủy lịch own/khác owner/đã tới giờ | Chỉ own pending/confirmed chưa tới giờ, lưu lý do |
+| APT-05 | Completed/no_show và trạng thái cuối | Sau giờ confirmed; chuyển đúng; không sửa trạng thái cuối |
+| UI-01 | Khách/staff/admin, mobile/tablet/desktop | Đồng bộ Toyota, không tràn; đủ loading/empty/error/success/disabled |
+| SET-01 | Máy thành viên khác, MySQL/web/Reverb/worker | Cài lockfile/migrate/seed/build và chạy theo README; không lộ secret |
+| REPORT-01 | Báo cáo, Git và demo 5 người | Đủ rubric, nguồn/ảnh/test, PR/review và giải thích được phần mình |
 
-PHP tests nền dùng SQLite; CI chạy thêm MySQL. Test khóa hàng/race condition
-cần hai giao dịch/connections thật, không kết luận từ test tuần tự hoặc mock DB.
-Chat cần demo trình duyệt hai session độc lập, không chỉ unit test Event.
+APT-03 phải dùng hai giao dịch/kết nối MySQL thật, không kết luận từ SQLite/mock
+hoặc hai lần request tuần tự. CHAT cần hai session độc lập và thử ngắt/nối mạng.
+Seed đủ >12 xe để thấy phân trang và đủ các trạng thái demo.
+Chỉ mở P2 sau khi nhóm ghi kết quả đạt toàn bộ bảng và xử lý lỗi P1.

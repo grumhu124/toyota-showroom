@@ -1,45 +1,52 @@
-# Hợp đồng route và giao tiếp
+# Hợp đồng route và giao tiếp — P1
 
-**Các endpoint nghiệp vụ dưới đây là kế hoạch, chưa được đăng ký trong baseline.**
-Khi làm route thật, module owner cập nhật bảng và FEATURE_STATUS.
-Route chạy hiện tại xem php artisan route:list: welcome, health và broadcast auth.
+Theo [SRS 1.4](../../SRS.md)/ADR 0003, chưa phải endpoint đã triển khai.
+Baseline chỉ welcome/health/broadcast auth và private channel deny-by-default.
 
-| Nhóm | Route dự kiến | Quyền |
+| Nhóm | Route đích | Quyền |
 | --- | --- | --- |
-| Public | GET /xe, /xe/{slug}, /dich-vu; POST /tu-van, /lich-hen | Khách vãng lai; chỉ dữ liệu công khai |
-| Auth | GET/POST /dang-ky, /dang-nhap; POST /dang-xuat | guest/auth tùy route; active; CSRF |
-| Customer | /customer/yeu-cau, /customer/lich-hen; đổi/hủy lịch mình | auth + ensure.active + role:customer + Policy |
-| Chat | GET/POST /chat/{inquiry}/messages | auth + ensure.active + Inquiry/Message Policy |
-| Staff | /staff/yeu-cau, /staff/lich-hen | auth + ensure.active + role:sales,admin + Policy assigned |
-| Admin | /admin/xe, /admin/dong-xe, /admin/dich-vu, /admin/users, /admin/logs | auth + ensure.active + role:admin |
+| Public | GET /xe, /xe/{id}, /dich-vu; POST /tu-van, /dat-lich/xem-xe, /dat-lich/bao-duong | Dữ liệu public, validate, throttle |
+| Auth | GET/POST /dang-ky, /dang-nhap; POST /dang-xuat | guest/auth, active, CSRF |
+| Customer | GET /yeu-cau, /yeu-cau/{inquiry}, /lich-hen; POST /lich-hen/{id}/huy | Own/active |
+| Chat | GET/POST /yeu-cau/{inquiry}/tin-nhan | Own/assigned/admin; gửi chỉ assigned/in_progress |
+| Staff/admin | /staff/... và /admin/... | Role/active + Policy từng hồ sơ |
 
-Public /xe/{slug} dùng cars.slug unique; code quản trị cũng unique.
-HTML trả Blade; AJAX yêu cầu Accept: application/json.
-FormRequest trả validation 422 có errors theo trường; 401 cần login, 403 thiếu quyền,
-404 public ẩn/không có, 409 tranh chấp hoặc UUID trùng payload khác, 429 vượt limiter.
-Sau POST form HTML redirect với flash; AJAX trả id + trạng thái, không lộ nội bộ.
+Không có route đổi lịch/mở lại/audit UI/API status riêng trong P1.
+Bootstrap còn nhóm /customer rỗng; chủ module sửa khi làm endpoint.
+Giữ slug/source/brand; Toyota cố định phía server. Category lọc bằng slug,
+chi tiết xe dùng ID, xe ẩn 404. Car code là mã chiếc xe, không là mã cả dòng xe.
 
-## Gửi và tải tin
+## Form AJAX và lỗi
 
-POST: content + client_message_id; không nhận sender_id hay role từ client.
-Trả id, inquiry_id, sender (id/name), content, created_at. Không gửi email/phone,
-note nội bộ, password hoặc toàn bộ serialized User. History GET after_id và limit
-giới hạn tối đa 50; các trang cũ dùng cursor, thứ tự theo message ID.
-UUID trùng sender được kiểm tra với inquiry/content để trả đúng idempotent response.
+Form tư vấn Accept JSON trả 201 với id, thông báo tiếp nhận; không trả cả model.
+Không dùng mã/id public để đọc hồ sơ; guest liên hệ qua phone.
+Email form ánh xạ contact_email. Không nhận customer_id/role/assigned_to từ khách.
+422 validation/trùng lịch; 401 chưa đăng nhập; 403 sai quyền; 404 không tồn tại/ẩn;
+429 throttle; 409 UUID dùng lại khác payload. Web dùng redirect/flash phù hợp.
+Form public 3 lần/10 phút/IP/endpoint; login 5 thất bại/phút/IP+email.
+Không nhận limiter đếm request hiện có là failure-only login đã chạy.
 
-Kênh Echo logical name inquiry.{id}.v{version}; Echo tự thêm private- prefix.
-Authorized khi account active và là customer owner/sales đang assigned/admin,
-và version khớp DB. Event chỉ mang thông tin tin nhắn tối thiểu sau commit.
-Khi version đổi, client còn quyền lấy version mới qua HTTP có Policy;
-rời kênh cũ, tham gia kênh mới, rồi tải tin thiếu và dedupe theo ID.
-Event queue phải xác định quyền/version hiện tại lúc phát, không dùng phiên cũ đã chụp.
-reconnect/catch-up là HTTP đồng bộ khi có sự kiện nối lại, không polling định kỳ thay chat.
+## Chat
 
-## Hợp đồng xác nhận lịch
+POST content/client_message_id, sender từ session; trả id/inquiry_id,
+sender(id,name), content, created_at; không serialize user/inquiry/internal_note.
+History tối đa 50/lần, after_id/cursor; client dedupe ID, kết nối lại bù lịch sử.
+Unique sender/UUID; retry cùng payload trả bản cũ 200, khác trả 409.
+Lưu rồi phát sau commit, chỉ lần tạo mới phát. Subscribe trước catch-up.
+Private inquiry.{id}.v{version} kiểm active/role/ownership/assigned/version.
+Chuyển sales/khóa tài khoản tăng version; kiểm quyền/version hiện tại khi gửi/phát,
+không chuyển tin của job cũ sang kênh cũ. Dữ liệu đã nhận không thu lại được.
+Người còn quyền có thể tải lại để lấy version mới; kênh users.{id} tự chuyển là P2.
+New/closed chỉ đọc; không có reopen trong P1. UI chưa gửi được phải nói rõ.
 
-assigned_to phải là sales active; confirmed_at tương lai, đủ điều kiện xe/dịch vụ.
-Khóa row users của sales trong transaction trước khi truy vấn conflict.
-Lịch A chồng B khi A.start < B.end và A.end > B.start, khung 60 phút.
-Cùng giao thức khóa dùng khi confirm/reschedule đổi người để tránh race.
-Chặn đổi người phụ trách lịch confirmed mà chưa kiểm tra lịch của người mới.
-Khi xe bán/ẩn sau khi confirmed, không tự xóa lịch: nhân viên liên hệ và đổi/hủy.
+## Lịch
+
+Validate type/giờ/xe/dịch vụ; admin phân công sales active.
+Xác nhận transaction khóa appointment rồi sales, đọc lại pending và quyền,
+kiểm giờ/xe/service và lịch confirmed khác cách <60 phút, rồi ghi.
+Mọi confirmation dùng cùng service/protocol, tránh hai request ghi đè/trùng.
+Đúng 60 phút hợp lệ; đây là quy ước tiếp nhận demo, không mô hình xưởng.
+Customer hủy pending/confirmed chưa tới giờ, server kiểm own và lưu lý do.
+Nhân viên/admin hủy kèm lý do; hoàn tất/no_show sau giờ confirmed_at.
+Không sửa trạng thái cuối, không tự giữ xe từ lịch; không gán inquiry khác customer.
+Giờ không phù hợp: hủy, tạo yêu cầu mới; đổi lịch chuyên biệt là P2.
