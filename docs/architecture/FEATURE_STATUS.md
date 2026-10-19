@@ -32,4 +32,3 @@ Chưa nghiệm thu race trên hai kết nối MySQL hay thu hồi socket thực 
 Xem AUTH_VALIDATION và docs/team/HOANG_TASKS.md. Đã kiểm menu Auth ở viewport
 390×844 và luồng admin trên trình duyệt; chưa kiểm điện thoại thật/toàn bộ responsive.
 Bản ghép: composer check 35 tests/328 assertions + Pint; build đạt.
-
