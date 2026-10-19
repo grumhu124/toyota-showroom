@@ -1,5 +1,12 @@
 # Nhật ký thay đổi hệ thống
 
+## 2026-10-20 H03 review catalog TV3
+
+- Thêm báo cáo rà tĩnh commit TV3 44dee2e, chỉ ra validation category_id sai kiểu, lọc giá một đầu và upload còn lại khi xóa xe.
+- Cập nhật việc tiếp theo của Hoàng; không sửa code/catalog/schema/DB, không tích hợp lại nhánh bị revert.
+- Phân biệt mã đã đọc và test chưa chạy; không nghiệm thu H03-CAT từ suite demo.
+
+
 ## 2026-10-20 Chuẩn bị bản demo tiến độ
 
 - Ghép PR #5 FE/H01 và PR #4 H02/H03 trên nhánh demo riêng; giữ main để nhóm review.

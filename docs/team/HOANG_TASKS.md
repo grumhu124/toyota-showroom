@@ -69,3 +69,11 @@ toàn bộ H03 chỉ vì đã có quy ước.
 
 Mỗi task xong ghi PR, bằng chứng và giới hạn; không đánh dấu chỉ vì có file.
 Không có deadline cố định vì nhóm chưa cung cấp ngày nộp.
+
+## Tiếp tục ngày 20/10/2026
+
+- [x] Chuẩn bị và chạy bản demo c86df32; xem docs/demo/DEMO_2026-10-20.md. CI frontend/SQLite/MySQL xanh; không đồng nghĩa catalog/chat/lịch đã nghiệm thu.
+- [x] Rà mã H03-CAT tại TV3 44dee2e; báo cáo docs/testing/CATALOG_H03_REVIEW_2026-10-20.md.
+- [ ] Owner sửa validation ID sai kiểu, bộ lọc giá một đầu và dọn upload khi xóa xe; chạy ca kiểm bổ sung.
+- [ ] Review bản sửa catalog trên nền main sau revert, kiểm DB riêng và phối hợp FE; chưa đổi bản demo cố định.
+- [ ] H03-INQ/CHAT/APT tiếp tục khi có mã endpoint/policy tương ứng.
