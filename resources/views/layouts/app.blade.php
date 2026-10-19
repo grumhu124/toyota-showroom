@@ -18,6 +18,17 @@
             <a href="{{ url('/').'#dich-vu' }}">Dịch vụ</a>
             <a href="{{ url('/').'#showroom' }}">Showroom</a>
             <a href="#lien-he">Liên hệ</a>
+            <div class="mobile-account">
+                @auth
+                    <a href="{{ route('account') }}">Tài khoản</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit">Đăng xuất</button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}">Đăng nhập</a>
+                @endauth
+            </div>
         </nav>
         <div class="header-account">
             @auth

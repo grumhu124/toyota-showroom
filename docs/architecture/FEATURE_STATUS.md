@@ -1,14 +1,14 @@
 # Trạng thái thực tế
 
-Ngày 19/10/2026. Đã gộp vào main: docs/review-v6-srs, H01 (feature/auth-middleware),
-H02 (feature/admin-users), frontend home/catalog preview (feature/frontend-layout) và
-tích hợp auth vào giao diện frontend (feature/frontend-auth-integration). H03 mới có
-hợp đồng quyền/gói review. Chưa có nghiệp vụ tư vấn/lịch/chat hoàn chỉnh.
+Ngày 20/10/2026. Nhánh demo/progress-2026-10-20 ghép frontend + H01 từ PR #5
+với H02 từ PR #4. Đã đồng bộ main 983b12b: lịch sử main có H01/H02/FE,
+nhưng catalog TV3 đã được revert. Đây là bản diễn tập, không thay nghiệm thu của nhóm.
+Trang chủ, /xe và /xe/{id} vẫn dùng fixture local/testing. Auth dùng session/CSRF thật;
+admin quản lý tài khoản qua database. Tư vấn, chat và lịch chưa nối backend trong bản này.
+H03 mới có hợp đồng quyền và checklist. Nhánh TV3 feature/car-crud-search đã có mã,
+chưa được kiểm tra hoặc đưa vào bản demo này.
 
-Trang chủ tối, video/canvas, hai ảnh chi tiết, /xe slider/card/lọc và /xe/{id} ID 1–9
-vẫn dùng fixture local/testing (chỉ chạy ở local/testing). Header đã nối Auth thật,
-form đăng nhập/đăng ký dùng ảnh xe chạy và nền tối; backend H01/H02 giữ nguyên.
-Tư vấn/đặt lịch/chat chưa nối backend.
+
 
 | Module | Đã có | P1 còn làm | Chủ trách nhiệm |
 | --- | --- | --- | --- |
@@ -26,7 +26,9 @@ Chưa triển khai InquiryNote/code/closed_at/other; các mục này là P2, kh�
 chặn hoàn thành P1. Không cần migration bỏ brand trong P1. Kênh users control,
 khách tự đổi lịch/mở lại cũng P2. Chưa có chức năng nào tự hoàn tất vì sửa SRS.
 Chỉ đánh dấu hoàn tất khi chạy end-to-end, có quyền/validation và bằng chứng kiểm tra.
-Suite sau tích hợp main gồm nền, Auth, admin user, frontend tích hợp, preview và inventory;
-chưa nghiệm thu các module khác hoặc race trên hai kết nối MySQL.
-Xem AUTH_VALIDATION và docs/team/HOANG_TASKS.md. Chưa kiểm trực quan responsive;
-build/Blade render pass không thay việc Đạt review giao diện.
+Bằng chứng trước khi ghép: FE + H01 có 27 tests/263 assertions; H02 riêng có
+28 tests/222 assertions. Kết quả bản ghép ghi trong docs/demo/DEMO_2026-10-20.md.
+Chưa nghiệm thu race trên hai kết nối MySQL hay thu hồi socket thực tế.
+Xem AUTH_VALIDATION và docs/team/HOANG_TASKS.md. Đã kiểm menu Auth ở viewport
+390×844 và luồng admin trên trình duyệt; chưa kiểm điện thoại thật/toàn bộ responsive.
+Bản ghép: composer check 35 tests/328 assertions + Pint; build đạt.

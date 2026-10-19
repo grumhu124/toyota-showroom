@@ -16,6 +16,11 @@ H01 đã có đăng ký/đăng nhập/đăng xuất và màn tài khoản tối 
 H02 có quản lý user phía admin ở /admin/users (tạo sales, khóa/mở customer/sales).
 CRUD xe, tư vấn/chat và lịch vẫn chưa hoàn chỉnh.
 
+## Demo tiến độ 20/10/2026
+
+Bản tích hợp trên `demo/progress-2026-10-20`: xem [hướng dẫn chạy, kịch bản và giới hạn](docs/demo/DEMO_2026-10-20.md).
+Auth + quản lý tài khoản chạy DB; catalog trong bản này vẫn là fixture.
+
 ## Đọc trước khi làm
 
 1. [AGENTS.md](AGENTS.md) — quy tắc cho AI và người sửa mã.
