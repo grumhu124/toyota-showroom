@@ -1,5 +1,29 @@
 # Nhật ký thay đổi hệ thống
 
+## 2026-10-18 Chuyển động nhẹ cho hai ảnh trang chủ
+
+- Giữ hiệu ứng hiện dần; thêm vệt sáng chạy một lần trên ảnh đèn và zoom vô lăng theo cuộn.
+- Hover phóng nhẹ, viền sáng; hỗ trợ reduced-motion, chỉ cập nhật ảnh trong vùng nhìn bằng requestAnimationFrame.
+- Chỉ CSS/JS trang chủ, không đổi dữ liệu hoặc quyền. Kiểm tra composer check, build và trình duyệt.
+
+## 2026-10-18 Giao diện đăng nhập và đăng ký
+
+- Dùng ảnh xe chạy do người dùng cung cấp, ảnh trái/form xanh đen phải; mobile ảnh trên.
+- Layout auth riêng, hiện/ẩn mật khẩu, loading submit và phục hồi khi quay lại trang.
+- Giữ route/CSRF/validation/controller H01; không đổi trang tài khoản hay database.
+- Kiểm tra composer check và build; kiểm trực quan theo kích thước trình duyệt khả dụng.
+
+
+## 2026-10-18 Tích hợp thử H01 với frontend
+
+- Nhánh riêng từ frontend, merge H01 668b65e/PR #2 và nền phụ thuộc #1; không merge main/#4.
+- Giữ controller/request Auth của Hoàng, home/catalog/video của Đạt; nối header login/account/logout.
+- Resolve routes/contracts/status theo cả hai module, tạo lại inventory format 2.
+- Thêm test điều hướng guest/ba role/login/logout/CSRF và ghi review tại AUTH_FRONTEND_INTEGRATION.md.
+- Không thay schema/dependency/MySQL demo. Form Auth giữ bản tối thiểu, chat/booking chưa kết nối.
+- Kiểm tra local: 27 tests/263 assertions, Pint, build, route:list và diff check đạt; chưa kiểm local MySQL/đầy đủ responsive.
+
+
 ## 2026-10-18 Đồng bộ nhánh giao diện
 
 - Giữ hai ảnh và nền tối đã lưu local; ghép commit sửa smoke test af2091f từ GitHub.

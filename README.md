@@ -9,7 +9,7 @@ Việc mua bán, giấy tờ và thanh toán được thực hiện tại showro
 Trong local/testing: mở `/` để xem trang chủ Camry, `/xe` xem slider và card,
 `/xe/1` đến `/xe/9` xem chi tiết mẫu. Chạy `npm run dev` khi sửa hoặc
 `npm run build` để xem bản build. Dữ liệu/giá đều minh họa; tư vấn, đặt lịch
-và đăng nhập chưa được kết nối trên nhánh này.
+chưa được kết nối; đăng ký/đăng nhập/đăng xuất đã nối H01 của Hoàng trên nhánh tích hợp.
 Xem docs/development/HOME_PREVIEW.md và CATALOG_CARDS.md.
 Đã có Laravel, cấu hình Reverb, schema nền, model, middleware và tài liệu.
 H01 đã có đăng ký/đăng nhập/đăng xuất và màn tài khoản tối thiểu.

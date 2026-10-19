@@ -12,6 +12,34 @@ if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-mot
         section.classList.add('reveal-ready');
         detailObserver.observe(section);
     });
+
+    // Update only visible photos, once per scroll frame; no continuous render loop.
+    const visibleDetails = new Set();
+    let detailFrame = 0;
+    const updateDetailProgress = () => {
+        detailFrame = 0;
+        visibleDetails.forEach((section) => {
+            const photo = section.querySelector('.home-detail-photo');
+            if (!photo) return;
+            const bounds = photo.getBoundingClientRect();
+            const progress = Math.max(0, Math.min(1, (window.innerHeight - bounds.top) / (window.innerHeight + bounds.height)));
+            section.style.setProperty('--detail-progress', progress.toFixed(4));
+        });
+    };
+    const scheduleDetailProgress = () => {
+        if (!detailFrame && !document.hidden) detailFrame = requestAnimationFrame(updateDetailProgress);
+    };
+    const motionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) visibleDetails.add(entry.target);
+            else visibleDetails.delete(entry.target);
+        });
+        scheduleDetailProgress();
+    });
+    detailSections.forEach((section) => motionObserver.observe(section));
+    window.addEventListener('scroll', scheduleDetailProgress, { passive: true });
+    window.addEventListener('resize', scheduleDetailProgress);
+    document.addEventListener('visibilitychange', scheduleDetailProgress);
 }
 
 const atmosphereStory = document.querySelector('[data-camry-story]');

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex,nofollow">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Toyota Showroom')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -19,7 +20,15 @@
             <a href="#lien-he">Liên hệ</a>
         </nav>
         <div class="header-account">
-            <button type="button" class="login-link" data-preview="Đăng nhập">Đăng nhập</button>
+            @auth
+                <a class="login-link" href="{{ route('account') }}">Tài khoản</a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="login-link">Đăng xuất</button>
+                </form>
+            @else
+                <a class="login-link" href="{{ route('login') }}">Đăng nhập</a>
+            @endauth
             <button type="button" class="button button-red" data-preview="Tư vấn">Tư vấn</button>
         </div>
     </header>
