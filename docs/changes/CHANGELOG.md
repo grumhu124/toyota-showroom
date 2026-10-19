@@ -1,5 +1,16 @@
 # Nhật ký thay đổi hệ thống
 
+## 2026-10-19 Gộp năm nhánh vào main
+
+- Gộp theo thứ tự docs/review-v6-srs, feature/auth-middleware, feature/admin-users,
+  feature/frontend-layout, feature/frontend-auth-integration; giữ toàn bộ lịch sử commit.
+- Xung đột routes/web.php: giữ cả route chủ (home/preview) lẫn route auth/tài khoản.
+- Xung đột CONTRACTS.md, FEATURE_STATUS.md, INVENTORY.json: hợp nhất mô tả và tạo lại inventory.
+- FoundationTest dùng `withoutVite()` và chờ `ensure.active` thu hồi phiên khi user bị khóa
+  (hành vi H01), thay vì giữ phiên và nhận 403.
+- Kiểm tra: composer check pass, npm run build pass, php artisan test 35 test/328 assertions.
+  Chưa kiểm MySQL thật và giao diện trên trình duyệt/thiết bị.
+
 ## 2026-10-18 Chuyển động nhẹ cho hai ảnh trang chủ
 
 - Giữ hiệu ứng hiện dần; thêm vệt sáng chạy một lần trên ảnh đèn và zoom vô lăng theo cuộn.
