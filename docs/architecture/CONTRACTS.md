@@ -43,7 +43,29 @@ JSON 403; kiểm active áp dụng cả web công khai để tránh giữ phiên
 Sai thông tin login trả lỗi email, quá ngưỡng trả 429. Đăng xuất chỉ POST + CSRF.
 Tên route là hợp đồng cho Đạt; layout accounts chỉ là giao diện tối thiểu.
 
-## Chat
+## H02 đã triển khai
+
+GET /admin/users (admin.users.index): q tên/email tối đa 100, role từ enum, page;
+15 user/trang, giữ filter. GET /admin/users/create (admin.users.create).
+POST /admin/users (admin.users.store): name/email/phone/password/password_confirmation,
+role cố định sales, is_active true; không đổi session admin sang user vừa tạo.
+PATCH /admin/users/{user}/status (admin.users.status): is_active boolean, bắt buộc
+gửi trạng thái đích (0/1), không toggle mù. Tất cả web/auth/active/admin + UserPolicy.
+POST/PATCH thành công redirect về danh sách với flash status; validation web redirect
+với lỗi, JSON 422; sai quyền 403. H02 không cung cấp JSON API CRUD riêng.
+Không khóa bất kỳ admin nào, không xóa user/cấp admin/sửa mật khẩu qua màn này.
+UpdateUserStatus khóa actor/target theo ID, đọc lại Policy trong transaction,
+đổi active và tăng version inquiry liên quan khi chuyển từ active sang locked.
+Lặp trạng thái không tăng version; mở lại không phục hồi version cũ.
+Giữ assignment/history, không khóa appointment trong service này.
+HTTP phiên cũ bị H01 thu hồi ở request kế tiếp; socket/job còn phải tích hợp TV4.
+
+## Chat — hợp đồng TV4
+
+HTTP chat dùng auth group cho customer/sales/admin trong routes/inquiries.php,
+không đặt trong routes/customer.php vốn role:customer. Quyền từng inquiry kiểm
+bằng Policy; xem [ma trận H03](AUTHORIZATION_CONTRACT.md). Đây là hợp đồng đích,
+chưa có endpoint/kênh nghiệp vụ để nghiệm thu.
 
 POST content/client_message_id, sender từ session; trả id/inquiry_id,
 sender(id,name), content, created_at; không serialize user/inquiry/internal_note.
