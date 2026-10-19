@@ -3,11 +3,23 @@
 ## 2026-10-20 Chuẩn bị bản demo tiến độ
 
 - Ghép PR #5 FE/H01 và PR #4 H02/H03 trên nhánh demo riêng; giữ main để nhóm review.
-- Giải quyết tài liệu trạng thái, tái tạo inventory; không thay schema hoặc controller Auth.
+- Đồng bộ main 983b12b (đã có H01/H02/FE và revert catalog TV3); giải quyết tài liệu, tái tạo inventory; không thay schema/controller Auth.
 - Bổ sung điều hướng Auth trong menu mobile, giữ logout POST + CSRF.
 - Thêm script chạy SQLite demo riêng, không sửa .env/reset DB; hướng dẫn kịch bản, bảng tiến độ theo bằng chứng.
-- Kiểm tra: composer check 35 tests/327 assertions + Pint; build đạt; trình duyệt đăng ký/login/catalog/logout, mobile menu và admin tạo sales/khóa/mở, đăng nhập tài khoản khóa bị từ chối.
+- Kiểm tra: composer check 35 tests/328 assertions + Pint; build đạt; trình duyệt đăng ký/login/catalog/logout, mobile menu và admin tạo sales/khóa/mở, đăng nhập tài khoản khóa bị từ chối.
 - Chưa kiểm MySQL concurrency, thiết bị thật hoặc chat/lịch; catalog demo là fixture, nhánh TV3 chưa nghiệm thu. Ảnh dự phòng ngoài Git, chưa có video.
+
+
+## 2026-10-19 Gộp năm nhánh vào main
+
+- Gộp theo thứ tự docs/review-v6-srs, feature/auth-middleware, feature/admin-users,
+  feature/frontend-layout, feature/frontend-auth-integration; giữ toàn bộ lịch sử commit.
+- Xung đột routes/web.php: giữ cả route chủ (home/preview) lẫn route auth/tài khoản.
+- Xung đột CONTRACTS.md, FEATURE_STATUS.md, INVENTORY.json: hợp nhất mô tả và tạo lại inventory.
+- FoundationTest dùng `withoutVite()` và chờ `ensure.active` thu hồi phiên khi user bị khóa
+  (hành vi H01), thay vì giữ phiên và nhận 403.
+- Kiểm tra: composer check pass, npm run build pass, php artisan test 35 test/328 assertions.
+  Chưa kiểm MySQL thật và giao diện trên trình duyệt/thiết bị.
 
 
 ## 2026-10-18 Chuyển động nhẹ cho hai ảnh trang chủ

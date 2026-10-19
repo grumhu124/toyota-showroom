@@ -22,6 +22,12 @@ class FoundationTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withoutVite();
+    }
+
     public function test_demo_seeding_is_idempotent_and_does_not_reset_accounts(): void
     {
         config(['showroom.demo_password' => 'Demo-Only-Testing-123']);
@@ -82,7 +88,9 @@ class FoundationTest extends TestCase
         $admin->forceFill(['role' => UserRole::Admin])->save();
         $this->actingAs($admin)->getJson('/foundation-admin-test')->assertOk();
         $admin->forceFill(['is_active' => false])->save();
-        $this->actingAs($admin)->getJson('/foundation-admin-test')->assertForbidden();
+        // ensure.active revokes the session of a locked account instead of leaving it signed in.
+        $this->getJson('/foundation-admin-test')->assertForbidden();
+        $this->assertGuest();
     }
 
     public function test_business_channel_is_denied_until_its_policy_is_implemented(): void

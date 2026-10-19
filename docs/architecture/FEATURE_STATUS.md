@@ -1,11 +1,13 @@
 # Trạng thái thực tế
 
 Ngày 20/10/2026. Nhánh demo/progress-2026-10-20 ghép frontend + H01 từ PR #5
-với H02 từ PR #4; đây là bản demo tích hợp, không phải xác nhận main đã nghiệm thu.
+với H02 từ PR #4. Đã đồng bộ main 983b12b: lịch sử main có H01/H02/FE,
+nhưng catalog TV3 đã được revert. Đây là bản diễn tập, không thay nghiệm thu của nhóm.
 Trang chủ, /xe và /xe/{id} vẫn dùng fixture local/testing. Auth dùng session/CSRF thật;
 admin quản lý tài khoản qua database. Tư vấn, chat và lịch chưa nối backend trong bản này.
 H03 mới có hợp đồng quyền và checklist. Nhánh TV3 feature/car-crud-search đã có mã,
 chưa được kiểm tra hoặc đưa vào bản demo này.
+
 
 
 | Module | Đã có | P1 còn làm | Chủ trách nhiệm |
@@ -18,7 +20,6 @@ chưa được kiểm tra hoặc đưa vào bản demo này.
 | Chat | Reverb/Echo cấu hình, private channel từ chối mặc định | Gửi/lưu/phát, lịch sử, retry/catch-up, thu hồi quyền, UI hai phiên | Nguyễn Huy Hoàng (TV4) + Đạt |
 | Lịch/dịch vụ | Schema/model/enum | Form, phân công, xác nhận khóa/trùng giờ, hủy/hoàn tất/no_show | Phan Võ Chí Bảo (TV5) |
 | Audit | Bảng/model/namespace | Không buộc làm module riêng P1; giữ nền | Hoàng |
-| H03 | Ma trận quyền theo bản ghi, vị trí shared chat route, checklist review/ca test đích | Owner review; Policy/endpoints của TV3/4/5 và nghiệm thu tích hợp | Hoàng + các owner |
 | Bàn giao | Kiểm tra nền từng pass local và CI | Test nghiệp vụ, responsive, báo cáo, demo cả 5 người | Cả nhóm |
 
 Chưa triển khai InquiryNote/code/closed_at/other; các mục này là P2, không còn
@@ -30,4 +31,5 @@ Bằng chứng trước khi ghép: FE + H01 có 27 tests/263 assertions; H02 ri�
 Chưa nghiệm thu race trên hai kết nối MySQL hay thu hồi socket thực tế.
 Xem AUTH_VALIDATION và docs/team/HOANG_TASKS.md. Đã kiểm menu Auth ở viewport
 390×844 và luồng admin trên trình duyệt; chưa kiểm điện thoại thật/toàn bộ responsive.
-Bản ghép: composer check 35 tests/327 assertions + Pint; build đạt.
+Bản ghép: composer check 35 tests/328 assertions + Pint; build đạt.
+

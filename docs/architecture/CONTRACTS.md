@@ -3,6 +3,22 @@
 Theo [SRS 1.4](../../SRS.md)/ADR 0003. H01 đã có endpoint Auth/tài khoản ở phần dưới.
 Endpoint catalog/tư vấn/chat/lịch vẫn là đích; private channel còn deny-by-default.
 
+GET / tên home: preview trang chủ Camry trong local/testing; production giữ welcome.
+/#dich-vu và /#showroom là anchor giới thiệu, không phải endpoint dịch vụ/đặt lịch.
+
+Preview local/testing: GET /xe/{id} tên cars.preview.show cho ID fixture 1–9;
+ID không có trả 404. Không truy vấn DB; chưa thay hợp đồng Catalog production.
+
+Frontend local 16/10/2026: GET /xe tên cars.preview đã có trong local/testing,
+chỉ render fixtures minh họa, không phải endpoint Catalog production.
+Query q/category/price/status/sort do JS lọc fixture; chưa là API/backend filter.
+Các route nghiệp vụ khác bên dưới vẫn chưa triển khai.
+
+**Các endpoint nghiệp vụ dưới đây là kế hoạch, chưa được đăng ký trong baseline.**
+Khi làm route thật, module owner cập nhật bảng và FEATURE_STATUS.
+Route chạy hiện tại xem php artisan route:list: home, auth/tài khoản, admin user,
+health và broadcast auth.
+
 | Nhóm | Route đích | Quyền |
 | --- | --- | --- |
 | Public | GET /xe, /xe/{id}, /dich-vu; POST /tu-van, /dat-lich/xem-xe, /dat-lich/bao-duong | Dữ liệu public, validate, throttle |
@@ -95,12 +111,3 @@ Giờ không phù hợp: hủy, tạo yêu cầu mới; đổi lịch chuyên bi
 Xem [PARALLEL_WORK](../team/PARALLEL_WORK.md) về namespace route, fixture/seed,
 phân công file chung và thứ tự khóa giữa tài khoản/tư vấn/lịch.
 TV4/TV5 dùng hợp đồng chung và test MySQL, không khóa dữ liệu ngược thứ tự.
-
-## Tích hợp frontend + H01 — 18/10/2026
-
-Nhánh feature/frontend-auth-integration phụ thuộc PR #1/#2 và frontend PR #3,
-chưa merge các PR đó vào main. Giữ GET / tên home cho trang chủ local/testing,
-production vẫn welcome. /xe và /xe/{id} (cars.preview/cars.preview.show) vẫn là
-fixtures ID 1–9 trong local/testing; chưa có Catalog backend.
-Header guest nối route login thật; đã xác thực nối account và POST logout có CSRF.
-Tư vấn/đặt lịch vẫn là preview; anchor /#dich-vu và /#showroom chỉ giới thiệu.
