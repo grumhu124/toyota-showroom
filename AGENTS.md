@@ -27,6 +27,10 @@ thay đổi cụ thể và đưa vào PR. ADR 0003/SRS 1.4/COURSE_SCOPE kiểm s
 
 ## Cấu trúc và trách nhiệm
 
+Đọc và áp dụng [hướng dẫn AI về khả năng mở rộng](docs/development/AI_DEVELOPMENT_GUIDELINES.md)
+trước khi triển khai hoặc refactor. Hoàn thiện P1 trước, giữ mã dễ sửa/kiểm thử;
+không lấy khả năng mở rộng làm lý do thêm P2, schema dự phòng hoặc lớp trừu tượng không cần thiết.
+
 Dùng Laravel MVC đơn khối; không thêm framework frontend thứ hai,
 microservice hoặc lớp repository chỉ để bọc Eloquent. Controller nhận request,
 FormRequest validate, Policy kiểm tra quyền từng hồ sơ; Service xử lý thao tác
