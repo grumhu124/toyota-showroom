@@ -1,5 +1,17 @@
 # Nhật ký thay đổi hệ thống
-
+## 2026-10-20 Lịch hẹn và dịch vụ (TV5 - feature/appointment-schedule)
+- Thêm: routes/appointments.php, AppointmentController, StoreAppointmentRequest/
+  UpdateStatusRequest, AppointmentService, AppointmentPolicy/ServicePolicy,
+  views appointments (create/index/manage), admin/services, customer/staff
+  appointments, tests Feature/Appointment (AppointmentTest, ServiceCrudTest).
+- Sửa: routes/admin.php, routes/staff.php, routes/customer.php, bootstrap/app.php
+  đăng ký nhóm route appointments; enum AppointmentStatus/AppointmentType/ServiceType
+  bổ sung giá trị no_show và loại bảo dưỡng.
+- Quyền: guest/customer đặt lịch viewing/maintenance; customer chỉ xem/hủy lịch của
+  mình trước giờ; sales/staff xem scoped; admin xác nhận (khóa slot + kiểm tra trùng giờ
+  trong transaction), hủy với lý do, kết thúc sau giờ xác nhận, đánh dấu no_show.
+- Kiểm tra: php artisan test 50 test/418 assertions pass; pint pass;
+  architecture-inventory --check pass. Chưa kiểm tra trực quan trình duyệt và MySQL thật.
 ## 2026-10-19 Gộp năm nhánh vào main
 
 - Gộp theo thứ tự docs/review-v6-srs, feature/auth-middleware, feature/admin-users,

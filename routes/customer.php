@@ -1,4 +1,9 @@
 <?php
 
-// Add customer module routes here; shared middleware/prefix are registered in bootstrap/app.php.
-// No business endpoints are implemented by this foundation file.
+use App\Http\Controllers\AppointmentController;
+use Illuminate\Support\Facades\Route;
+
+// Own appointments: list + cancel.
+Route::get('/lich-hen', [AppointmentController::class, 'index'])->name('appointments.index');
+Route::post('/lich-hen/{appointment}/huy', [AppointmentController::class, 'cancel'])
+    ->name('appointments.cancel');
