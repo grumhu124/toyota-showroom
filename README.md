@@ -118,3 +118,8 @@ Server vẫn validate count/size/MIME; chưa tự sửa php.ini trên máy thàn
 ràng buộc P1 và điều kiện mới được mở rộng P2. Chat WebSocket văn bản vẫn P1.
 Một chiếc xe có mã riêng; giá công bố tham khảo; không làm công cụ tính lăn bánh.
 SRS 1.4/ADR 0003 thay phạm vi trái chúng trong tài liệu v6 cũ; Word giữ nguyên.
+
+## MySQL local cho phát triển và kiểm thử
+
+[Hướng dẫn MySQL riêng, backup/restore](docs/development/MYSQL_LOCAL.md).
+Không thay .env hay database SQLite của bản demo.

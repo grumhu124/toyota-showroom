@@ -32,3 +32,10 @@ Chưa nghiệm thu race trên hai kết nối MySQL hay thu hồi socket thực 
 Xem AUTH_VALIDATION và docs/team/HOANG_TASKS.md. Đã kiểm menu Auth ở viewport
 390×844 và luồng admin trên trình duyệt; chưa kiểm điện thoại thật/toàn bộ responsive.
 Bản ghép: composer check 35 tests/328 assertions + Pint; build đạt.
+
+## MySQL local ngày 20/10/2026
+
+Đã chuẩn bị dev/test/restore trên instance MySQL 8.4.3 riêng cổng 3307, user giới hạn từng DB.
+Migration + 6 user seed; suite nền/Auth/admin 35 tests/328 assertions đạt trên MySQL.
+Backup/restore đã so dữ liệu khớp; không đụng SQLite demo. Xem docs/development/MYSQL_LOCAL.md.
+Chưa kiểm session driver database qua trình duyệt MySQL, race hai kết nối, socket hay nghiệp vụ các module chưa có.

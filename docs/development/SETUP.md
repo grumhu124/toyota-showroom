@@ -34,3 +34,8 @@ Schema quản lý bằng migration, không sửa DB tay thay cho migration.
 Mỗi máy tạo database riêng; pull bản mới rồi migrate, không reset DB chung.
 Chủ module dùng factory/fixture test riêng; seed demo tổng do Hoàng tổng hợp.
 Xem docs/team/PARALLEL_WORK.md về thứ tự nhánh/PR và bàn giao module.
+
+## MySQL riêng và phục hồi dữ liệu
+
+Xem [MYSQL_LOCAL.md](MYSQL_LOCAL.md): instance loopback, user dev/test/restore tách biệt,
+script migration/test/backup/restore và bằng chứng kiểm thử local 20/10/2026.

@@ -62,10 +62,21 @@ toàn bộ H03 chỉ vì đã có quy ước.
 ## H05 — Bàn giao môn học
 
 - [ ] README cài trên máy khác, secret riêng; chạy web/Reverb/queue/build.
-- [ ] Hướng dẫn backup/restore MySQL demo.
+- [x] Hướng dẫn backup/restore MySQL local, đã thử restore DB riêng; xem docs/development/MYSQL_LOCAL.md. Chưa phục hồi DB dùng chung.
 - [ ] Tổng hợp ACCEPTANCE có bằng chứng, responsive và lỗi tồn.
 - [ ] Báo cáo ERD/MVC/phạm vi/test/nguồn; mỗi người viết và demo phần mình.
 - [ ] Đối chiếu rubric và yêu cầu GV trước khi chọn P2.
 
 Mỗi task xong ghi PR, bằng chứng và giới hạn; không đánh dấu chỉ vì có file.
 Không có deadline cố định vì nhóm chưa cung cấp ngày nộp.
+
+## H04 — Bằng chứng môi trường ngày 20/10/2026
+
+- [x] Instance MySQL 8.4.3 loopback 3307, dev/test/restore riêng và user giới hạn từng DB.
+- [x] Migration + UserSeeder chạy thành công trên dev; suite MySQL thật 35 tests/328 assertions.
+- [x] Kiểm Auth/admin: đăng ký/login/logout, tạo sales, khóa/mở/thu hồi phiên, rollback và version qua HTTP test.
+- [x] Backup SQL và phục hồi DB rỗng, dữ liệu các bảng khớp; test user không đọc được dev; restore từ chối DB không rỗng.
+- [ ] Kiểm cạnh tranh hai kết nối MySQL, database session qua trình duyệt và quyền module TV4/TV5 khi có mã.
+
+Script scripts/mysql-local.ps1 và docs/development/MYSQL_LOCAL.md; secrets/SQL/data nằm trong .setup-cache ngoài Git.
+Bản demo SQLite giữ nguyên. Không nghiệm thu catalog/chat/lịch hoặc đánh dấu toàn bộ H04 xong từ suite nền.

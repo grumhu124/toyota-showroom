@@ -1,5 +1,14 @@
 # Nhật ký thay đổi hệ thống
 
+## 2026-10-20 H04 MySQL local và backup/restore
+
+- Thêm script PowerShell kiểm đúng instance/user/DB riêng, chạy migrate/test/backup/restore; không sửa schema, Auth hoặc .env.
+- Tạo instance local MySQL 8.4.3 cổng 3307; dev/test/restore và credentials nằm ngoài Git trong .setup-cache.
+- Thêm hướng dẫn chạy, khởi động lại và phục hồi; cập nhật task/status. Không dùng root chạy test, không reset dev hoặc SQLite demo.
+- Kiểm MySQL 35 tests/328 assertions; dump/restore dữ liệu khớp, restore DB không rỗng bị từ chối, test user không truy cập dev.
+- Chưa kiểm concurrency hai kết nối, DB session trình duyệt hoặc module catalog/chat/lịch.
+
+
 ## 2026-10-20 Chuẩn bị bản demo tiến độ
 
 - Ghép PR #5 FE/H01 và PR #4 H02/H03 trên nhánh demo riêng; giữ main để nhóm review.
