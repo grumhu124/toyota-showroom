@@ -23,6 +23,8 @@ Auth + quản lý tài khoản chạy DB; catalog trong bản này vẫn là fix
 
 ## Đọc trước khi làm
 
+Khi dùng AI, đọc [hướng dẫn hoàn thiện P1 và giữ khả năng mở rộng](docs/development/AI_DEVELOPMENT_GUIDELINES.md).
+
 1. [AGENTS.md](AGENTS.md) — quy tắc cho AI và người sửa mã.
 2. [SRS 1.4 theo phạm vi môn học](SRS.md) và [chỉ mục đặc tả](docs/requirements/SPECIFICATION.md).
 3. [Kiến trúc hệ thống](ARCHITECTURE.md).

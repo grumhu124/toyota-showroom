@@ -1,5 +1,11 @@
 # Nhật ký thay đổi hệ thống
 
+## 2026-10-20 Hướng dẫn AI về khả năng mở rộng
+
+- Thêm AI_DEVELOPMENT_GUIDELINES.md: trách nhiệm từng lớp, hợp đồng chung, điều kiện bàn giao và đề xuất P2 riêng.
+- Liên kết từ AGENTS/CLAUDE/README để người và AI tìm thấy; hoàn thành phạm vi môn học trước, tránh làm sẵn P2.
+- Chỉ thay tài liệu và inventory, không đổi mã ứng dụng, schema, quyền hoặc dữ liệu; kiểm bằng composer check.
+
 ## 2026-10-20 H04 MySQL local và backup/restore
 
 - Thêm script PowerShell kiểm đúng instance/user/DB riêng, chạy migrate/test/backup/restore; không sửa schema, Auth hoặc .env.
