@@ -89,6 +89,14 @@
                     @endcan
 
                     @can('cancel', $appointment)
+                        <form method="POST" action="{{ route('staff.appointments.reschedule', $appointment) }}" class="flex flex-wrap items-end gap-2">
+                            @csrf
+                            <div>
+                                <label for="staff_reschedule_at-{{ $appointment->id }}" class="mb-1 block text-sm">Đổi giờ mong muốn</label>
+                                <input type="datetime-local" id="staff_reschedule_at-{{ $appointment->id }}" name="requested_at" required class="rounded-lg border border-zinc-300 bg-white p-2">
+                            </div>
+                            <button type="submit" class="rounded-lg border border-zinc-300 px-4 py-2 text-zinc-700">Đổi giờ</button>
+                        </form>
                         <form method="POST" action="{{ route('staff.appointments.cancel', $appointment) }}" class="flex flex-wrap items-end gap-2" onsubmit="return confirm('Xác nhận hủy lịch này?');">
                             @csrf
                             <div>

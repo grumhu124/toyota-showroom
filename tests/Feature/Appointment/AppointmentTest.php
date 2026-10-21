@@ -11,7 +11,7 @@ use App\Models\CarCategory;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Tests\TestCase;
 
 class AppointmentTest extends TestCase
@@ -24,7 +24,7 @@ class AppointmentTest extends TestCase
         $this->withoutVite();
         // Các test này gửi nhiều POST liên tiếp; throttle riêng đã có test riêng
         // nên bỏ middleware throttle để không bị 429 giữa chuỗi request.
-        $this->withoutMiddleware([\Illuminate\Routing\Middleware\ThrottleRequests::class]);
+        $this->withoutMiddleware([ThrottleRequests::class]);
     }
 
     private function user(UserRole $role = UserRole::Customer): User
@@ -149,6 +149,88 @@ class AppointmentTest extends TestCase
         $this->actingAs($customer)->get('/lich-hen')
             ->assertOk()
             ->assertViewHas('appointments', fn ($page) => $page->total() === 1 && $page->first()->id === $own->id);
+    }
+
+    public function test_customer_reschedules_own_pending_appointment(): void
+    {
+        $customer = $this->user();
+        $appointment = Appointment::create([
+            'type' => 'viewing', 'customer_id' => $customer->id,
+            'contact_name' => 'A', 'contact_phone' => '0901234567',
+            'requested_at' => now()->addDay(), 'status' => 'pending',
+        ]);
+        $newTime = now()->addDays(3)->setTime(14, 0);
+
+        $this->actingAs($customer)
+            ->post("/lich-hen/{$appointment->id}/doi", ['requested_at' => $newTime->format('Y-m-d H:i')])
+            ->assertRedirect();
+        $this->assertSame($newTime->format('Y-m-d H:i'), $appointment->fresh()->requested_at->format('Y-m-d H:i'));
+        $this->assertSame(AppointmentStatus::Pending, $appointment->fresh()->status);
+
+        // Cannot reschedule someone else's appointment.
+        $other = $this->user();
+        $foreign = Appointment::create([
+            'type' => 'viewing', 'customer_id' => $other->id,
+            'contact_name' => 'B', 'contact_phone' => '0901234568',
+            'requested_at' => now()->addDay(), 'status' => 'pending',
+        ]);
+        $this->actingAs($customer)
+            ->post("/lich-hen/{$foreign->id}/doi", ['requested_at' => $newTime->format('Y-m-d H:i')])
+            ->assertForbidden();
+
+        // Past new time rejected.
+        $this->actingAs($customer)
+            ->post("/lich-hen/{$appointment->id}/doi", ['requested_at' => now()->subHour()->format('Y-m-d H:i')])
+            ->assertRedirect()->assertSessionHasErrors('requested_at');
+    }
+
+    public function test_customer_cannot_reschedule_after_time(): void
+    {
+        $customer = $this->user();
+        $passed = Appointment::create([
+            'type' => 'viewing', 'customer_id' => $customer->id,
+            'contact_name' => 'A', 'contact_phone' => '0901234567',
+            'requested_at' => now()->subHour(), 'status' => 'pending',
+        ]);
+
+        $this->actingAs($customer)
+            ->post("/lich-hen/{$passed->id}/doi", ['requested_at' => now()->addDay()->format('Y-m-d H:i')])
+            ->assertRedirect()->assertSessionHasErrors('status');
+        $this->assertSame(now()->subHour()->format('Y-m-d H:i'), $passed->fresh()->requested_at->format('Y-m-d H:i'));
+    }
+
+    public function test_staff_reschedules_pending_appointment(): void
+    {
+        $sales = $this->user(UserRole::Sales);
+        $other = $this->user(UserRole::Sales);
+        $appointment = Appointment::create([
+            'type' => 'viewing', 'assigned_to' => $sales->id,
+            'contact_name' => 'A', 'contact_phone' => '0901234567',
+            'requested_at' => now()->addDay(), 'status' => 'pending',
+        ]);
+        $newTime = now()->addDays(2)->setTime(10, 30);
+
+        // Sales on own appointment: allowed.
+        $this->actingAs($sales)
+            ->post("/staff/appointments/{$appointment->id}/doi", ['requested_at' => $newTime->format('Y-m-d H:i')])
+            ->assertRedirect();
+        $this->assertSame($newTime->format('Y-m-d H:i'), $appointment->fresh()->requested_at->format('Y-m-d H:i'));
+
+        // Sales on someone else's appointment: forbidden.
+        $foreign = Appointment::create([
+            'type' => 'viewing', 'assigned_to' => $other->id,
+            'contact_name' => 'C', 'contact_phone' => '0901234569',
+            'requested_at' => now()->addDay(), 'status' => 'pending',
+        ]);
+        $this->actingAs($sales)
+            ->post("/staff/appointments/{$foreign->id}/doi", ['requested_at' => $newTime->format('Y-m-d H:i')])
+            ->assertForbidden();
+
+        // Confirmed appointment cannot be rescheduled (must cancel first).
+        $foreign->update(['status' => 'confirmed', 'confirmed_at' => now()->addDay()]);
+        $this->actingAs($other)
+            ->post("/staff/appointments/{$foreign->id}/doi", ['requested_at' => $newTime->format('Y-m-d H:i')])
+            ->assertRedirect()->assertSessionHasErrors('status');
     }
 
     public function test_customer_can_cancel_own_pending_appointment_before_time(): void

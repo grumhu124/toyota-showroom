@@ -189,6 +189,64 @@ class AppointmentService
     }
 
     /**
+     * Customer đổi lịch của mình: chỉ pending và chưa tới giờ, giữ trạng thái pending.
+     */
+    public function rescheduleByCustomer(User $actor, Appointment $appointment, string $requestedAt): Appointment
+    {
+        return DB::transaction(function () use ($actor, $appointment, $requestedAt): Appointment {
+            $locked = Appointment::query()->whereKey($appointment->id)->lockForUpdate()->firstOrFail();
+
+            if ($locked->customer_id !== $actor->id) {
+                abort(403);
+            }
+
+            if ($locked->status !== AppointmentStatus::Pending) {
+                throw ValidationException::withMessages([
+                    'status' => 'Chỉ lịch pending mới đổi được. Vui lòng hủy và đặt lại lịch đã xác nhận.',
+                ]);
+            }
+
+            $reference = $locked->confirmed_at ?? $locked->requested_at;
+            if ($reference !== null && $reference->lessThanOrEqualTo(now())) {
+                throw ValidationException::withMessages([
+                    'status' => 'Lịch đã qua thời gian hẹn, không thể đổi.',
+                ]);
+            }
+
+            $locked->requested_at = Carbon::parse($requestedAt);
+            $locked->save();
+
+            return $locked;
+        });
+    }
+
+    /**
+     * Nhân viên/admin đổi thời gian lịch pending của mình (sales) hoặc bất kỳ (admin).
+     * Lịch confirmed phải hủy rồi đặt lại để đảm bảo kiểm tra slot lại từ đầu.
+     */
+    public function rescheduleByStaff(User $actor, Appointment $appointment, string $requestedAt): Appointment
+    {
+        return DB::transaction(function () use ($actor, $appointment, $requestedAt): Appointment {
+            $locked = Appointment::query()->whereKey($appointment->id)->lockForUpdate()->firstOrFail();
+
+            if ($actor->role === UserRole::Sales && $locked->assigned_to !== $actor->id) {
+                abort(403);
+            }
+
+            if ($locked->status !== AppointmentStatus::Pending) {
+                throw ValidationException::withMessages([
+                    'status' => 'Chỉ lịch pending mới đổi được. Vui lòng hủy lịch confirmed rồi đặt lại.',
+                ]);
+            }
+
+            $locked->requested_at = Carbon::parse($requestedAt);
+            $locked->save();
+
+            return $locked;
+        });
+    }
+
+    /**
      * Nhân viên/admin hủy kèm lý do; lịch confirmed đã tới giờ vẫn hủy được (mất khách).
      */
     public function cancelByStaff(User $actor, Appointment $appointment, string $reason): Appointment

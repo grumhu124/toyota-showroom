@@ -185,4 +185,21 @@ class AppointmentController extends Controller
 
         return back()->with('status', 'Đã cập nhật kết quả lịch hẹn.');
     }
+
+    public function reschedule(Request $request, Appointment $appointment): RedirectResponse
+    {
+        $user = $request->user();
+        $data = $request->validate([
+            'requested_at' => ['required', 'date', 'after:now'],
+        ]);
+
+        if ($user->role === UserRole::Customer) {
+            $this->service->rescheduleByCustomer($user, $appointment, $data['requested_at']);
+        } else {
+            Gate::authorize('cancel', $appointment);
+            $this->service->rescheduleByStaff($user, $appointment, $data['requested_at']);
+        }
+
+        return back()->with('status', 'Đã đổi thời gian lịch hẹn.');
+    }
 }

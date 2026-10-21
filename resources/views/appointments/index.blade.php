@@ -31,6 +31,14 @@
                     @if ($appointment->service)
                         <p>Dịch vụ: {{ $appointment->service->name }}</p>
                     @endif
+                    @if ($appointment->status === \App\Enums\AppointmentStatus::Pending)
+                        <form method="POST" action="{{ route('customer.appointments.reschedule', $appointment) }}" class="stack-form">
+                            @csrf
+                            <label for="reschedule_at-{{ $appointment->id }}">Đổi thời gian mong muốn</label>
+                            <input type="datetime-local" name="requested_at" id="reschedule_at-{{ $appointment->id }}" required>
+                            <button type="submit" class="button button-dark">Đổi lịch</button>
+                        </form>
+                    @endif
                     @if ($appointment->status === \App\Enums\AppointmentStatus::Pending || $appointment->status === \App\Enums\AppointmentStatus::Confirmed)
                         <form method="POST" action="{{ route('customer.appointments.cancel', $appointment) }}" onsubmit="return confirm('Xác nhận hủy lịch hẹn này?');">
                             @csrf
