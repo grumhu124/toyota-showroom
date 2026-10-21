@@ -91,6 +91,9 @@ class StoreAppointmentRequest extends FormRequest
                 $service = Service::where('id', $serviceId)->first();
                 if (! $service || ! $service->is_visible) {
                     $validator->errors()->add('service_id', 'Dịch vụ không tồn tại hoặc chưa hiển thị.');
+                    if (trim((string) $this->input('customer_car_info')) === '') {
+                        $validator->errors()->add('customer_car_info', 'Vui lòng nhập thông tin xe của bạn (mẫu xe/biển số).');
+                    }
 
                     return;
                 }

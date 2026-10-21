@@ -22,9 +22,9 @@ class AppointmentTest extends TestCase
     {
         parent::setUp();
         $this->withoutVite();
-        // Public-form throttle (3/10min/IP) chặn chuỗi nhiều POST trong 1 test;
-        // riêng test throttle chạy full stack nên không tắt global.
-        RateLimiter::clear('public-form');
+        // Các test này gửi nhiều POST liên tiếp; throttle riêng đã có test riêng
+        // nên bỏ middleware throttle để không bị 429 giữa chuỗi request.
+        $this->withoutMiddleware([\Illuminate\Routing\Middleware\ThrottleRequests::class]);
     }
 
     private function user(UserRole $role = UserRole::Customer): User
@@ -113,7 +113,7 @@ class AppointmentTest extends TestCase
             'type' => 'maintenance', 'service_id' => 999999,
             'contact_name' => 'B', 'contact_phone' => '0901234567',
             'requested_at' => now()->addDay()->format('Y-m-d H:i'),
-        ])->assertInvalid(['customer_car_info']);
+        ])->assertInvalid(['service_id', 'customer_car_info']);
 
         $this->assertDatabaseCount('appointments', 0);
     }
