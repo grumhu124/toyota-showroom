@@ -81,8 +81,8 @@
                         <form method="POST" action="{{ route('staff.appointments.confirm', $appointment) }}" class="flex flex-wrap items-end gap-2">
                             @csrf
                             <div>
-                                <label for="confirmed_at-{{ $appointment->id }}" class="mb-1 block text-sm">Xác nhận giờ</label>
-                                <input type="datetime-local" id="confirmed_at-{{ $appointment->id }}" name="confirmed_at" required class="rounded-lg border border-zinc-300 bg-white p-2">
+                                <label for="confirmed_at-{{ $appointment->id }}" class="mb-1 block text-sm">Xác nhận giờ (mặc định giờ khách hẹn)</label>
+                                <input type="datetime-local" id="confirmed_at-{{ $appointment->id }}" name="confirmed_at" value="{{ old('confirmed_at', $appointment->requested_at->format('Y-m-d\TH:i')) }}" required class="rounded-lg border border-zinc-300 bg-white p-2">
                             </div>
                             <button type="submit" class="rounded-lg bg-red-700 px-4 py-2 text-white">Xác nhận lịch</button>
                         </form>

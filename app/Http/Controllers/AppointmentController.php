@@ -87,9 +87,15 @@ class AppointmentController extends Controller
             ->with('status', 'Đã gửi yêu cầu đặt lịch. Showroom sẽ liên hệ xác nhận trong thời gian sớm nhất.');
     }
 
-    // Customer: own appointments list.
-    public function index(Request $request): View
+    // Customer: own appointments list. Staff/admin are redirected to their
+    // full management view so nobody sees an empty list by visiting the wrong URL.
+    public function index(Request $request): RedirectResponse|View
     {
+        if ($request->user()->role !== UserRole::Customer) {
+            return redirect()->route('staff.appointments.index')
+                ->with('status', 'Bạn đang dùng tài khoản nhân viên/quản trị — đây là danh sách lịch quản lý.');
+        }
+
         $appointments = Appointment::query()
             ->where('customer_id', $request->user()->id)
             ->with(['car', 'service', 'assignedStaff'])
