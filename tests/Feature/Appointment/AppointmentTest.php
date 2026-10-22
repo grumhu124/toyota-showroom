@@ -130,6 +130,65 @@ class AppointmentTest extends TestCase
         $this->assertDatabaseCount('appointments', 0);
     }
 
+    public function test_customer_cannot_book_overlapping_time_slot(): void
+    {
+        $customer = $this->user();
+        $this->actingAs($customer)->post('/dat-lich', $this->viewingPayload());
+
+        // Lịch thứ hai cách 30 phút: bị chặn.
+        $this->actingAs($customer)
+            ->post('/dat-lich', $this->viewingPayload([
+                'requested_at' => now()->addDays(2)->setTime(9, 30)->format('Y-m-d H:i'),
+            ]))
+            ->assertInvalid(['requested_at']);
+        $this->assertDatabaseCount('appointments', 1);
+
+        // Cách đúng 60 phút trở lên: hợp lệ.
+        $this->actingAs($customer)
+            ->post('/dat-lich', $this->viewingPayload([
+                'requested_at' => now()->addDays(2)->setTime(10, 0)->format('Y-m-d H:i'),
+            ]))
+            ->assertRedirect();
+        $this->assertDatabaseCount('appointments', 2);
+    }
+
+    public function test_guest_can_still_book_any_time_and_admin_sees_all(): void
+    {
+        // Guest không bị chặn trùng (không có danh tính) — vẫn đặt được 2 lịch cùng giờ.
+        $this->post('/dat-lich', $this->viewingPayload())->assertRedirect();
+        $this->post('/dat-lich', $this->viewingPayload())->assertRedirect();
+        $this->assertDatabaseCount('appointments', 2);
+    }
+
+    public function test_customer_cannot_reschedule_into_overlapping_slot(): void
+    {
+        $customer = $this->user();
+        $first = Appointment::create([
+            'type' => 'viewing', 'customer_id' => $customer->id,
+            'contact_name' => 'A', 'contact_phone' => '0901234567',
+            'requested_at' => now()->addDays(2)->setTime(9, 0), 'status' => 'pending',
+        ]);
+        $second = Appointment::create([
+            'type' => 'viewing', 'customer_id' => $customer->id,
+            'contact_name' => 'B', 'contact_phone' => '0901234567',
+            'requested_at' => now()->addDays(2)->setTime(11, 0), 'status' => 'pending',
+        ]);
+
+        // Đổi lịch thứ nhất sang 11:30 — cách lịch 11:00 dưới 60 phút: chặn.
+        $this->actingAs($customer)
+            ->post("/lich-hen/{$first->id}/doi", ['requested_at' => now()->addDays(2)->setTime(11, 30)->format('Y-m-d H:i')])
+            ->assertRedirect()->assertSessionHasErrors('requested_at');
+        $this->assertSame('09:00', $first->fresh()->requested_at->format('H:i'));
+
+        // Đổi sang 12:00 — cách đúng 60 phút: hợp lệ.
+        $this->actingAs($customer)
+            ->post("/lich-hen/{$first->id}/doi", ['requested_at' => now()->addDays(2)->setTime(12, 0)->format('Y-m-d H:i')])
+            ->assertRedirect();
+        $this->assertSame('12:00', $first->fresh()->requested_at->format('H:i'));
+
+        $this->assertDatabaseHas('appointments', ['id' => $second->id, 'requested_at' => now()->addDays(2)->setTime(11, 0)]);
+    }
+
     public function test_customer_sees_only_own_appointments(): void
     {
         $customer = $this->user();

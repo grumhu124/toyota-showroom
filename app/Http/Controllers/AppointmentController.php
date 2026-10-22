@@ -68,6 +68,12 @@ class AppointmentController extends Controller
     {
         $data = $request->validated();
 
+        // Chặn khách đã đăng nhập đặt trùng khung giờ ±60 phút với lịch hiện có.
+        $this->service->assertNoCustomerOverlap(
+            auth()->id(),
+            Carbon::parse($data['requested_at'])->format('Y-m-d H:i:s')
+        );
+
         $appointment = new Appointment;
         $appointment->type = AppointmentType::from($data['type']);
         $appointment->car_id = $data['car_id'] ?? null;

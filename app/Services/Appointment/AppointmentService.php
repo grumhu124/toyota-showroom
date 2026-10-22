@@ -54,6 +54,35 @@ class AppointmentService
     }
 
     /**
+     * Chặn khách đặt/đổi trùng khung giờ (±60 phút) với lịch của chính mình
+     * đang chờ hoặc đã xác nhận — tránh tạo lịch trùng rồi phải hủy.
+     * Khách vãng lai (không đăng nhập) không kiểm tra được, chặn ở staff xác nhận.
+     */
+    public function assertNoCustomerOverlap(?int $customerId, string $requestedAt, ?int $ignoreId = null): void
+    {
+        if ($customerId === null) {
+            return; // Guest: không có danh tính để đối chiếu.
+        }
+
+        $time = Carbon::parse($requestedAt);
+        $conflicts = Appointment::query()
+            ->where('customer_id', $customerId)
+            ->whereIn('status', [AppointmentStatus::Pending->value, AppointmentStatus::Confirmed->value])
+            ->where('requested_at', '>=', $time->copy()->subMinutes(self::SLOT_MINUTES))
+            ->where('requested_at', '<=', $time->copy()->addMinutes(self::SLOT_MINUTES))
+            ->when($ignoreId !== null, fn ($q) => $q->whereKeyNot($ignoreId))
+            ->get();
+
+        foreach ($conflicts as $conflict) {
+            if ($conflict->requested_at->diffInMinutes($time) < self::SLOT_MINUTES) {
+                throw ValidationException::withMessages([
+                    'requested_at' => 'Bạn đã có lịch hẹn cách đây dưới 60 phút ('.$conflict->requested_at->format('H:i d/m').'). Vui lòng chọn thời gian khác hoặc hủy lịch cũ trước.',
+                ]);
+            }
+        }
+    }
+
+    /**
      * Admin phân công sales cho một lịch pending.
      */
     public function assign(User $actor, Appointment $appointment, ?int $staffId): Appointment
@@ -213,7 +242,10 @@ class AppointmentService
                 ]);
             }
 
-            $locked->requested_at = Carbon::parse($requestedAt);
+            $newTime = Carbon::parse($requestedAt);
+            $this->assertNoCustomerOverlap($actor->id, $newTime->format('Y-m-d H:i:s'), $locked->id);
+
+            $locked->requested_at = $newTime;
             $locked->save();
 
             return $locked;
@@ -239,7 +271,10 @@ class AppointmentService
                 ]);
             }
 
-            $locked->requested_at = Carbon::parse($requestedAt);
+            $newTime = Carbon::parse($requestedAt);
+            $this->assertNoCustomerOverlap($locked->customer_id, $newTime->format('Y-m-d H:i:s'), $locked->id);
+
+            $locked->requested_at = $newTime;
             $locked->save();
 
             return $locked;
