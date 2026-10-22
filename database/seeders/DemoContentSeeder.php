@@ -39,28 +39,54 @@ class DemoContentSeeder extends Seeder
             ]
         );
 
-        // Nhóm xe + xe hiển thị cho lịch xem xe.
-        $vios = CarCategory::firstOrCreate(
-            ['slug' => 'vios'],
-            ['brand' => 'Toyota', 'name' => 'Vios', 'is_visible' => true]
-        );
-        Car::firstOrCreate(
-            ['code' => 'TOY-DEMO-001'],
-            [
-                'slug' => 'toyota-vios-1-5g', 'name' => 'Toyota Vios 1.5G',
-                'category_id' => $vios->id, 'status' => CarStatus::Available,
-                'is_visible' => true, 'year' => (int) date('Y'),
-                'color' => 'Trắng', 'price' => 539000000,
-            ]
-        );
-        Car::firstOrCreate(
-            ['code' => 'TOY-DEMO-002'],
-            [
-                'slug' => 'toyota-vios-1-5e', 'name' => 'Toyota Vios 1.5E',
-                'category_id' => $vios->id, 'status' => CarStatus::Available,
-                'is_visible' => true, 'year' => (int) date('Y'),
-                'color' => 'Đen', 'price' => 574000000,
-            ]
-        );
+        // Nhóm xe + xe hiển thị cho lịch xem xe (đầy đủ dòng Toyota demo).
+        $categories = collect([
+            'vios' => ['name' => 'Vios', 'cars' => [
+                ['TOY-DEMO-001', 'toyota-vios-1-5g', 'Toyota Vios 1.5G', 'Trắng', 539000000],
+                ['TOY-DEMO-002', 'toyota-vios-1-5e', 'Toyota Vios 1.5E', 'Đen', 574000000],
+            ]],
+            'yaris' => ['name' => 'Yaris', 'cars' => [
+                ['TOY-DEMO-003', 'toyota-yaris-1-5g', 'Toyota Yaris 1.5G', 'Bạc', 557000000],
+            ]],
+            'corolla-cross' => ['name' => 'Corolla Cross', 'cars' => [
+                ['TOY-DEMO-004', 'toyota-corolla-cross-1-8v', 'Toyota Corolla Cross 1.8V', 'Đỏ', 815000000],
+                ['TOY-DEMO-005', 'toyota-corolla-cross-1-8hev', 'Toyota Corolla Cross HEV', 'Xám', 899000000],
+            ]],
+            'camry' => ['name' => 'Camry', 'cars' => [
+                ['TOY-DEMO-006', 'toyota-camry-2-0g', 'Toyota Camry 2.0G', 'Xanh đen', 1119000000],
+                ['TOY-DEMO-007', 'toyota-camry-2-5hev', 'Toyota Camry 2.5HEV', 'Trắng ngọc', 1299000000],
+            ]],
+            'innova' => ['name' => 'Innova', 'cars' => [
+                ['TOY-DEMO-008', 'toyota-innova-2-0g', 'Toyota Innova 2.0G', 'Bạc', 760000000],
+            ]],
+            'fortuner' => ['name' => 'Fortuner', 'cars' => [
+                ['TOY-DEMO-009', 'toyota-fortuner-2-7v', 'Toyota Fortuner 2.7V', 'Đen', 1023000000],
+                ['TOY-DEMO-010', 'toyota-fortuner-2-8hev', 'Toyota Fortuner GR-S', 'Xám', 1268000000],
+            ]],
+            'raize' => ['name' => 'Raize', 'cars' => [
+                ['TOY-DEMO-011', 'toyota-raize-1-0t', 'Toyota Raize 1.0 Turbo', 'Xanh', 542000000],
+            ]],
+            'rush' => ['name' => 'Rush', 'cars' => [
+                ['TOY-DEMO-012', 'toyota-rush-1-5g', 'Toyota Rush 1.5G', 'Trắng', 659000000],
+            ]],
+        ]);
+
+        foreach ($categories as $slug => $category) {
+            $model = CarCategory::firstOrCreate(
+                ['slug' => $slug],
+                ['brand' => 'Toyota', 'name' => $category['name'], 'is_visible' => true]
+            );
+            foreach ($category['cars'] as [$code, $carSlug, $name, $color, $price]) {
+                Car::firstOrCreate(
+                    ['code' => $code],
+                    [
+                        'slug' => $carSlug, 'name' => $name,
+                        'category_id' => $model->id, 'status' => CarStatus::Available,
+                        'is_visible' => true, 'year' => (int) date('Y'),
+                        'color' => $color, 'price' => $price,
+                    ]
+                );
+            }
+        }
     }
 }
