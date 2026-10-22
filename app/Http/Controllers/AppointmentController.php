@@ -57,6 +57,7 @@ class AppointmentController extends Controller
 
         return view('appointments.create', [
             'preselectType' => $preselectType,
+            'preselectCar' => (int) $request->query('car', 0) ?: null,
             'cars' => $cars,
             'services' => $services,
             'appointment' => null,
