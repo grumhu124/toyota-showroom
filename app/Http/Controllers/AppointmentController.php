@@ -51,7 +51,7 @@ class AppointmentController extends Controller
         $services = Service::query()
             ->where('is_visible', true)
             ->where('allow_booking', true)
-            ->where('type', 'maintenance')
+            ->whereIn('type', ['maintenance', 'warranty'])
             ->orderBy('name')
             ->get(['id', 'name']);
 

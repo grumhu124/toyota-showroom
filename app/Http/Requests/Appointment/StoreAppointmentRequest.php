@@ -97,7 +97,7 @@ class StoreAppointmentRequest extends FormRequest
 
                     return;
                 }
-                if ($service->type !== ServiceType::Maintenance) {
+                if (! in_array($service->type, [ServiceType::Maintenance, ServiceType::Warranty], true)) {
                     $validator->errors()->add('service_id', 'Dịch vụ này không nhận đặt lịch.');
 
                     return;
