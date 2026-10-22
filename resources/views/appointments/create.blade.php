@@ -10,7 +10,12 @@
         <p class="appointment-lead">Chọn lịch xem xe tại showroom hoặc đăng ký bảo dưỡng, bảo hành. Chúng tôi sẽ gọi điện xác nhận thời gian cụ thể.</p>
 
         @if (session('status'))
-            <div class="appointment-notice" role="status">{{ session('status') }}</div>
+            <div class="appointment-notice" role="status">
+                {{ session('status') }}
+                @auth
+                    <a href="{{ route('customer.appointments.index') }}" style="display:inline-block;margin-top:10px;color:#f3f6fa;text-decoration:underline;text-underline-offset:4px">Xem lịch hẹn của tôi →</a>
+                @endauth
+            </div>
         @endif
 
         <form method="POST" action="{{ route('appointments.store') }}" class="appointment-card">
