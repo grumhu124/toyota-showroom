@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserRole;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,8 @@ Route::middleware('guest')->group(function (): void {
 });
 
 Route::middleware(['auth', 'ensure.active'])->group(function (): void {
-    Route::view('/tai-khoan', 'auth.account')->name('account');
+    Route::get('/tai-khoan', function () {
+        return view(auth()->user()->role === UserRole::Customer ? 'customer.account' : 'auth.account');
+    })->name('account');
     Route::post('/dang-xuat', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });

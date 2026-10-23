@@ -6,3 +6,5 @@ import './modules/home-atmosphere';
 export { createEcho } from './echo';
 
 import './modules/auth';
+
+import './modules/customer-chat';

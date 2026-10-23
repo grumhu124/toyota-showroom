@@ -111,3 +111,9 @@ Giờ không phù hợp: hủy, tạo yêu cầu mới; đổi lịch chuyên bi
 Xem [PARALLEL_WORK](../team/PARALLEL_WORK.md) về namespace route, fixture/seed,
 phân công file chung và thứ tự khóa giữa tài khoản/tư vấn/lịch.
 TV4/TV5 dùng hợp đồng chung và test MySQL, không khóa dữ liệu ngược thứ tự.
+
+## Preview UI khách hàng — 23/10/2026
+
+GET /tai-khoan giữ name account, auth/active; customer dùng view customer.account, admin/sales giữ auth.account.
+GET /tai-khoan/tin-nhan (customer.chat.preview) chỉ local/testing và customer active.
+Chỉ dữ liệu fixture, không có HTTP mutation hoặc mở private channel. Shared chat thật vẫn theo TV4 trong routes/inquiries.php; preview không là endpoint nghiệp vụ.

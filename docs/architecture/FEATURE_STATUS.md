@@ -1,5 +1,7 @@
 # Trạng thái thực tế
 
+23/10: customer có giao diện tài khoản riêng tại /tai-khoan; chat preview local/testing tại /tai-khoan/tin-nhan dùng fixture, chưa có gửi/nhận WebSocket hoặc lịch sử thật. Admin/sales giữ màn tài khoản H01/H02. Xem docs/development/CUSTOMER_ACCOUNT_CHAT_UI.md.
+
 Ngày 19/10/2026. Đã gộp vào main: docs/review-v6-srs, H01 (feature/auth-middleware),
 H02 (feature/admin-users), frontend home/catalog preview (feature/frontend-layout) và
 tích hợp auth vào giao diện frontend (feature/frontend-auth-integration). H03 mới có
