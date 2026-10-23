@@ -143,10 +143,18 @@ class AppointmentTest extends TestCase
             ->assertInvalid(['requested_at']);
         $this->assertDatabaseCount('appointments', 1);
 
-        // Cách đúng 60 phút trở lên: hợp lệ.
+        // Cách đúng 60 phút: vẫn bị chặn (phải cách hơn 1 tiếng).
         $this->actingAs($customer)
             ->post('/dat-lich', $this->viewingPayload([
                 'requested_at' => now()->addDays(2)->setTime(10, 0)->format('Y-m-d H:i'),
+            ]))
+            ->assertInvalid(['requested_at']);
+        $this->assertDatabaseCount('appointments', 1);
+
+        // Cách hơn 1 tiếng (10:31): hợp lệ.
+        $this->actingAs($customer)
+            ->post('/dat-lich', $this->viewingPayload([
+                'requested_at' => now()->addDays(2)->setTime(10, 31)->format('Y-m-d H:i'),
             ]))
             ->assertRedirect();
         $this->assertDatabaseCount('appointments', 2);
@@ -180,11 +188,11 @@ class AppointmentTest extends TestCase
             ->assertRedirect()->assertSessionHasErrors('requested_at');
         $this->assertSame('09:00', $first->fresh()->requested_at->format('H:i'));
 
-        // Đổi sang 12:00 — cách đúng 60 phút: hợp lệ.
+        // Đổi sang 12:01 — cách hơn 1 tiếng: hợp lệ.
         $this->actingAs($customer)
-            ->post("/lich-hen/{$first->id}/doi", ['requested_at' => now()->addDays(2)->setTime(12, 0)->format('Y-m-d H:i')])
+            ->post("/lich-hen/{$first->id}/doi", ['requested_at' => now()->addDays(2)->setTime(12, 1)->format('Y-m-d H:i')])
             ->assertRedirect();
-        $this->assertSame('12:00', $first->fresh()->requested_at->format('H:i'));
+        $this->assertSame('12:01', $first->fresh()->requested_at->format('H:i'));
 
         $this->assertDatabaseHas('appointments', ['id' => $second->id, 'requested_at' => now()->addDays(2)->setTime(11, 0)]);
     }

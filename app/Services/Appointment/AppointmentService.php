@@ -45,9 +45,9 @@ class AppointmentService
 
         foreach ($conflicts as $conflict) {
             $minutes = $conflict->confirmed_at->diffInMinutes(Carbon::parse($confirmedAt));
-            if ($minutes < self::SLOT_MINUTES) {
+            if ($minutes <= self::SLOT_MINUTES) {
                 throw ValidationException::withMessages([
-                    'assigned_to' => 'Nhân viên này đã có lịch xác nhận cách dưới 60 phút. Vui lòng chọn thời gian hoặc nhân viên khác.',
+                    'assigned_to' => 'Nhân viên này đã có lịch xác nhận trong vòng 60 phút. Vui lòng chọn thời gian hoặc nhân viên khác.',
                 ]);
             }
         }
@@ -74,9 +74,9 @@ class AppointmentService
             ->get();
 
         foreach ($conflicts as $conflict) {
-            if ($conflict->requested_at->diffInMinutes($time) < self::SLOT_MINUTES) {
+            if ($conflict->requested_at->diffInMinutes($time) <= self::SLOT_MINUTES) {
                 throw ValidationException::withMessages([
-                    'requested_at' => 'Bạn đã có lịch hẹn cách đây dưới 60 phút ('.$conflict->requested_at->format('H:i d/m').'). Vui lòng chọn thời gian khác hoặc hủy lịch cũ trước.',
+                    'requested_at' => 'Bạn đã có lịch hẹn trong vòng 60 phút ('.$conflict->requested_at->format('H:i d/m').'). Vui lòng chọn cách hơn 1 tiếng hoặc hủy lịch cũ trước.',
                 ]);
             }
         }
