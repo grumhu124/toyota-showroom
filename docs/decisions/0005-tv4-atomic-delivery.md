@@ -1,6 +1,8 @@
 # ADR 0005 — Ý định phát tin TV4 nguyên tử với message
 
-24/10/2026. Áp dụng trong nhánh TV4 theo yêu cầu khắc phục F02; chưa commit/merge.
+24/10/2026. Áp dụng trong nhánh TV4 theo yêu cầu khắc phục F02.
+Mã đã commit và push tại `a7bf4059764fc506f1ee3e1aa10a8ea2b61199d6` lên
+`feature/inquiry-chat-websocket`; chưa tạo Pull Request TV4, chưa merge vào main.
 
 Database queue `database` dùng cùng đối tượng Connection với Message. Ghi message
 và jobs trong một transaction; job beforeCommit vô hiệu trì hoãn enqueue nhưng KHÔNG

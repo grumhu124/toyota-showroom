@@ -1,7 +1,9 @@
 # ADR 0006 — Tuần tự publication và thu hồi quyền TV4/H02
 
 24/10/2026. Thực hiện trên nhánh TV4 theo phê duyệt mở phạm vi có giới hạn của người dùng.
-Chưa commit/merge; mọi diff H02 cần Hoàng phụ trách Repo/Auth review trước merge.
+Mã đã commit và push tại `a7bf4059764fc506f1ee3e1aa10a8ea2b61199d6` lên
+`feature/inquiry-chat-websocket`; chưa tạo Pull Request TV4, chưa merge vào main.
+Mọi diff H02 vẫn cần Hoàng phụ trách Repo/Auth review trước merge.
 
 ## Nguyên nhân và lựa chọn
 

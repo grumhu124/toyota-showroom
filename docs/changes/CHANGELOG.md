@@ -1,5 +1,16 @@
 # Nhật ký thay đổi hệ thống
 
+## 2026-10-24 TV4 — đồng bộ tài liệu sau commit/push
+
+- Sửa trạng thái bàn giao theo commit chức năng `a7bf4059764fc506f1ee3e1aa10a8ea2b61199d6`
+  đã push lên `feature/inquiry-chat-websocket`; chưa tạo Pull Request TV4, chưa merge main.
+- Giữ kết quả kiểm thử lịch sử, quyết định ADR, giới hạn bảo mật và yêu cầu owner review;
+  không sửa mã ứng dụng, schema, dữ liệu hoặc quyền. Regenerate inventory bằng script chính thức.
+- Kiểm tra: inventory --check, git diff --check và đối chiếu diff từng file; không chạy
+  lại MySQL/Reverb trong đợt đồng bộ tài liệu. Các mục dưới là lịch sử các đợt triển khai.
+- Composer check theo quy định repo đạt: SQLite 57 tests / 507 assertions, syntax/encoding/Pint;
+  không thay các số liệu MySQL/Reverb lịch sử bằng kết quả chạy mới.
+
 ## 2026-10-24 F01 — tích hợp publication/revocation theo phê duyệt giới hạn
 
 - Thêm PublicationGate chung theo DB: MySQL GET_LOCK session PDO riêng không TTL/
@@ -12,7 +23,7 @@
 - Security gate từ FAIL trước sửa sang PASS; thêm MySQL independent revoker, process
   death/session-loss trước dispatch, Reverb thật hai socket cho reassign/lock sales/customer.
 - Không đổi schema/config/dependency/Auth khác H02/Catalog/Appointment/Frontend của Đạt,
-  không merge PR #11, không stage/commit/push. F02/F03/F04 regression chạy lại.
+  không merge PR #11; tại đợt khắc phục này chưa stage/commit/push. F02/F03/F04 regression chạy lại.
 - Dữ liệu demo nguyên fingerprint. Giới hạn single-primary/gate ownership/in-flight,
   head-of-line blocking và acceptance không đồng nhất receipt ở ADR 0006; kết quả thật TV4_VALIDATION.
 
@@ -33,7 +44,7 @@
 - Không sửa Auth/H02/Catalog/Appointment/schema/lockfile hoặc merge PR #11; không
   reset/seed demo. Kết quả thực tế/giới hạn ở TV4_VALIDATION; chưa READY vì F01.
 
-## 2026-10-24 Backend TV4 tư vấn/chat trên nhánh riêng (chưa commit)
+## 2026-10-24 Backend TV4 tư vấn/chat trên nhánh riêng (lịch sử trước commit)
 
 - Thêm InquiryCloseResult, InquiryPolicy/MessagePolicy, FormRequests/controllers,
   InquiryLock/InquiryService/MessageService/MessageData, BroadcastInquiryMessage job

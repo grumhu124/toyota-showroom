@@ -1,7 +1,9 @@
 # TV4 — hợp đồng tích hợp tư vấn/chat P1
 
 Ngày 24/10/2026; nhánh `feature/inquiry-chat-websocket`, base
-`983b12b22a27eb4eaaf3da3a701c7f78bc1bcdb9`. Thay đổi local chưa commit.
+`983b12b22a27eb4eaaf3da3a701c7f78bc1bcdb9`. Mã TV4 đã commit và push tại
+`a7bf4059764fc506f1ee3e1aa10a8ea2b61199d6` lên nhánh riêng này.
+Chưa tạo Pull Request TV4, chưa merge vào main; vẫn cần review trước merge.
 PR [#11](https://github.com/grumhu124/toyota-showroom/pull/11) được kiểm qua GitHub:
 draft/open, chưa merge; head `2d63e337233ed38b9aaf8c7550a3db09559b7420`.
 Chỉ đọc tài liệu bàn giao của PR, không merge/cherry-pick/sao chép UI khách.
@@ -158,7 +160,11 @@ cho retry cùng nội dung. Không đổi layout/CSS/UI customer của Đạt.
 
 ## Demo và review
 
-Các tệp mới để review/stage (chưa stage):
+Danh sách bàn giao ban đầu dưới đây được giữ để truy vết; các tệp đã nằm trong
+commit chức năng đã push nêu trên, không còn là danh sách chờ stage. Các bổ sung
+sau audit được ghi trong ADR 0005/0006 và TV4_VALIDATION.
+
+Các tệp mới trong đợt triển khai ban đầu:
 
 - app/Enums/InquiryCloseResult.php; app/Events/InquiryMessageCreated.php;
   app/Jobs/BroadcastInquiryMessage.php.
@@ -175,8 +181,8 @@ Tệp tracked sửa: routes/{web,customer,staff,admin,channels}.php; resources/j
 scripts/project-files.php; tests/Unit/InventoryHashTest.php; docs/architecture/
 {FEATURE_STATUS,CONTRACTS,AUTHORIZATION_CONTRACT}.md và INVENTORY.json;
 docs/testing/ACCEPTANCE.md; docs/changes/CHANGELOG.md. Không có tệp bị xóa.
-Commit message đề xuất: `feat(inquiry): implement P1 inquiry workflow and private Reverb chat`.
-Giữ nguyên toàn bộ diff chưa commit để người dùng review; không stage secrets/artifacts.
+Commit message đã dùng: `feat(inquiry): implement P1 inquiry workflow and private Reverb chat`.
+Review diff commit đã push; không stage secrets/artifacts và không coi push là phê duyệt merge.
 
 1. Guest/customer POST /tu-van (frontend POST phải có CSRF); giữ ID đã nhận.
 2. Admin mở /admin/inquiries/{id}, giao sales active.

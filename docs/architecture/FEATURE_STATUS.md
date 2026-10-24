@@ -1,5 +1,13 @@
 # Trạng thái thực tế
 
+## Bàn giao TV4 sau push — 24/10/2026
+
+Mã TV4 đã commit và push tại `a7bf4059764fc506f1ee3e1aa10a8ea2b61199d6` lên
+`feature/inquiry-chat-websocket`. Chưa tạo Pull Request TV4, chưa merge vào main.
+Hoàng vẫn cần review H02/PublicationGate; TV3 review lock protocol và Đạt tích hợp
+UI khách. Không nâng mức nghiệm thu vì push; giữ nguyên giới hạn bảo mật và kết quả
+kiểm thử lịch sử bên dưới. Đợt đồng bộ tài liệu này không chạy lại MySQL/Reverb.
+
 ## Sau audit TV4 — 24/10/2026
 
 F01 đã có gate chung publication/reassign/H02 theo phê duyệt giới hạn của người dùng;
@@ -13,7 +21,7 @@ Phần dưới là lịch sử triển khai trước audit; kết quả mới nh
 
 ## TV4 trên nhánh feature/inquiry-chat-websocket — 24/10/2026
 
-Đã triển khai local, chưa commit/merge: POST tư vấn AJAX; customer/staff/admin
+Đã triển khai và push nhánh riêng, chưa merge: POST tư vấn AJAX; customer/staff/admin
 list/detail scoped + phân trang; assign/reassign, start, internal_note, close_result;
 HTTP message/history/UUID; private channel thật; job after-commit có kiểm lại quyền/
 version; màn Blade TV4 tối thiểu với Echo/retry/catch-up. Giữ schema/H01/H02.

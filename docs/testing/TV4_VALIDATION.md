@@ -1,14 +1,18 @@
 # TV4 — kết quả kiểm chứng local 24/10/2026
 
 Nhánh `feature/inquiry-chat-websocket`, base
-`983b12b22a27eb4eaaf3da3a701c7f78bc1bcdb9`. Chưa commit/push/merge.
-Kết quả mô tả mã local trên nhánh này, không chứng nhận main/PR #11 đã tích hợp.
+`983b12b22a27eb4eaaf3da3a701c7f78bc1bcdb9`. Mã TV4 đã commit và push tại
+`a7bf4059764fc506f1ee3e1aa10a8ea2b61199d6` lên nhánh riêng này.
+Chưa tạo Pull Request TV4, chưa merge vào main; không chứng nhận main/PR #11 đã tích hợp.
+
+Đồng bộ tài liệu sau push: giữ nguyên các kết quả kiểm thử lịch sử bên dưới.
+Không chạy lại MySQL/Reverb trong đợt đồng bộ này; không coi sửa tài liệu là bằng chứng test mới.
 
 ## Kết quả mới nhất — F01 được phê duyệt tích hợp H02, 24/10/2026
 
 F01 **Fixed and verified trong phạm vi ADR 0006**: cùng MySQL primary, mọi đường
 publish/revoke qua gate và session gate còn sở hữu. Không hứa tuyệt đối qua failover,
-partition hoặc dữ liệu/request đã in-flight. Chưa commit/merge; H02 cần Hoàng review.
+partition hoặc dữ liệu/request đã in-flight. Đã push nhánh riêng, chưa merge; H02 cần Hoàng review.
 F02/F03 phía TV4/F04 giữ Fixed and verified; chưa nghiệm thu UI khách PR #11/toàn P1.
 
 | Kiểm tra sau sửa F01 | Kết quả |
@@ -128,7 +132,8 @@ phân công lại cùng sales idempotent. Full SQLite qua composer check đạt
 PHP syntax, route:list (29 non-vendor routes), JS syntax và git diff --check đạt.
 Frontend build đạt; helper loại public/hot khỏi source inventory.
 
-Git QA: 23 tệp mới, 14 tệp tracked sửa, không xóa; staging rỗng. Main/origin/main/HEAD
+Git QA lịch sử tại đợt trước audit (không phải trạng thái sau push):
+23 tệp mới, 14 tệp tracked sửa, không xóa; staging rỗng. Main/origin/main/HEAD
 vẫn base 983b12b, chỉ đang đứng nhánh TV4; không commit/push/merge/rebase/PR.
 Không đổi app/Models, migrations, config/bootstrap, Auth/H02, CSS/layout hay lockfile.
 Kiểm read-only DB demo cuối: 6 users, 0 inquiries, 0 messages. Test HTTP/Reverb
