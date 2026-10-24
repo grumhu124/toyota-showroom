@@ -1,5 +1,31 @@
 # Trạng thái thực tế
 
+## Sau audit TV4 — 24/10/2026
+
+F01 đã có gate chung publication/reassign/H02 theo phê duyệt giới hạn của người dùng;
+security gate, MySQL process và Reverb thật đạt trong phạm vi ADR 0006. H02 chỉ bọc
+transaction, cần Hoàng review trước merge. Không nhận bảo đảm qua failover/network in-flight.
+F02 đã đổi sang message + database job cùng transaction/connection; F03 phía TV4
+khóa category → car; F04 giữ draft theo input revision. Có regression PHPUnit/Node
+và harness MySQL/crash/locking. Kết quả mới nhất ở TV4_VALIDATION; suite pass không
+thay security gate F01 độc lập (nay exit 0). Không sửa TV3/Auth khác H02/TV5, schema hay PR #11.
+Phần dưới là lịch sử triển khai trước audit; kết quả mới nhất ở TV4_VALIDATION.
+
+## TV4 trên nhánh feature/inquiry-chat-websocket — 24/10/2026
+
+Đã triển khai local, chưa commit/merge: POST tư vấn AJAX; customer/staff/admin
+list/detail scoped + phân trang; assign/reassign, start, internal_note, close_result;
+HTTP message/history/UUID; private channel thật; job after-commit có kiểm lại quyền/
+version; màn Blade TV4 tối thiểu với Echo/retry/catch-up. Giữ schema/H01/H02.
+MySQL concurrency và hai phiên HTTP/session/CSRF + Reverb thật đã chạy; độ trễ
+1731 ms với worker đang chạy. Job chờ sau reassign/H02 lock không phát kênh cũ.
+Chi tiết/bằng chứng: [TV4_VALIDATION](../testing/TV4_VALIDATION.md).
+
+PR #11 vẫn draft/open tại lúc kiểm, chưa tích hợp UI customer của Đạt.
+Public form backend sẵn sàng, form/CTA khách chung chờ Frontend nối. Chưa review
+trực quan responsive; chưa coi toàn bộ P1 hoặc UI khách hoàn tất.
+Các ghi chú main ngày 19/10 bên dưới là lịch sử baseline trước thay đổi TV4 này.
+
 Ngày 19/10/2026. Đã gộp vào main: docs/review-v6-srs, H01 (feature/auth-middleware),
 H02 (feature/admin-users), frontend home/catalog preview (feature/frontend-layout) và
 tích hợp auth vào giao diện frontend (feature/frontend-auth-integration). H03 mới có
@@ -16,8 +42,8 @@ Tư vấn/đặt lịch/chat chưa nối backend.
 | Dữ liệu | 8 bảng core + audit, enum/model | Seed Toyota; giữ brand=Toyota, internal_note | Võ Nguyễn Thành Đạt (TV3)/Phan Võ Chí Bảo (TV5) + Hoàng |
 | Auth | H01; H02 UserPolicy, admin list/search/pagination/tạo sales/khóa-mở, transaction tăng version khi khóa; test HTTP pass | Review/kiểm trực quan H02, tích hợp thu hồi socket/job với TV4 | Hoàng |
 | Catalog | Schema/model/thư mục | CRUD/ảnh/search/filter/pagination/UI | Võ Nguyễn Thành Đạt (TV3) + Đạt |
-| Tư vấn | Inquiry model/enum | Form AJAX, phân công/trạng thái/internal_note/quyền | Nguyễn Huy Hoàng (TV4) + Đạt |
-| Chat | Reverb/Echo cấu hình, private channel từ chối mặc định | Gửi/lưu/phát, lịch sử, retry/catch-up, thu hồi quyền, UI hai phiên | Nguyễn Huy Hoàng (TV4) + Đạt |
+| Tư vấn | Nhánh TV4: tiếp nhận AJAX, scoped list/detail, phân công/trạng thái/internal_note/quyền; Blade staff | Review nhóm, nối form/UI khách | Nguyễn Huy Hoàng (TV4) + Đạt |
+| Chat | Nhánh TV4: HTTP/UUID/history, private channel/event/Queue, thu hồi version; test hai phiên Reverb thật | Nối UI khách PR #11, review UI/responsive | Nguyễn Huy Hoàng (TV4) + Đạt |
 | Lịch/dịch vụ | Schema/model/enum | Form, phân công, xác nhận khóa/trùng giờ, hủy/hoàn tất/no_show | Phan Võ Chí Bảo (TV5) |
 | Audit | Bảng/model/namespace | Không buộc làm module riêng P1; giữ nền | Hoàng |
 | Bàn giao | Kiểm tra nền từng pass local và CI | Test nghiệp vụ, responsive, báo cáo, demo cả 5 người | Cả nhóm |
