@@ -1,4 +1,7 @@
 <?php
 
-// Add customer module routes here; shared middleware/prefix are registered in bootstrap/app.php.
-// No business endpoints are implemented by this foundation file.
+use App\Http\Controllers\Inquiry\InquiryController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/yeu-cau', [InquiryController::class, 'index'])->name('inquiries.index');
+Route::get('/yeu-cau/{inquiry}', [InquiryController::class, 'show'])->name('inquiries.show');

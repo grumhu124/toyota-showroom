@@ -1,5 +1,73 @@
 # Nhật ký thay đổi hệ thống
 
+## 2026-10-24 TV4 — đồng bộ tài liệu sau commit/push
+
+- Sửa trạng thái bàn giao theo commit chức năng `a7bf4059764fc506f1ee3e1aa10a8ea2b61199d6`
+  đã push lên `feature/inquiry-chat-websocket`; chưa tạo Pull Request TV4, chưa merge main.
+- Giữ kết quả kiểm thử lịch sử, quyết định ADR, giới hạn bảo mật và yêu cầu owner review;
+  không sửa mã ứng dụng, schema, dữ liệu hoặc quyền. Regenerate inventory bằng script chính thức.
+- Kiểm tra: inventory --check, git diff --check và đối chiếu diff từng file; không chạy
+  lại MySQL/Reverb trong đợt đồng bộ tài liệu. Các mục dưới là lịch sử các đợt triển khai.
+- Composer check theo quy định repo đạt: SQLite 57 tests / 507 assertions, syntax/encoding/Pint;
+  không thay các số liệu MySQL/Reverb lịch sử bằng kết quả chạy mới.
+
+## 2026-10-24 F01 — tích hợp publication/revocation theo phê duyệt giới hạn
+
+- Thêm PublicationGate chung theo DB: MySQL GET_LOCK session PDO riêng không TTL/
+  reconnect, SQLite flock test; bounded wait, ownership check, fail closed với nested/
+  outer transaction. Publisher giữ gate qua synchronous dispatch, nhả row locks trước network.
+- Bọc InquiryService::update và CHỈ transaction gốc UpdateUserStatus::handle bằng gate;
+  không đổi Policy/active/version/idempotency/deadlock retry H02. Hoàng phải review trước merge.
+- Thêm regression publication/outside-transaction/rollback-idempotency; H02 tests dùng
+  DatabaseMigrations + DB guard thay implicit test transaction. Giữ toàn bộ ca cũ.
+- Security gate từ FAIL trước sửa sang PASS; thêm MySQL independent revoker, process
+  death/session-loss trước dispatch, Reverb thật hai socket cho reassign/lock sales/customer.
+- Không đổi schema/config/dependency/Auth khác H02/Catalog/Appointment/Frontend của Đạt,
+  không merge PR #11; tại đợt khắc phục này chưa stage/commit/push. F02/F03/F04 regression chạy lại.
+- Dữ liệu demo nguyên fingerprint. Giới hạn single-primary/gate ownership/in-flight,
+  head-of-line blocking và acceptance không đồng nhất receipt ở ADR 0006; kết quả thật TV4_VALIDATION.
+
+## 2026-10-24 Khắc phục findings TV4 trong phạm vi owner
+
+- Sửa F02: message và database job ghi cùng connection/transaction, beforeCommit chỉ
+  cho INSERT intent; driver/connection sai fail closed. Không thay bảng/dependency;
+  rollback/enqueue failure không để message thiếu intent, worker chỉ thấy sau commit.
+- Sửa F03 phía TV4: locking reads user → category shared → car shared; từ chối xe
+  chuyển category, không khóa thêm ngược thứ tự. TV3 cần review khi tích hợp CRUD.
+- Sửa F04: composer input revision/raw value bảo vệ draft mới khi response chậm;
+  giữ UUID retry/error. Không đổi UI/layout/CSS khách hay contract response/event.
+- Giữ F01 OPEN: chưa sửa H02 khi chưa được phép. Thêm security regression chính thức
+  exit 1 cho reassign và H02-lock commit trước dispatch; không che bằng mock pass.
+  Đề xuất fence/phối hợp Hoàng ở TV4_INTEGRATION. Không network trong DB transaction.
+- Thêm PHPUnit enqueue/rollback/retry/config guard, Node DOM regression, MySQL
+  process crash trước/sau commit và Catalog UPDATE locking độc lập. Không xóa test cũ.
+- Không sửa Auth/H02/Catalog/Appointment/schema/lockfile hoặc merge PR #11; không
+  reset/seed demo. Kết quả thực tế/giới hạn ở TV4_VALIDATION; chưa READY vì F01.
+
+## 2026-10-24 Backend TV4 tư vấn/chat trên nhánh riêng (lịch sử trước commit)
+
+- Thêm InquiryCloseResult, InquiryPolicy/MessagePolicy, FormRequests/controllers,
+  InquiryLock/InquiryService/MessageService/MessageData, BroadcastInquiryMessage job
+  và InquiryMessageCreated event; thêm tests và harness MySQL/Reverb độc lập.
+- Thêm POST /tu-van, customer/staff/admin scoped list/detail và mutation theo quyền;
+  chat HTTP shared auth/active, private channel version thật thay deny-by-default.
+- Thêm Blade staff tối thiểu + Echo JS: history, retry UUID, catch-up, lỗi/kết nối,
+  textContent chống XSS. Không chép frontend customer PR #11 (vẫn draft/unmerged).
+- Shared files: routes/web/customer/staff/admin/channels, app.js; giữ middleware,
+  H01/H02/TV3/TV5 và layout/CSS. Không đổi model/migration/schema/dependency/lockfile.
+- Sửa scripts/project-files.php loại trừ public/hot (Vite marker vốn bị Git ignore)
+  khỏi inventory; thêm regression InventoryHashTest để CI không phụ thuộc Vite local.
+- Dữ liệu/quyền: không hard-delete; owner/sender từ session; internal_note không
+  trả customer/events; users theo ID → inquiry và recheck trong transaction;
+  unique sender/UUID + khóa sender; enqueue sau commit; job recheck version/active.
+- DB demo toyota_showroom không migrate/reset/seed; kiểm MySQL trên DB local test
+  mới, user riêng chỉ có quyền DB test. Root password chỉ nhập hộp thoại cục bộ.
+- Đã thử MySQL concurrent UUID/send+reassign; hai phiên Reverb thật 1731 ms;
+  retry/catch-up, job chờ và socket kênh cũ sau chuyển sales/khóa user: đạt.
+  Full regression/build và composer check ghi kết quả ở docs/testing/TV4_VALIDATION.md.
+- Chưa nối public form/UI customer PR #11, chưa review trực quan responsive;
+  không nhận hoàn thành các module khác. Hợp đồng ở docs/development/TV4_INTEGRATION.md.
+
 ## 2026-10-19 Gộp năm nhánh vào main
 
 - Gộp theo thứ tự docs/review-v6-srs, feature/auth-middleware, feature/admin-users,
