@@ -54,29 +54,36 @@ class AppointmentService
     }
 
     /**
-     * Chặn khách đặt/đổi trùng khung giờ (±60 phút) với lịch của chính mình
-     * đang chờ hoặc đã xác nhận — tránh tạo lịch trùng rồi phải hủy.
-     * Khách vãng lai (không đăng nhập) không kiểm tra được, chặn ở staff xác nhận.
+     * Chặn đặt/đổi trùng khung giờ (±60 phút) với lịch hiện có của cùng người —
+     * đối chiếu customer_id (đã đăng nhập) hoặc contact_phone (cả guest),
+     * tránh tạo lịch trùng rồi phải hủy.
      */
-    public function assertNoCustomerOverlap(?int $customerId, string $requestedAt, ?int $ignoreId = null): void
+    public function assertNoCustomerOverlap(?int $customerId, string $requestedAt, ?string $phone = null, ?int $ignoreId = null): void
     {
-        if ($customerId === null) {
-            return; // Guest: không có danh tính để đối chiếu.
+        if ($customerId === null && ($phone === null || trim($phone) === '')) {
+            return; // Không có danh tính nào để đối chiếu.
         }
 
         $time = Carbon::parse($requestedAt);
         $conflicts = Appointment::query()
-            ->where('customer_id', $customerId)
             ->whereIn('status', [AppointmentStatus::Pending->value, AppointmentStatus::Confirmed->value])
             ->where('requested_at', '>=', $time->copy()->subMinutes(self::SLOT_MINUTES))
             ->where('requested_at', '<=', $time->copy()->addMinutes(self::SLOT_MINUTES))
             ->when($ignoreId !== null, fn ($q) => $q->whereKeyNot($ignoreId))
+            ->where(function ($q) use ($customerId, $phone): void {
+                if ($customerId !== null) {
+                    $q->where('customer_id', $customerId);
+                }
+                if ($phone !== null && trim($phone) !== '') {
+                    $q->orWhere('contact_phone', trim($phone));
+                }
+            })
             ->get();
 
         foreach ($conflicts as $conflict) {
             if ($conflict->requested_at->diffInMinutes($time) <= self::SLOT_MINUTES) {
                 throw ValidationException::withMessages([
-                    'requested_at' => 'Bạn đã có lịch hẹn trong vòng 60 phút ('.$conflict->requested_at->format('H:i d/m').'). Vui lòng chọn cách hơn 1 tiếng hoặc hủy lịch cũ trước.',
+                    'requested_at' => 'Số này đã có lịch hẹn trong vòng 60 phút ('.$conflict->requested_at->format('H:i d/m').'). Vui lòng chọn cách hơn 1 tiếng hoặc hủy lịch cũ trước.',
                 ]);
             }
         }
@@ -243,7 +250,7 @@ class AppointmentService
             }
 
             $newTime = Carbon::parse($requestedAt);
-            $this->assertNoCustomerOverlap($actor->id, $newTime->format('Y-m-d H:i:s'), $locked->id);
+            $this->assertNoCustomerOverlap($actor->id, $newTime->format('Y-m-d H:i:s'), $locked->contact_phone, $locked->id);
 
             $locked->requested_at = $newTime;
             $locked->save();

@@ -84,7 +84,7 @@ class AppointmentTest extends TestCase
         ]);
 
         $this->actingAs($this->user())
-            ->post('/dat-lich', $this->viewingPayload())
+            ->post('/dat-lich', $this->viewingPayload(['contact_phone' => '0901112223']))
             ->assertRedirect();
         $this->assertDatabaseCount('appointments', 2);
     }
@@ -160,11 +160,20 @@ class AppointmentTest extends TestCase
         $this->assertDatabaseCount('appointments', 2);
     }
 
-    public function test_guest_can_still_book_any_time_and_admin_sees_all(): void
+    public function test_guest_with_same_phone_cannot_book_overlapping_slot(): void
     {
-        // Guest không bị chặn trùng (không có danh tính) — vẫn đặt được 2 lịch cùng giờ.
+        // Guest cùng SĐT: đặt 11:20 rồi 11:40 phải bị chặn.
         $this->post('/dat-lich', $this->viewingPayload())->assertRedirect();
-        $this->post('/dat-lich', $this->viewingPayload())->assertRedirect();
+        $this->post('/dat-lich', $this->viewingPayload([
+            'requested_at' => now()->addDays(2)->setTime(9, 40)->format('Y-m-d H:i'),
+        ]))->assertInvalid(['requested_at']);
+        $this->assertDatabaseCount('appointments', 1);
+
+        // SĐT khác cùng giờ: vẫn đặt được (khác người).
+        $this->post('/dat-lich', $this->viewingPayload([
+            'contact_name' => 'Trần Khác',
+            'contact_phone' => '0909876543',
+        ]))->assertRedirect();
         $this->assertDatabaseCount('appointments', 2);
     }
 
