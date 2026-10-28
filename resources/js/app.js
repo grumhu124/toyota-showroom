@@ -8,3 +8,4 @@ export { createEcho } from './echo';
 import './modules/auth';
 
 import './modules/customer-chat';
+import './modules/appointments';

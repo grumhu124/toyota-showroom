@@ -20,3 +20,6 @@
 @import './auth.css';
 
 @import './customer.css';
+@import './appointments.css';
+
+@import './customer-integration.css';

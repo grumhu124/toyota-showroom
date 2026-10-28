@@ -22,6 +22,7 @@
                 @if(Route::has('customer.chat.preview'))
                     <a href="{{ route('customer.chat.preview') }}" @if(request()->routeIs('customer.chat.preview')) aria-current="page" @endif><x-customer-icon name="chat"/> Tin nhắn <small>Bản mẫu</small></a>
                 @endif
+                <a href="{{ route('customer.appointments.index') }}" @if(request()->routeIs('customer.appointments.*')) aria-current="page" @endif><x-customer-icon name="calendar"/> Lịch hẹn</a>
                 <a href="{{ url('/xe') }}"><x-customer-icon name="car"/> Khám phá xe</a>
             </nav>
             <div class="customer-sidebar-bottom"><x-customer-icon name="shield"/><p>Không gian riêng cho<br>hành trình của bạn.</p><form method="POST" action="{{ route('logout') }}">@csrf<button type="submit"><x-customer-icon name="logout"/> Đăng xuất</button></form></div>

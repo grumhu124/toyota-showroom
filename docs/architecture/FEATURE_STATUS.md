@@ -1,16 +1,17 @@
 # Trạng thái thực tế
 
-23/10: customer có giao diện tài khoản riêng tại /tai-khoan; chat preview local/testing tại /tai-khoan/tin-nhan dùng fixture, chưa có gửi/nhận WebSocket hoặc lịch sử thật. Admin/sales giữ màn tài khoản H01/H02. Xem docs/development/CUSTOMER_ACCOUNT_CHAT_UI.md.
+28/10: nhánh giao diện đồng bộ lịch hẹn từ main, account customer có lịch sắp tới từ DB và liên kết /lich-hen. Trang lịch khách dùng layouts.customer, hủy theo endpoint TV5 có kiểm owner/time/state. Chat vẫn preview local/testing; chưa gộp TV4 vào bản này.
 
-Ngày 19/10/2026. Đã gộp vào main: docs/review-v6-srs, H01 (feature/auth-middleware),
-H02 (feature/admin-users), frontend home/catalog preview (feature/frontend-layout) và
-tích hợp auth vào giao diện frontend (feature/frontend-auth-integration). H03 mới có
-hợp đồng quyền/gói review. Chưa có nghiệp vụ tư vấn/lịch/chat hoàn chỉnh.
+Ngày 20/10/2026. Đã gộp vào main: docs/review-v6-srs, H01 (feature/auth-middleware),
+H02 (feature/admin-users), frontend home/catalog preview (feature/frontend-layout),
+tích hợp auth vào giao diện frontend (feature/frontend-auth-integration) và nhánh
+feature/appointment-schedule (TV5: đặt lịch, phân công, xác nhận, hủy, hoàn tất).
+H03 mới có hợp đồng quyền/gói review. Chưa có nghiệp vụ tư vấn/chat hoàn chỉnh.
 
 Trang chủ tối, video/canvas, hai ảnh chi tiết, /xe slider/card/lọc và /xe/{id} ID 1–9
 vẫn dùng fixture local/testing (chỉ chạy ở local/testing). Header đã nối Auth thật,
 form đăng nhập/đăng ký dùng ảnh xe chạy và nền tối; backend H01/H02 giữ nguyên.
-Tư vấn/đặt lịch/chat chưa nối backend.
+Tư vấn/chat chưa nối backend; đặt lịch đã nối backend với form + quyền.
 
 | Module | Đã có | P1 còn làm | Chủ trách nhiệm |
 | --- | --- | --- | --- |
@@ -20,7 +21,7 @@ Tư vấn/đặt lịch/chat chưa nối backend.
 | Catalog | Schema/model/thư mục | CRUD/ảnh/search/filter/pagination/UI | Võ Nguyễn Thành Đạt (TV3) + Đạt |
 | Tư vấn | Inquiry model/enum | Form AJAX, phân công/trạng thái/internal_note/quyền | Nguyễn Huy Hoàng (TV4) + Đạt |
 | Chat | Reverb/Echo cấu hình, private channel từ chối mặc định | Gửi/lưu/phát, lịch sử, retry/catch-up, thu hồi quyền, UI hai phiên | Nguyễn Huy Hoàng (TV4) + Đạt |
-| Lịch/dịch vụ | Schema/model/enum | Form, phân công, xác nhận khóa/trùng giờ, hủy/hoàn tất/no_show | Phan Võ Chí Bảo (TV5) |
+| Lịch/dịch vụ | Form + rights; CRUD dịch vụ admin; xác nhận khóa/trùng giờ; hủy/hoàn tất/no_show; tests pass | Kiểm trực quan trình duyệt và MySQL thật | Phan Võ Chí Bảo (TV5) |
 | Audit | Bảng/model/namespace | Không buộc làm module riêng P1; giữ nền | Hoàng |
 | Bàn giao | Kiểm tra nền từng pass local và CI | Test nghiệp vụ, responsive, báo cáo, demo cả 5 người | Cả nhóm |
 

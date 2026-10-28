@@ -19,8 +19,17 @@
             @else
                 <p class="customer-muted">Chức năng tin nhắn đang được hoàn thiện.</p>
             @endif
-            <div class="customer-service-link customer-service-pending"><span class="customer-service-icon"><x-customer-icon name="calendar"/></span><span><strong>Lịch hẹn của bạn <small>Sắp có</small></strong><span>Lịch xem xe và bảo dưỡng sẽ xuất hiện tại đây khi chức năng sẵn sàng.</span></span></div>
-            <p class="customer-muted customer-next-note">Tư vấn và lịch hẹn đang được hoàn thiện. Chưa có lịch sử hoặc số liệu để hiển thị.</p>
+            <a class="customer-service-link" href="{{ route('customer.appointments.index') }}"><span class="customer-service-icon"><x-customer-icon name="calendar"/></span><span><strong>Lịch hẹn của bạn</strong><span>Theo dõi lịch xem xe, bảo dưỡng và thông tin xác nhận từ showroom.</span></span><x-customer-icon name="arrow"/></a>
+            <p class="customer-muted customer-next-note">Bạn có thể đặt lịch và xem các lịch hẹn của mình. Tin nhắn hiện là bản mẫu giao diện.</p>
         </section>
     </div>
+    <section class="customer-panel workspace-upcoming" aria-labelledby="upcoming-title">
+        <div class="customer-section-heading"><div><p class="customer-eyebrow">03 / HẸN GẶP BẠN</p><h2 id="upcoming-title">Lịch hẹn sắp tới</h2></div><a href="{{ route('customer.appointments.index') }}" class="workspace-text-link">Xem tất cả <x-customer-icon name="arrow"/></a></div>
+        @forelse($upcomingAppointments as $appointment)
+            @php($time = $appointment->confirmed_at ?? $appointment->requested_at)
+            <article class="workspace-appointment-row"><div class="workspace-date"><strong>{{ $time->format('d') }}</strong><span>THÁNG {{ $time->format('m') }}</span></div><div><h3>{{ $appointment->type->label() }}</h3><p>{{ $appointment->car?->name ?? $appointment->service?->name ?? 'Hẹn tại showroom' }} · {{ $time->format('H:i d/m/Y') }}</p></div><span class="workspace-status workspace-status-{{ $appointment->status->value }}">{{ $appointment->status->label() }}</span></article>
+        @empty
+            <div class="workspace-empty"><x-customer-icon name="calendar"/><h3>Chưa có lịch hẹn sắp tới</h3><p>Chọn thời gian thuận tiện để khám phá xe hoặc chăm sóc chiếc Toyota của bạn.</p><a class="customer-button customer-button-red" href="{{ route('appointments.create') }}">Đặt lịch với showroom <x-customer-icon name="arrow"/></a></div>
+        @endforelse
+    </section>
 @endsection

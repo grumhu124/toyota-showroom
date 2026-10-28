@@ -1,9 +1,16 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
 use Illuminate\Support\Facades\Route;
 
-// Presentation only; the shared chat HTTP endpoints remain TV4's routes/inquiries.php.
-// This file already has web/auth/active/role:customer middleware from bootstrap/app.php.
+// Own appointments: list + reschedule + cancel.
+Route::get('/lich-hen', [AppointmentController::class, 'index'])->name('appointments.index');
+Route::post('/lich-hen/{appointment}/doi', [AppointmentController::class, 'reschedule'])
+    ->name('appointments.reschedule');
+Route::post('/lich-hen/{appointment}/huy', [AppointmentController::class, 'cancel'])
+    ->name('appointments.cancel');
+
+// UI preview only; shared chat HTTP remains separate.
 if (app()->environment(['local', 'testing'])) {
     Route::get('/tai-khoan/tin-nhan', function () {
         return view('customer.chat', [

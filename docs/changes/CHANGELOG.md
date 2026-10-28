@@ -1,5 +1,13 @@
 # Nhật ký thay đổi hệ thống
 
+## 2026-10-28 Đồng bộ lịch hẹn với tài khoản khách
+
+- Ghép main ed06179 vào nhánh giao diện, giữ appointment TV5 và account/chat preview.
+- AccountController chỉ đọc lịch sắp tới của đúng customer; điều hướng và danh sách lịch dùng layout customer, hủy theo endpoint hiện có với lý do/CSRF.
+- Không đổi migration, seed, trạng thái hoặc nghiệp vụ xác nhận/đổi lịch; chưa ghép TV4 trong mốc này.
+- Kiểm tra bằng suite chung và browser với DB QA riêng; không reset DB người dùng.
+
+
 ## 2026-10-23 Giao diện tài khoản và chat khách hàng
 
 - Customer có layout riêng, hồ sơ từ session, hero ảnh xe chạy, điều hướng tài khoản/chat/catalog và logout POST CSRF.
@@ -9,6 +17,19 @@
 - Kiểm tra composer check/build và browser responsive; xem hướng dẫn CUSTOMER_ACCOUNT_CHAT_UI.md về phạm vi chưa nối backend.
 
 
+## 2026-10-20 Lịch hẹn và dịch vụ (TV5 - feature/appointment-schedule)
+- Thêm: routes/appointments.php, AppointmentController, StoreAppointmentRequest/
+  UpdateStatusRequest, AppointmentService, AppointmentPolicy/ServicePolicy,
+  views appointments (create/index/manage), admin/services, customer/staff
+  appointments, tests Feature/Appointment (AppointmentTest, ServiceCrudTest).
+- Sửa: routes/admin.php, routes/staff.php, routes/customer.php, bootstrap/app.php
+  đăng ký nhóm route appointments; enum AppointmentStatus/AppointmentType/ServiceType
+  bổ sung giá trị no_show và loại bảo dưỡng.
+- Quyền: guest/customer đặt lịch viewing/maintenance; customer chỉ xem/hủy lịch của
+  mình trước giờ; sales/staff xem scoped; admin xác nhận (khóa slot + kiểm tra trùng giờ
+  trong transaction), hủy với lý do, kết thúc sau giờ xác nhận, đánh dấu no_show.
+- Kiểm tra: php artisan test 50 test/418 assertions pass; pint pass;
+  architecture-inventory --check pass. Chưa kiểm tra trực quan trình duyệt và MySQL thật.
 ## 2026-10-19 Gộp năm nhánh vào main
 
 - Gộp theo thứ tự docs/review-v6-srs, feature/auth-middleware, feature/admin-users,
