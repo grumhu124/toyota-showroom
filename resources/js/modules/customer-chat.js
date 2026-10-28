@@ -1,48 +1,70 @@
+import { mountInquiryChat } from './chat/inquiry-chat';
+
 const chat = document.querySelector('[data-customer-chat]');
 if (chat) {
-    const conversations = [...chat.querySelectorAll('[data-conversation]')];
+    const buttons = [...chat.querySelectorAll('[data-conversation]')];
     const threads = [...chat.querySelectorAll('[data-chat-thread]')];
-    conversations.forEach((button) => {
-        button.addEventListener('click', () => {
-            conversations.forEach((item) => {
-                const selected = item === button;
-                item.classList.toggle('is-selected', selected);
-                item.setAttribute('aria-current', String(selected));
-            });
-            threads.forEach((thread) => { thread.hidden = thread.dataset.chatThread !== button.dataset.conversation; });
-            chat.classList.add('is-thread-open');
-            // Each thread keeps its own unsent draft in the DOM; nothing persists across reload.
-            chat.querySelector('[data-chat-thread]:not([hidden]) h2')?.focus();
+    buttons.forEach((button) => button.addEventListener('click', (event) => {
+        if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+        const thread = threads.find((item) => item.dataset.chatThread === button.dataset.conversation);
+        if (!thread) return;
+        event.preventDefault();
+        buttons.forEach((item) => {
+            item.classList.toggle('is-selected', item === button);
+            item.setAttribute('aria-current', String(item === button));
         });
-    });
+        threads.forEach((item) => { item.hidden = item !== thread; });
+        chat.classList.add('is-thread-open');
+        mountInquiryChat(thread);
+        history.replaceState(null, '', button.href);
+    }));
+    chat.querySelectorAll('[data-chat-back]').forEach((button) => button.addEventListener('click', (event) => {
+        event.preventDefault();
+        chat.classList.remove('is-thread-open');
+        history.replaceState(null, '', button.href);
+        chat.querySelector('[data-conversation][aria-current="true"]')?.focus();
+    }));
     threads.forEach((thread) => {
-        thread.querySelector('h2').tabIndex = -1;
-        thread.querySelector('[data-chat-back]').addEventListener('click', () => {
-            chat.classList.remove('is-thread-open');
-            chat.querySelector('[data-conversation][aria-current="true"]')?.focus();
-        });
-        const form = thread.querySelector('[data-chat-composer]');
-        const draft = form.querySelector('[data-chat-draft]');
-        const feedback = form.querySelector('[data-chat-feedback]');
-        draft.addEventListener('input', () => {
-            form.querySelector('[data-chat-count]').textContent = `${draft.value.length} / 1000`;
-            feedback.hidden = true;
-        });
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            if (draft.disabled) return;
-            feedback.textContent = draft.value.trim()
-                ? 'Chưa gửi: đây là bản xem trước, chưa kết nối với showroom. Nội dung vẫn được giữ trong ô soạn tin.'
-                : 'Bạn hãy nhập nội dung tin nhắn trước.';
-            feedback.hidden = false;
-            draft.focus();
+        const input = thread.querySelector('textarea');
+        const counter = thread.querySelector('[data-chat-count]');
+        const count = () => { if (counter) counter.textContent = `${input.value.length} / 1000`; };
+        input?.addEventListener('input', count);
+        // Sent responses can clear the draft without a new input event.
+        thread.querySelector('[data-chat-form]')?.addEventListener('submit', () => {
+            const watcher = new MutationObserver(() => { count(); watcher.disconnect(); });
+            watcher.observe(thread.querySelector('[data-chat-status]'), { childList: true });
         });
     });
-    const search = chat.querySelector('[data-chat-search]');
-    const normalize = (value) => value.toLocaleLowerCase('vi').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd');
-    search.addEventListener('input', () => {
-        const query = normalize(search.value.trim());
-        conversations.forEach((button) => { button.hidden = !normalize(button.textContent).includes(query); });
-        chat.querySelector('[data-chat-search-empty]').hidden = conversations.some((button) => !button.hidden);
+    window.addEventListener('beforeunload', (event) => {
+        if (threads.some((thread) => thread.querySelector('textarea')?.value.trim())) {
+            event.preventDefault();
+            event.returnValue = '';
+        }
+    });
+}
+
+const inquiryDialog = document.querySelector('[data-inquiry-dialog]');
+if (inquiryDialog) {
+    document.querySelectorAll('[data-open-inquiry]').forEach((button) => button.addEventListener('click', () => inquiryDialog.showModal()));
+    const form = inquiryDialog.querySelector('[data-inquiry-create]');
+    const submit = form.querySelector('button[type="submit"]');
+    const feedback = form.querySelector('[data-inquiry-feedback]');
+    let busy = false;
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (busy) return;
+        busy = true; submit.disabled = true; submit.textContent = 'Đang gửi…'; feedback.hidden = true;
+        try {
+            const response = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+            const body = await response.json();
+            if (response.status !== 201 || !Number.isInteger(body.id)) {
+                throw new Error(body.errors ? Object.values(body.errors).flat().join(' ') : body.message || 'Chưa gửi được yêu cầu. Hãy thử lại.');
+            }
+            const url = new URL(form.dataset.chatUrl, location.origin);
+            url.searchParams.set('conversation', body.id);
+            location.assign(url);
+        } catch (error) {
+            feedback.textContent = `Chưa gửi được: ${error.message}`; feedback.hidden = false;
+        } finally { busy = false; submit.disabled = false; submit.textContent = 'Gửi yêu cầu tư vấn'; }
     });
 }

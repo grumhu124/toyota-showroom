@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\Customer\ChatController;
+use App\Http\Controllers\Inquiry\InquiryController;
 use Illuminate\Support\Facades\Route;
 
 // Own appointments: list + reschedule + cancel.
@@ -10,11 +12,7 @@ Route::post('/lich-hen/{appointment}/doi', [AppointmentController::class, 'resch
 Route::post('/lich-hen/{appointment}/huy', [AppointmentController::class, 'cancel'])
     ->name('appointments.cancel');
 
-// UI preview only; shared chat HTTP remains separate.
-if (app()->environment(['local', 'testing'])) {
-    Route::get('/tai-khoan/tin-nhan', function () {
-        return view('customer.chat', [
-            'conversations' => require resource_path('data/customer-chat-preview.php'),
-        ]);
-    })->name('chat.preview');
-}
+Route::get('/yeu-cau', [InquiryController::class, 'index'])->name('inquiries.index');
+Route::get('/yeu-cau/{inquiry}', [InquiryController::class, 'show'])->name('inquiries.show');
+
+Route::get('/tai-khoan/tin-nhan', ChatController::class)->name('chat.index');

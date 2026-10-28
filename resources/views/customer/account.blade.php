@@ -14,13 +14,13 @@
         </section>
         <section class="customer-panel customer-next" aria-labelledby="next-title">
             <p class="customer-eyebrow">02 / ĐỒNG HÀNH</p><h2 id="next-title">Kết nối với showroom</h2>
-            @if(Route::has('customer.chat.preview'))
-                <a class="customer-service-link" href="{{ route('customer.chat.preview') }}"><span class="customer-service-icon"><x-customer-icon name="chat"/></span><span><strong>Tin nhắn tư vấn <small>Bản mẫu</small></strong><span>Xem trước không gian trao đổi cùng tư vấn viên.</span></span><x-customer-icon name="arrow"/></a>
+            @if(Route::has('customer.chat.index'))
+                <a class="customer-service-link" href="{{ route('customer.chat.index') }}"><span class="customer-service-icon"><x-customer-icon name="chat"/></span><span><strong>Tin nhắn tư vấn</strong><span>Trao đổi cùng nhân viên phụ trách yêu cầu tư vấn của bạn.</span></span><x-customer-icon name="arrow"/></a>
             @else
                 <p class="customer-muted">Chức năng tin nhắn đang được hoàn thiện.</p>
             @endif
             <a class="customer-service-link" href="{{ route('customer.appointments.index') }}"><span class="customer-service-icon"><x-customer-icon name="calendar"/></span><span><strong>Lịch hẹn của bạn</strong><span>Theo dõi lịch xem xe, bảo dưỡng và thông tin xác nhận từ showroom.</span></span><x-customer-icon name="arrow"/></a>
-            <p class="customer-muted customer-next-note">Bạn có thể đặt lịch và xem các lịch hẹn của mình. Tin nhắn hiện là bản mẫu giao diện.</p>
+            <p class="customer-muted customer-next-note">Theo dõi lịch hẹn và trao đổi với showroom trong không gian riêng của bạn.</p>
         </section>
     </div>
     <section class="customer-panel workspace-upcoming" aria-labelledby="upcoming-title">

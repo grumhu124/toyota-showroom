@@ -1,53 +1,43 @@
 @extends('layouts.customer')
 @section('title', 'Tin nhắn tư vấn')
 @section('content')
-<div class="customer-page-heading"><div><p class="customer-eyebrow">MY TOYOTA / KẾT NỐI</p><h1>Tin nhắn tư vấn</h1></div><span class="customer-pill customer-pill-preview">Bản xem trước giao diện</span></div>
-<p class="customer-chat-disclaimer">Các cuộc tư vấn bên dưới là dữ liệu minh họa. Chưa gửi hoặc nhận tin nhắn thật với showroom.</p>
-<section class="customer-chat" data-customer-chat aria-label="Không gian tin nhắn minh họa">
+@php($labels = ['new' => 'Chờ phân công', 'assigned' => 'Đã phân công', 'in_progress' => 'Đang tư vấn', 'closed' => 'Đã kết thúc'])
+<div class="customer-page-heading"><div><p class="customer-eyebrow">MY TOYOTA / KẾT NỐI</p><h1>Tin nhắn tư vấn</h1></div><button type="button" class="customer-button customer-button-red" data-open-inquiry>Yêu cầu tư vấn mới <x-customer-icon name="chat"/></button></div>
+<p class="customer-chat-disclaimer">Tin nhắn gắn với yêu cầu tư vấn của bạn. Khi đổi người phụ trách, hãy tải lại trang để cập nhật cuộc tư vấn.</p>
+@if($errors->any())<p class="workspace-errors" role="alert">{{ $errors->first() }}</p>@endif
+<section class="customer-chat {{ request('conversation') ? 'is-thread-open' : '' }}" data-customer-chat aria-label="Không gian tin nhắn">
     <aside class="chat-conversations" aria-label="Danh sách cuộc tư vấn">
-        <div class="chat-list-heading"><h2>Cuộc tư vấn</h2><span>{{ count($conversations) }} mẫu</span></div>
-        <label class="chat-search"><x-customer-icon name="search"/><input type="search" placeholder="Tìm cuộc tư vấn…" aria-label="Tìm cuộc tư vấn" data-chat-search></label>
+        <div class="chat-list-heading"><h2>Cuộc tư vấn</h2><span>{{ $conversations->total() }} yêu cầu</span></div>
+        <form method="GET" action="{{ route('customer.chat.index') }}"><label class="chat-search"><x-customer-icon name="search"/><input type="search" name="q" value="{{ request('q') }}" maxlength="100" placeholder="Tìm cuộc tư vấn…" aria-label="Tìm cuộc tư vấn"></label><button type="submit" class="workspace-search-button">Tìm kiếm</button></form>
         <div class="chat-conversation-list">
-            @foreach($conversations as $conversation)
-                <button class="chat-conversation {{ $loop->first ? 'is-selected' : '' }}" type="button" data-conversation="{{ $conversation['key'] }}" aria-current="{{ $loop->first ? 'true' : 'false' }}" aria-controls="thread-{{ $conversation['key'] }}">
-                    <span class="chat-conversation-avatar">{{ $conversation['initial'] }}</span><span class="chat-conversation-copy"><strong>{{ $conversation['name'] }}</strong><span>{{ $conversation['summary'] }}</span><small class="chat-status chat-status-{{ $conversation['status'] }}">{{ $conversation['status_label'] }}</small></span>
-                </button>
-            @endforeach
+            @forelse($conversations as $conversation)
+            <a class="chat-conversation {{ $selected?->id === $conversation->id ? 'is-selected' : '' }}" href="{{ route('customer.chat.index', array_filter(['conversation' => $conversation->id, 'q' => request('q'), 'page' => request('page')])) }}" data-conversation="{{ $conversation->id }}" aria-current="{{ $selected?->id === $conversation->id ? 'true' : 'false' }}" aria-controls="thread-{{ $conversation->id }}"><span class="chat-conversation-avatar">T</span><span class="chat-conversation-copy"><strong>{{ $conversation->car?->name ?? 'Tư vấn Toyota' }}</strong><span>{{ $conversation->content }}</span><small class="chat-status chat-status-{{ $conversation->status->value }}">{{ $labels[$conversation->status->value] }}</small></span></a>
+            @empty
+                <p class="chat-search-empty">{{ request('q') ? 'Không có cuộc tư vấn phù hợp.' : 'Bạn chưa có yêu cầu tư vấn nào.' }}</p>
+            @endforelse
         </div>
-        <p class="chat-search-empty" data-chat-search-empty hidden role="status">Không có cuộc tư vấn phù hợp.</p>
-        <div class="chat-list-note"><x-customer-icon name="shield"/><p>Mỗi cuộc tư vấn là một<br>không gian trao đổi riêng.</p></div>
+        <div class="workspace-conversation-pagination">{{ $conversations->links('pagination::simple-tailwind') }}</div>
+        <div class="chat-list-note"><x-customer-icon name="shield"/><p>Chỉ bạn và nhân viên<br>có quyền xem cuộc tư vấn.</p></div>
     </aside>
     <div class="chat-thread-area">
-        @foreach($conversations as $conversation)
-        <section class="chat-thread" id="thread-{{ $conversation['key'] }}" data-chat-thread="{{ $conversation['key'] }}" @if(!$loop->first) hidden @endif aria-labelledby="title-{{ $conversation['key'] }}">
-            <header class="chat-thread-header">
-                <button class="chat-mobile-back" type="button" data-chat-back aria-label="Quay lại danh sách cuộc tư vấn"><x-customer-icon name="back"/></button>
-                <span class="chat-advisor-avatar">T</span><div><h2 id="title-{{ $conversation['key'] }}">{{ $conversation['advisor'] }}</h2><p>{{ $conversation['name'] }} <span>· {{ $conversation['reference'] }}</span></p></div><span class="chat-connection"><i></i> Chưa kết nối</span>
-            </header>
-            <div class="chat-vehicle"><img src="{{ asset($conversation['image']) }}" alt="{{ $conversation['name'] }} minh họa" width="120" height="60"><div><span>XE BẠN QUAN TÂM</span><strong>{{ $conversation['name'] }}</strong></div><span class="chat-status chat-status-{{ $conversation['status'] }}">{{ $conversation['status_label'] }}</span></div>
-            <div class="chat-messages" role="log" aria-label="Tin nhắn minh họa của {{ $conversation['name'] }}">
-                @if(count($conversation['messages']))
-                    <p class="chat-date">Hội thoại minh họa</p>
-                    @foreach($conversation['messages'] as $message)
-                        <div class="chat-message chat-message-{{ $message['sender'] }}"><div><p>{{ $message['content'] }}</p></div><span>{{ $message['sender'] === 'customer' ? 'Bạn (minh họa)' : 'Tư vấn viên mẫu' }} · {{ $message['time'] }}</span></div>
-                    @endforeach
-                @else
-                    <div class="chat-waiting"><x-customer-icon name="chat"/><h3>Chờ một lời chào mới</h3><p>Cuộc tư vấn sẽ bắt đầu khi showroom phân công nhân viên phụ trách.</p><small>Đây là trạng thái minh họa.</small></div>
-                @endif
-            </div>
-            <form class="chat-composer" data-chat-composer>
-                <p class="chat-send-feedback" data-chat-feedback role="alert" hidden></p>
-                @if($conversation['status'] === 'new')
-                    <p class="chat-readonly-note">Cuộc tư vấn đang chờ phân công. Bạn chưa thể gửi tin nhắn.</p>
-                @elseif($conversation['status'] === 'closed')
-                    <p class="chat-readonly-note">Cuộc tư vấn đã kết thúc. Bạn có thể xem lại nội dung trao đổi.</p>
-                @endif
-                <div class="chat-compose-row"><label class="sr-only" for="draft-{{ $conversation['key'] }}">Nội dung tin nhắn</label><textarea id="draft-{{ $conversation['key'] }}" rows="2" maxlength="1000" placeholder="{{ $conversation['status'] === 'in_progress' ? 'Viết lời nhắn của bạn…' : 'Chưa thể gửi tin nhắn' }}" data-chat-draft @disabled($conversation['status'] !== 'in_progress') aria-describedby="hint-{{ $conversation['key'] }}"></textarea><button type="submit" class="chat-send-button" @disabled($conversation['status'] !== 'in_progress')><x-customer-icon name="send"/><span>Gửi</span></button></div>
-                <div class="chat-compose-hint" id="hint-{{ $conversation['key'] }}"><span>Bản mẫu · Nội dung chưa được gửi đến showroom.</span><span data-chat-count>0 / 1000</span></div>
-            </form>
+        @forelse($threads as $conversation)
+        @php($canSend = in_array($conversation->status, [\App\Enums\InquiryStatus::Assigned, \App\Enums\InquiryStatus::InProgress], true))
+        <section class="chat-thread" id="thread-{{ $conversation->id }}" data-chat-thread="{{ $conversation->id }}" data-inquiry-chat data-id="{{ $conversation->id }}" data-version="{{ $conversation->access_version }}" data-user-id="{{ auth()->id() }}" data-skin="customer" @if($selected?->id !== $conversation->id) hidden @endif aria-labelledby="title-{{ $conversation->id }}">
+            <header class="chat-thread-header"><a href="{{ route('customer.chat.index', array_filter(['q' => request('q'), 'page' => request('page')])) }}" class="chat-mobile-back" data-chat-back aria-label="Quay lại danh sách cuộc tư vấn"><x-customer-icon name="back"/></a><span class="chat-advisor-avatar">T</span><div><h2 id="title-{{ $conversation->id }}">{{ $conversation->assignedStaff?->name ?? 'Chờ nhân viên phụ trách' }}</h2><p>{{ $conversation->car?->name ?? 'Tư vấn Toyota' }} <span>· #{{ $conversation->id }}</span></p></div></header>
+            <div class="chat-vehicle"><div><span>YÊU CẦU TƯ VẤN #{{ $conversation->id }}</span><strong>{{ $conversation->car?->name ?? 'Trao đổi với showroom' }}</strong></div><span class="chat-status chat-status-{{ $conversation->status->value }}">{{ $labels[$conversation->status->value] }}</span></div>
+            <p class="workspace-connection" role="status" data-chat-status>Đang tải lịch sử và kết nối…</p>
+            <div class="chat-messages" data-chat-scroll><button type="button" data-chat-older class="workspace-load-older">Tải tin cũ hơn</button><ol data-chat-messages aria-label="Tin nhắn trong cuộc tư vấn" aria-live="polite" aria-relevant="additions"></ol></div>
+            @if($canSend)
+            <form class="chat-composer" data-chat-form><div class="chat-compose-row"><label class="sr-only" for="draft-{{ $conversation->id }}">Nội dung tin nhắn</label><textarea id="draft-{{ $conversation->id }}" name="content" rows="2" maxlength="1000" required placeholder="Viết lời nhắn của bạn…" aria-describedby="hint-{{ $conversation->id }}"></textarea><button type="submit" class="chat-send-button"><x-customer-icon name="send"/><span>Gửi / thử lại</span></button></div><div class="chat-compose-hint" id="hint-{{ $conversation->id }}"><span>Nội dung tối đa 1000 ký tự.</span><span data-chat-count>0 / 1000</span></div></form>
+            @else
+                <p class="chat-readonly-note workspace-readonly">{{ $conversation->status === \App\Enums\InquiryStatus::New ? 'Đang chờ phân công nhân viên. Bạn có thể xem lại lịch sử, chưa thể gửi tin.' : 'Cuộc tư vấn đã kết thúc. Bạn có thể xem lại nội dung trao đổi.' }}</p>
+            @endif
         </section>
-        @endforeach
+        @empty
+            <div class="chat-waiting"><x-customer-icon name="chat"/><h3>Khởi đầu một cuộc trò chuyện</h3><p>Gửi yêu cầu tư vấn để showroom phân công nhân viên hỗ trợ bạn.</p><button type="button" class="customer-button customer-button-red" data-open-inquiry>Gửi yêu cầu tư vấn <x-customer-icon name="arrow"/></button></div>
+        @endforelse
     </div>
 </section>
-<noscript><p class="customer-chat-disclaimer">Bật JavaScript để chuyển giữa các cuộc tư vấn. Bản mẫu chưa hỗ trợ gửi tin thật.</p></noscript>
+<dialog class="workspace-inquiry-dialog" data-inquiry-dialog aria-labelledby="inquiry-dialog-title"><form method="dialog"><button class="workspace-dialog-close" aria-label="Đóng yêu cầu tư vấn">Đóng ×</button></form><p class="customer-eyebrow">TOYOTA / TƯ VẤN</p><h2 id="inquiry-dialog-title">Chúng tôi có thể giúp gì cho bạn?</h2><p>Showroom sẽ tiếp nhận và phân công tư vấn viên. Bạn có thể chat khi yêu cầu được phân công.</p><form data-inquiry-create action="{{ route('inquiries.store') }}" method="POST" data-chat-url="{{ route('customer.chat.index') }}">@csrf<label>Họ và tên<input name="name" maxlength="100" value="{{ auth()->user()->name }}" required autocomplete="name"></label><label>Số điện thoại<input name="phone" maxlength="10" value="{{ auth()->user()->phone }}" required autocomplete="tel" inputmode="tel"></label><label>Email<input name="email" type="email" maxlength="255" value="{{ auth()->user()->email }}" autocomplete="email"></label><label>Nhu cầu của bạn<textarea name="content" minlength="10" maxlength="2000" rows="4" required placeholder="Bạn đang quan tâm dòng xe hoặc cần tư vấn điều gì?"></textarea></label><p class="workspace-inquiry-feedback" data-inquiry-feedback role="alert" hidden></p><button type="submit" class="customer-button customer-button-red">Gửi yêu cầu tư vấn</button></form></dialog>
+<noscript><p class="customer-chat-disclaimer">Bật JavaScript để tải lịch sử, gửi và nhận tin nhắn thời gian thực.</p></noscript>
 @endsection
