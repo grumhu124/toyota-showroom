@@ -1,5 +1,7 @@
 # Trạng thái thực tế
 
+28/10: nhánh giao diện đồng bộ lịch hẹn từ main, account customer có lịch sắp tới từ DB và liên kết /lich-hen. Trang lịch khách dùng layouts.customer, hủy theo endpoint TV5 có kiểm owner/time/state. Chat vẫn preview local/testing; chưa gộp TV4 vào bản này.
+
 Ngày 20/10/2026. Đã gộp vào main: docs/review-v6-srs, H01 (feature/auth-middleware),
 H02 (feature/admin-users), frontend home/catalog preview (feature/frontend-layout),
 tích hợp auth vào giao diện frontend (feature/frontend-auth-integration) và nhánh

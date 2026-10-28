@@ -1,4 +1,22 @@
 # Nhật ký thay đổi hệ thống
+
+## 2026-10-28 Đồng bộ lịch hẹn với tài khoản khách
+
+- Ghép main ed06179 vào nhánh giao diện, giữ appointment TV5 và account/chat preview.
+- AccountController chỉ đọc lịch sắp tới của đúng customer; điều hướng và danh sách lịch dùng layout customer, hủy theo endpoint hiện có với lý do/CSRF.
+- Không đổi migration, seed, trạng thái hoặc nghiệp vụ xác nhận/đổi lịch; chưa ghép TV4 trong mốc này.
+- Kiểm tra bằng suite chung và browser với DB QA riêng; không reset DB người dùng.
+
+
+## 2026-10-23 Giao diện tài khoản và chat khách hàng
+
+- Customer có layout riêng, hồ sơ từ session, hero ảnh xe chạy, điều hướng tài khoản/chat/catalog và logout POST CSRF.
+- Chat preview local/testing có danh sách/search/thread/new/closed/composer/feedback chưa kết nối, bản nháp DOM; không gửi request hoặc giả tin thành công.
+- Giữ màn account admin/sales, backend Auth/H02 và toàn bộ schema. Không seed hoặc sửa database người dùng.
+- Route preview customer-only, không thay shared HTTP/private channel TV4. Lịch hẹn ghi sắp có; không giả số liệu.
+- Kiểm tra composer check/build và browser responsive; xem hướng dẫn CUSTOMER_ACCOUNT_CHAT_UI.md về phạm vi chưa nối backend.
+
+
 ## 2026-10-20 Lịch hẹn và dịch vụ (TV5 - feature/appointment-schedule)
 - Thêm: routes/appointments.php, AppointmentController, StoreAppointmentRequest/
   UpdateStatusRequest, AppointmentService, AppointmentPolicy/ServicePolicy,
