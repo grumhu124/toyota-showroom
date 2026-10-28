@@ -19,8 +19,8 @@
             <p class="customer-nav-label">KHÔNG GIAN CỦA BẠN</p>
             <nav class="customer-nav" aria-label="Điều hướng tài khoản">
                 <a href="{{ route('account') }}" @if(request()->routeIs('account')) aria-current="page" @endif><x-customer-icon name="grid"/> Tổng quan</a>
-                @if(Route::has('customer.chat.preview'))
-                    <a href="{{ route('customer.chat.preview') }}" @if(request()->routeIs('customer.chat.preview')) aria-current="page" @endif><x-customer-icon name="chat"/> Tin nhắn <small>Bản mẫu</small></a>
+                @if(Route::has('customer.chat.index'))
+                    <a href="{{ route('customer.chat.index') }}" @if(request()->routeIs('customer.chat.index')) aria-current="page" @endif><x-customer-icon name="chat"/> Tin nhắn</a>
                 @endif
                 <a href="{{ route('customer.appointments.index') }}" @if(request()->routeIs('customer.appointments.*')) aria-current="page" @endif><x-customer-icon name="calendar"/> Lịch hẹn</a>
                 <a href="{{ url('/xe') }}"><x-customer-icon name="car"/> Khám phá xe</a>

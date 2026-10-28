@@ -23,7 +23,7 @@ class CustomerWorkspaceTest extends TestCase
         $this->get('/tai-khoan/tin-nhan')->assertRedirect(route('login'));
     }
 
-    public function test_customer_sees_only_own_profile_and_explicit_preview(): void
+    public function test_customer_sees_only_own_profile_and_real_empty_workspace(): void
     {
         $user = User::factory()->create(['name' => '<script>profile</script>']);
         $other = User::factory()->create();
@@ -31,11 +31,11 @@ class CustomerWorkspaceTest extends TestCase
             ->assertSee($user->email)->assertDontSee($other->email)
             ->assertSee('&lt;script&gt;profile&lt;/script&gt;', false)
             ->assertDontSee('<script>profile</script>', false)
-            ->assertSee(route('customer.chat.preview'))
+            ->assertSee(route('customer.chat.index'))
             ->assertSee('Thông tin cá nhân');
         $this->get('/tai-khoan/tin-nhan')->assertOk()
-            ->assertSee('Chưa kết nối')->assertSee('Bản xem trước giao diện')
-            ->assertSee('Chờ phân công')->assertSee('Đã kết thúc')
+            ->assertSee('Bạn chưa có yêu cầu tư vấn nào.')
+            ->assertDontSee('Hội thoại minh họa')
             ->assertSee('name="_token"', false);
         $this->assertDatabaseCount('inquiries', 0);
         $this->assertDatabaseCount('messages', 0);

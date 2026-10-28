@@ -9,3 +9,4 @@ import './modules/auth';
 
 import './modules/customer-chat';
 import './modules/appointments';
+import './modules/chat/inquiry-chat';

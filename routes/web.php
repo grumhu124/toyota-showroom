@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Customer\AccountController;
 use Illuminate\Support\Facades\Route;
 
+require __DIR__.'/inquiries.php';
+
 Route::get('/', function () {
     return app()->environment(['local', 'testing']) ? view('home') : view('welcome');
 })->name('home');

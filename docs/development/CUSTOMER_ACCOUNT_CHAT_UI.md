@@ -1,19 +1,29 @@
-# Giao diện tài khoản và chat khách hàng — 23/10/2026
+# Customer workspace integration — 28/10/2026
 
-- `/tai-khoan`: customer dùng layouts.customer, thông tin thật từ session. Admin/sales giữ auth.account và layouts.account.
-- `/tai-khoan/tin-nhan` (`customer.chat.preview`): GET local/testing, bảo vệ web/auth/ensure.active/role:customer qua bootstrap. Không có POST hoặc endpoint gửi/đọc hồ sơ thật.
-- Fixture resources/data/customer-chat-preview.php hoàn toàn minh họa, không đọc inquiries/messages và không ghi DB. Các hồ sơ new/closed không soạn tin; in_progress thử soạn tối đa 1000 ký tự nhưng submit chỉ báo chưa kết nối, giữ nội dung trong ô. Không giả gửi thành công, không tự trả lời, không polling hoặc lưu localStorage.
-- JS chuyển hội thoại/tìm kiếm/đếm ký tự/back mobile; mỗi ô giữ bản nháp trong DOM, mất khi reload. Không gọi Echo cho tới khi TV4 triển khai endpoint và private channel thật.
-- Lịch hẹn chỉ có nhãn sắp có, không gán số đếm/hồ sơ mẫu vào tài khoản thật. Không thêm chỉnh sửa thông tin hoặc mật khẩu.
+Nhánh feature/customer-realtime-integration ghép main ed06179/lịch TV5, PR #11 FE và TV4 tại 1438af2. Chưa merge main; H02/PublicationGate vẫn cần Hoàng review, không tự nhận toàn bộ module đã nghiệm thu.
 
-## Bàn giao TV4
+- /tai-khoan: thông tin từ session và tối đa 3 lịch pending/confirmed sắp tới của đúng customer.
+- /lich-hen: danh sách phân trang own appointments theo controller TV5; layout FE, hủy kèm lý do qua endpoint cũ. Không đổi schema/service xác nhận hoặc đổi lịch.
+- /tai-khoan/tin-nhan (customer.chat.index): own inquiry, q và conversation được validate; không serialize internal_note/contact người khác; tối đa 15 hội thoại/trang. Không dùng fixture cũ.
+- Tạo yêu cầu dùng AJAX POST /tu-van của TV4, CSRF, hiển thị validation/throttle; chỉ chuyển tới thread sau 201 có ID thật.
+- Dùng lại transport TV4 với mount lazy mỗi thread và một Echo connection dùng chung. Bubbles render bằng textContent; cursor, dedupe ID, UUID retry, revision bảo vệ draft vẫn giữ. Nội dung soạn giữ trong DOM khi đổi hội thoại cùng trang; trước reload/chuyển trang có bản nháp thì cảnh báo.
+- New/closed chỉ history; assigned/in_progress có composer tối đa 1000 ký tự. Lưu tin HTTP thành công không là bằng chứng phía đối diện đã nhận.
+- History vẫn tải được khi WebSocket chưa sẵn sàng; reconnect subscribed catch-up, không polling. Private authorization/state/version do TV4 kiểm phía server, nút disabled không thay quyền.
 
-Tái sử dụng markup thread/composer, thay fixture bằng response allowlist của inquiry đã kiểm Policy. Shared HTTP chat phải nằm trong routes/inquiries.php cho customer/sales/admin, không đặt vào nhóm customer-only. Route preview này không thay contract thật.
+## Chạy chat local
 
-Trạng thái thật cần nối: connecting/connected/disconnected; submit sending/sent/failed; UUID retry cùng payload, dedupe ID; subscribe rồi catch-up, server từ phiên lấy sender; new/closed chỉ đọc. Không dùng nội dung fixture hay timestamp minh họa khi nối DB. Quyền và trạng thái phải được server kiểm lại, không dựa nút disabled.
+Cần DB sẵn có, Reverb credentials đúng trong .env (không commit secret), BROADCAST_CONNECTION=reverb và database queue cùng Connection với message. Chạy Laravel HTTP, php artisan reverb:start và php artisan queue:work --queue=default --tries=3, npm run build sau khi chỉnh VITE_REVERB_*; không migrate:fresh hoặc reset dữ liệu để thử chat. Chỉ restart worker của môi trường đang sửa, không tự dừng worker của người khác.
 
 ## Kiểm tra
 
-Chạy composer check và npm run build. Kiểm route guest/customer/admin/sales/locked, account chỉ hiển thị user hiện tại, preview không tồn tại trong production. Trình duyệt kiểm desktop/mobile: tìm không có kết quả, chuyển new/closed, giữ draft khi đổi thread, submit không phát request hoặc báo thành công.
+Composer check + build; node --test tests/JavaScript/inquiry-chat.test.js kiểm revision/UUID. Kiểm browser/customer và staff độc lập, một thread đã phân công, gửi hai chiều; new/closed chỉ đọc; thử mất kết nối/reconnect và giữ draft. Kiểm QA tách biệt, không chạy harness MySQL trên DB thật của nhóm. Ghi bằng chứng thực chạy trong PR; UI pass không thay review PublicationGate hoặc chứng minh MySQL concurrency.
 
-Kết quả local 23/10: composer check đạt 39 tests/360 assertions + Pint; npm run build đạt. Route list production chỉ có account, không có chat preview. Browser desktop và 390×844: profile từ session, điều hướng, logout mobile, tìm rỗng, chuyển thread/back, new/closed disabled, giữ draft và feedback chưa gửi đạt; không tràn ngang. QA dùng SQLite riêng, không dùng DB khách hàng đang chạy. Chưa kiểm thiết bị thật, kết nối WebSocket, MySQL concurrency hoặc gửi/nhận tin thực tế.
+
+## Bằng chứng QA tích hợp — 28/10/2026
+
+- Composer check: 86 tests / 700 assertions, Pint/encoding/syntax/inventory đạt. Build Vite đạt; 4 cảnh báo font static có từ trước.
+- JavaScript transport: 5 tests đạt, gồm UUID retry, bảo vệ bản nháp khi response muộn và HTTP submit khi thiếu cấu hình WebSocket.
+- Browser trên SQLite QA riêng, HTTP khách :8040 và nhân viên :8041, Reverb :8080 + database worker: gửi khách → staff và staff → khách hiện ở phía nhận không reload.
+- Tắt riêng Reverb QA: khách hiện không kết nối, draft giữ nguyên; staff gửi một tin khi gián đoạn. Bật lại Reverb, khách tự catch-up nhận tin đó không reload, draft vẫn nguyên.
+- Form tạo yêu cầu tạo ID #2 thật trong QA, tự chuyển thread trạng thái chờ phân công, không hiện composer. Thread #1 đã phân công có composer. Owner/role/closed/internal_note kiểm bằng feature tests.
+- Chưa chạy MySQL concurrency/PublicationGate harness trong phiên này; browser viewport override không thay kích thước thực, chưa xác minh responsive mới ở 390px. Không coi các test này là nghiệm thu toàn bộ TV4/H02. Không thay .env hoặc DB MySQL của người dùng.

@@ -1,7 +1,8 @@
 # Hợp đồng route và giao tiếp — P1
 
 Theo [SRS 1.4](../../SRS.md)/ADR 0003. H01 đã có endpoint Auth/tài khoản ở phần dưới.
-Endpoint catalog/tư vấn/chat/lịch vẫn là đích; private channel còn deny-by-default.
+Catalog/lịch vẫn là đích. Trên nhánh TV4 24/10/2026, tư vấn/chat đã có endpoint,
+Policy/private channel thật. Xem phần triển khai và [hợp đồng đầy đủ](../development/TV4_INTEGRATION.md).
 
 GET / tên home: preview trang chủ Camry trong local/testing; production giữ welcome.
 /#dich-vu và /#showroom là anchor giới thiệu, không phải endpoint dịch vụ/đặt lịch.
@@ -14,10 +15,10 @@ chỉ render fixtures minh họa, không phải endpoint Catalog production.
 Query q/category/price/status/sort do JS lọc fixture; chưa là API/backend filter.
 Các route nghiệp vụ khác bên dưới vẫn chưa triển khai.
 
-**Các endpoint nghiệp vụ dưới đây là kế hoạch, chưa được đăng ký trong baseline.**
+**Bảng dưới là hợp đồng P1; catalog/lịch chưa đăng ký, tư vấn/chat đã có trên nhánh TV4.**
 Khi làm route thật, module owner cập nhật bảng và FEATURE_STATUS.
-Route chạy hiện tại xem php artisan route:list: home, auth/tài khoản, admin user,
-health và broadcast auth.
+Route chạy hiện tại xem php artisan route:list; TV4 thêm các route được liệt kê
+trong TV4_INTEGRATION, giữ home/Auth/admin user/health/broadcast auth.
 
 | Nhóm | Route đích | Quyền |
 | --- | --- | --- |
@@ -29,7 +30,7 @@ health và broadcast auth.
 
 Không có route đổi lịch/mở lại/audit UI/API status riêng trong P1.
 Customer route đăng ký tại root URL, route name customer.*; không có prefix /customer.
-Route file customer chưa có endpoint nghiệp vụ, TV4/TV5 thêm theo module.
+Route customer có list/detail inquiries; lịch chờ TV5 thêm theo module.
 Giữ slug/source/brand; Toyota cố định phía server. Category lọc bằng slug,
 chi tiết xe dùng ID, xe ẩn 404. Car code là mã chiếc xe, không là mã cả dòng xe.
 
@@ -79,15 +80,24 @@ HTTP phiên cũ bị H01 thu hồi ở request kế tiếp; socket/job còn ph�
 ## Chat — hợp đồng TV4
 
 HTTP chat dùng auth group cho customer/sales/admin trong routes/inquiries.php,
-không đặt trong routes/customer.php vốn role:customer. Quyền từng inquiry kiểm
-bằng Policy; xem [ma trận H03](AUTHORIZATION_CONTRACT.md). Đây là hợp đồng đích,
-chưa có endpoint/kênh nghiệp vụ để nghiệm thu.
+không đặt trong routes/customer.php vốn role:customer. InquiryPolicy/MessagePolicy
+và kênh nghiệp vụ đã triển khai trên nhánh TV4; xem [ma trận H03](AUTHORIZATION_CONTRACT.md).
 
 POST content/client_message_id, sender từ session; trả id/inquiry_id,
 sender(id,name), content, created_at; không serialize user/inquiry/internal_note.
 History tối đa 50/lần, after_id/cursor; client dedupe ID, kết nối lại bù lịch sử.
+GET mặc định 50 tin mới nhất theo thứ tự tăng dần, before_id cho tin cũ;
+after_id cho catch-up tăng dần, limit 1–50, không dùng cả hai cursor cùng lúc.
+Response `{data,has_more,next_after_id,next_before_id,access_version,channel}`.
+Event `.message.created` có payload bằng response message, không bọc model.
 Unique sender/UUID; retry cùng payload trả bản cũ 200, khác trả 409.
 Lưu rồi phát sau commit, chỉ lần tạo mới phát. Subscribe trước catch-up.
+Sau khắc phục F02, message và intent trong database jobs cùng transaction/connection;
+worker chỉ xử lý sau commit. HTTP retry không thêm job; worker delivery at-least-once,
+client dedupe ID. API/route/event payload không đổi. Redis/sync không là queue thay thế
+được hỗ trợ cho MessageService. F01 dùng PublicationGate chung H02/reassign/publisher,
+gate trước transaction, không row lock qua network. API/event không đổi; phạm vi và
+giới hạn session/primary/in-flight ở ADR 0006/TV4_INTEGRATION, cần Hoàng review H02.
 Private inquiry.{id}.v{version} kiểm active/role/ownership/assigned/version.
 Chuyển sales/khóa tài khoản tăng version; kiểm quyền/version hiện tại khi gửi/phát,
 không chuyển tin của job cũ sang kênh cũ. Dữ liệu đã nhận không thu lại được.
@@ -112,8 +122,23 @@ Xem [PARALLEL_WORK](../team/PARALLEL_WORK.md) về namespace route, fixture/seed
 phân công file chung và thứ tự khóa giữa tài khoản/tư vấn/lịch.
 TV4/TV5 dùng hợp đồng chung và test MySQL, không khóa dữ liệu ngược thứ tự.
 
-## Preview UI khách hàng — 23/10/2026
+## Preview UI khách hàng — 23/10/2026 (lịch sử; đã thay trên nhánh tích hợp 28/10)
 
 GET /tai-khoan giữ name account, auth/active; customer dùng view customer.account, admin/sales giữ auth.account.
 GET /tai-khoan/tin-nhan (customer.chat.preview) chỉ local/testing và customer active.
 Chỉ dữ liệu fixture, không có HTTP mutation hoặc mở private channel. Shared chat thật vẫn theo TV4 trong routes/inquiries.php; preview không là endpoint nghiệp vụ.
+## TV4 triển khai 24/10/2026 (chưa merge)
+
+POST /tu-van nhận name/phone/email/content/car_id, ánh xạ contact_*; guest/customer,
+3/10 phút từ limiter nền; JSON 201 id/message. Customer_id/source/status lấy server.
+GET /yeu-cau(/id), /staff/inquiries(/id), /admin/inquiries(/id) phân trang 15,
+lọc status và scoped theo owner/assigned/admin. Customer response không có internal_note/contact_*.
+PATCH admin.inquiries.assign nhận assigned_to sales active; staff/admin start/note/close.
+Chỉ assigned → in_progress → closed; close_result theo enum. Closed chỉ đọc, không DELETE.
+Ghi chú một ô tối đa 10000 ký tự; reassign giữ in_progress, chỉ bump version khi đổi sales.
+Schema endpoint/response/error/demo đầy đủ ở [TV4_INTEGRATION](../development/TV4_INTEGRATION.md).
+
+## Customer realtime integration — 28/10/2026
+
+Nhánh tích hợp nối GET /tai-khoan/tin-nhan (customer.chat.index) vào DB own inquiry, tối đa 15 thread/trang; tìm q và chọn conversation đã scoped owner. Không serialize ghi chú nội bộ. Dùng lại HTTP messages TV4, UUID/cursor và Echo, không tạo API gửi thứ hai. Shared HTTP vẫn cho ba role với Policy.
+Preview fixture không còn là màn mặc định. Main và PR #11 vẫn cần review trước khi gộp backend TV4. Appointment UI dùng các route TV5, không sửa protocol khóa hoặc schema.
